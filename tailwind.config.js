@@ -46,6 +46,9 @@ module.exports = {
               'player-1': colors.zinc[200],
               'player-2': colors.zinc[500],
 
+              'info-1': colors.blue[200],
+              'info-2': colors.blue[500],
+
               'success-1': colors.green[200],
               'success-2': colors.green[500],
 
