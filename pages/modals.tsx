@@ -14,7 +14,8 @@ const Buttons = () => {
       <div className='bg-base-2 rounded p-4 space-y-2'>
         <Modal open={showOne} setOpen={setShowOne} buttonProps={{ label: 'plain modal', kind: 'plain' }}>
           <div className='w-96 h-64 p-4'>
-            Hello. This is a modal or also known as a dialog. This one is plain with nuthin in it.
+            Hello. This is a modal or also known as a dialog. This one is plain with nuthin in it. It should still have focus on open.
+            You should be able to hit ESC to close.  The focus should then return to the button.
           </div>
         </Modal>
       </div>
