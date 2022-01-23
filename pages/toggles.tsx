@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { IconToggle, Toggle } from '../components/toggle'
 import Icons from '../components/icons'
-import Template from './template'
 const Head = () => {
   const [pressed, setPressed] = useState(false)
   return <Toggle description='send audio  to headphones' pressed={pressed} Icon={Icons.Headset} size='32px' onClick={() => setPressed(p => !p)}/>
@@ -11,7 +10,7 @@ const Broad = () => {
   return <Toggle description='send audio to broadcast' pressed={pressed} Icon={Icons.Broadcast} size='32px' onClick={() => setPressed(p => !p)}/>
 }
 const Buttons = () => (
-  <Template>
+  <div>
     <div className='bg-base-2 rounded p-4 space-y-2'>
     <Head />
     <Broad />
@@ -45,7 +44,7 @@ const Buttons = () => (
       </div>
     </div>
 
-  </Template>
+  </div>
 )
 
 export default Buttons

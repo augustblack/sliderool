@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 // import { IconToggle, Toggle } from '../components/toggle'
 import Icons from '../components/icons'
 import { Modal, ModalWithClose } from '../components/modal'
-import Template from './template'
 import Button from '../components/button'
 
 const Buttons = () => {
@@ -10,7 +9,7 @@ const Buttons = () => {
   const [showTwo, setShowTwo] = useState(false)
   const [showThree, setShowThree] = useState(false)
   return (
-    <Template>
+    <div>
       <div className='bg-base-2 rounded p-4 space-y-2'>
         <Modal open={showOne} setOpen={setShowOne} buttonProps={{ label: 'plain modal', kind: 'plain' }}>
           <div className='w-96 h-64 p-4'>
@@ -60,7 +59,7 @@ const Buttons = () => {
         </ModalWithClose>
       </div>
 
-    </Template>
+    </div>
   )
 }
 

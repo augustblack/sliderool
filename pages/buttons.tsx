@@ -1,11 +1,9 @@
 import React from 'react'
-// import Link from 'next/link'
 import Button from '../components/button'
 import Icons from '../components/icons'
-import Template from './template'
 
 const Buttons = () => (
-  <Template>
+  <div>
     <div className='bg-base-2 rounded p-4 space-y-2'>
       <div>Buttons of kind=plain</div>
       <div className='flex flex-row space-x-2'>
@@ -83,7 +81,7 @@ const Buttons = () => (
 
       </div>
     </div>
-  </Template>
+  </div>
 )
 
 export default Buttons

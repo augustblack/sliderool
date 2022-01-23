@@ -1,8 +1,5 @@
 import React, { FC, useState } from 'react'
-import Template from './template'
 import { Alert, AlertProps } from '../components/alert'
-// import Icons from '../components/icons'
-// import Button from '../components/button'
 
 const AlertClose: FC<AlertProps> = ({
   kind,
@@ -17,7 +14,7 @@ const AlertClose: FC<AlertProps> = ({
 }
 const Alerts = () => {
   return (
-    <Template>
+    <div>
       <div className='bg-base-2 rounded p-4 space-y-2'>
         <Alert kind='info'>
           This is a basic info alert. You would use it sparingly or never in Mezcal.
@@ -48,7 +45,7 @@ const Alerts = () => {
         </AlertClose>
       </div>
 
-    </Template>
+    </div>
   )
 }
 
