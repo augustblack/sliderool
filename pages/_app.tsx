@@ -18,7 +18,8 @@ const Menu = () => (
     <Link href='/alerts'>Alerts</Link>
     <Link href='/buttons'>Buttons</Link>
     <Link href='/toggles'>Toggles</Link>
-    <Link href='/labesl'>Labels</Link>
+    <Link href='/tabs'>Tabs</Link>
+    <Link href='/labels'>Labels</Link>
     <Link href='/modals'>Modals</Link>
     <Link href='/menus'>Menus</Link>
     <Link href='/forms'>Forms</Link>
