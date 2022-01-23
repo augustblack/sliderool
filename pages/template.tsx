@@ -33,7 +33,7 @@ const Template: FC<NavProps> = ({
   return (
     <div className={ ' p-4 bg-base-3 text-write-1 space-y-4 w-screen h-screen'} style={{ transition: 'background-color .25s' }}>
       <Head>
-        <title>daisy chain</title>
+        <title>s l i d e r o o l</title>
       </Head>
       <div className='flex flex-col space-x-2 '>
         <div className='flex flex-row space-x-2 p-2'>
