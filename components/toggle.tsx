@@ -1,5 +1,5 @@
 import React, { FC, MouseEventHandler } from 'react'
-import Icons, { IconOnOffProps, IconProps } from '../components/icons'
+import Icons, { IconOnOffProps, IconProps } from './icons'
 
 type ToggleProps = {
   description: string // use a unique description
