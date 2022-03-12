@@ -15,6 +15,12 @@ const classes: Record<AlertKind, string> = {
   warning: 'bg-warning-1 border-warning-2 text-warning-2',
   error: 'bg-error-1 border-error-2 text-error-2'
 }
+const hoverClasses: Record<AlertKind, string> = {
+  info: 'hover:bg-info-2 hover:text-info-1',
+  success: 'hover:bg-success-2 hover:text-success-1',
+  warning: 'hover:bg-warning-2 hover:text-warning-1',
+  error: 'hover:bg-error-2 hover:text-error-1'
+}
 
 export const Alert: FC<AlertProps> = ({
   children,
@@ -37,7 +43,13 @@ export const Alert: FC<AlertProps> = ({
     {
       onClose
         ? (
-          <Button kind='none' className="flex-shrink" onClick={onClose}><Clear /></Button>
+          <Button
+            kind='none'
+            className={[
+              'flex-shrink',
+              hoverClasses[kind]
+            ].join(' ')}
+      onClick={onClose}><Clear /></Button>
           )
         : null
     }
