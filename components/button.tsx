@@ -49,7 +49,7 @@ const Button = React.forwardRef(({
       aria-label={label}
       type={type}
       className={[
-        'active:scale-90 px-2 py-1 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def flex items-center justify-center',
+        'active:scale-90 p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def flex items-center justify-center',
         getColorClass(kind),
         getBorderClass(kind),
         getRoundedClass(kind),
