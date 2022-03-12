@@ -1,7 +1,7 @@
 {
   "name": "sliderool",
   "author": "August Black",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "react/tailwind/framer motion UI lib",
   "license": "GPLv3",
   "repository": {
@@ -10,15 +10,35 @@
   },
   "homepage": "https://github.com/augustblack/sliderool#README",
   "files": [
-    "lib/**/*"
+    "dist/**/*"
   ],
-  "main": "lib/index.js",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "tsup": {
+    "entry": [
+      "components/index.tsx"
+    ],
+    "format": "cjs,esm",
+    "splitting": false,
+    "sourcemap": true,
+    "dts": true,
+    "clean": true,
+    "minify": false
+  },
   "scripts": {
     "dev": "next dev",
     "build-tailwind": "NODE_ENV=production npx tailwindcss -o ./lib/sliderool.css --minify",
-    "prepublish": "npm run build-tailwind && tsc -p tsconfig_pkg.json",
+    "blah": "rm -rf ./lib && npm run build-tailwind && tsc -p tsconfig_pkg.json",
+    "tsup": "tsup --format cjs,esm --dts --clean",
+    "prepublish": "rm -rf ./dist && npm run build-tailwind && npm run tsup",
     "build": "next build",
     "export": "next build && next export",
     "start": "next start"
@@ -45,6 +65,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "next": "^12.0.8",
     "postcss": "^8.4.5",
+    "tsup": "^5.12.1",
     "typescript": "^4.5.4"
   }
 }
