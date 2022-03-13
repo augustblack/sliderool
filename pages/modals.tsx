@@ -8,6 +8,7 @@ const Buttons = () => {
   const [showOne, setShowOne] = useState(false)
   const [showTwo, setShowTwo] = useState(false)
   const [showThree, setShowThree] = useState(false)
+  const [showFour, setShowFour] = useState(false)
   return (
     <div>
       <div className='bg-base-2 rounded p-4 space-y-2'>
@@ -58,7 +59,35 @@ const Buttons = () => {
           </div>
         </ModalWithClose>
       </div>
+      <div className='bg-base-2 rounded p-4 space-y-2'>
+        <ModalWithClose
+          open={showFour}
+          setOpen={setShowFour}
+          buttonProps={{ label: 'modal w/menu', kind: 'plain' }}
+          menu={(
+            <div className='flex flex-row space-x-2 pl-4 pt-3'>
+              <Button kind='round' className='w-12 h-12 bg-base-1'>
+                <Icons.Headset size='36px' />
+              </Button>
+              <Button kind='round' className='w-12 h-12 bg-base-3'>
+                <Icons.Play size='24px' />
+              </Button>
+              <Button kind='round' className='w-12 h-12'>
+                <Icons.Pending size='24px' />
+              </Button>
+              <Button kind='round' className='w-10 h-10'>
+                <Icons.List size='24px' />
+              </Button>
+            </div>
+          )}
 
+        >
+          <div className='w-full h-full p-4'>
+            Hello. This is a longer text to fill out the space.  It&apos;s possible you would likely have some buttons and other schnick schnock in here
+            to make things seem fuller and funner.
+          </div>
+        </ModalWithClose>
+      </div>
     </div>
   )
 }
