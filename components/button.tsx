@@ -18,7 +18,7 @@ const getColorClass = (kind: ButtonKind) => kind === 'plain'
   ? 'bg-primary-1 hover:bg-primary-2 text-write-1 border border-primary-1 text-primary-4 '
   : kind === 'outline' || kind === 'round'
     ? 'hover:bg-primary-1 bg-base-2 text-primary-3 border border-primary-3 hover:border-primary-4'
-    : 'hover:bg-base-1' // for icons, use none and carry color in from container
+    : '' // for icons, use none and carry color in from container
 
 const getBorderClass = (kind: ButtonKind) => kind === 'plain'
   ? 'border border-primary-1 text-primary-4'
