@@ -49,7 +49,8 @@ export const Alert: FC<AlertProps> = ({
               'flex-shrink',
               hoverClasses[kind]
             ].join(' ')}
-      onClick={onClose}><Clear /></Button>
+            onClick={onClose}
+            ><Clear /></Button>
           )
         : null
     }
