@@ -3,8 +3,8 @@ const colors = require('tailwindcss/colors')
 
 module.exports = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}'
   ],
   plugins: [
     themeSwapper({
@@ -16,10 +16,10 @@ module.exports = {
           selectors: [':root'],
           theme: {
             ringWidth: {
-              'def': '0px'
+              def: '0px'
             },
             dropShadow: {
-              'def': '',
+              def: ''
             },
             colors: {
               'base-1': colors.slate[100],
@@ -56,9 +56,9 @@ module.exports = {
               'warning-2': colors.orange[500],
 
               'error-1': colors.red[200],
-              'error-2': colors.red[500],
-            },
-          },
+              'error-2': colors.red[500]
+            }
+          }
         },
         {
           name: 'dark',
@@ -66,7 +66,7 @@ module.exports = {
           // mediaQuery: '@media (prefers-color-scheme: dark)',
           theme: {
             ringWidth: {
-              'def': '1px'
+              def: '1px'
             },
             colors: {
 
@@ -86,13 +86,12 @@ module.exports = {
 
               // Texts
               'write-1': colors.stone[100],
-              'write-2': colors.stone[200],
+              'write-2': colors.stone[200]
 
-            },
-          },
-        },
-      ],
-    }),
-  ],
+            }
+          }
+        }
+      ]
+    })
+  ]
 }
-
