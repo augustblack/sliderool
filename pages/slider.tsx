@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
-import { Slider } from '../components/index'
+import {
+  Slider,
+  ModalWithClose
+} from '../components/index'
 import { useSlider, ScaleType } from '../components/sliderHook'
 
 const Sliders = () => {
   const [vol, setVol] = useState(0)
+  const [showOne, setShowOne] = useState(false)
   const setV = (v:number) => setVol(v)
   const volSlider = useSlider({
     value: vol,
@@ -15,20 +19,36 @@ const Sliders = () => {
 
   return (
     <div>
-      <div className='bg-base-2 rounded p-4 space-x-2'>
+      <div className='flex flex-row bg-base-2 rounded p-4 space-x-2'>
         <Slider slider={volSlider} trackSize={220} >
           <div className='rounded w-12 flex justify-center'>vol</div>
         </Slider>
         <div className='flex flex-col space-y-2'>
-        <Slider slider={volSlider} trackSize={220} orientation='horizontal' >
-          <div className='rounded w-12 flex justify-center'>volH</div>
-        </Slider>
-        <Slider slider={volSlider} trackSize={220} orientation='horizontal' >
-          <div className='rounded w-12 flex justify-center'>volH</div>
-        </Slider>
+          <Slider slider={volSlider} trackSize={220} orientation='horizontal' >
+            <div className='rounded w-12 flex justify-center'>volH</div>
+          </Slider>
+          <Slider slider={volSlider} trackSize={120} orientation='horizontal' >
+            <div className='rounded w-12 flex justify-center'>volH2</div>
+          </Slider>
         </div>
       </div>
       <div className='bg-base-2 rounded p-4 space-y-2'>
+        <ModalWithClose open={showOne} setOpen={setShowOne} buttonProps={{ label: 'plain modal', kind: 'plain' }}>
+          <div className='flex flex-row bg-base-2 rounded p-4 space-x-2 z-[100]'>
+            <Slider slider={volSlider} trackSize={220} >
+              <div className='rounded w-12 flex justify-center'>vol</div>
+            </Slider>
+            <div className='flex flex-col space-y-2'>
+              <Slider slider={volSlider} trackSize={220} orientation='horizontal' >
+                <div className='rounded w-12 flex justify-center'>volH</div>
+              </Slider>
+              <Slider slider={volSlider} trackSize={120} orientation='horizontal' >
+                <div className='rounded w-12 flex justify-center'>volH2</div>
+              </Slider>
+            </div>
+          </div>
+        </ModalWithClose>
+
       </div>
     </div>
   )
