@@ -64,21 +64,23 @@ const Buttons = () => (
     </div>
 
     <div className='bg-base-2 rounded p-4 space-y-2'>
-      <div>Button group <span className='text-red-400'>NEEDS WORK</span></div>
-      <div className='space-x-0 first:rounded-l last:rounded-r rounded-md border border-write-1'>
-        <Button kind='group'>
-          <Icons.Headset size='24px' />
-        </Button>
-        <Button kind='group'>
-          <Icons.Play size='24px' />
-        </Button>
-        <Button kind='group'>
-          <Icons.Pending size='24px' />
-        </Button>
-        <Button kind='group'>
-          <Icons.List size='24px' />
-        </Button>
+      <div>Button group </div>
+      <div className='w-1/3'>
+        <div className='flex flex-row w-auto border border-1 border-write-1 rounded'>
+          <Button kind='group'>
+            <Icons.Headset size='32px' />
+          </Button>
+          <Button kind='group'>
+            <Icons.Play size='32px' />
+          </Button>
+          <Button kind='group'>
+            <Icons.Pending size='32px' />
+          </Button>
+          <Button kind='group'>
+            <Icons.List size='32px' />
+          </Button>
 
+        </div>
       </div>
     </div>
   </div>
