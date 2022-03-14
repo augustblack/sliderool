@@ -80,7 +80,7 @@ const SliderMotion : FC<SliderMotionProps> = ({
        <motion.div
          className={'absolute ' + thumbClass}
          style={thumbStyle}
-         whileTap={{ scale: 1.2 }}
+         whileTap={{ scale: 1.1, opacity: 1.0 }}
          ref={thumbRef}
          onPointerDown={pointerDown}
          onDragStart={dragStart}
@@ -131,12 +131,12 @@ const Slider: FC<SliderProps> = ({
   const xy = useTransform(slider.spring, xyTransVals, [0, trackRatio])
 
   const thumbStyle = orientation === 'vertical'
-    ? ({ y: xy, width: 48, height: thumbSize }) // w-12 h-16
-    : ({ x: xy, width: thumbSize, height: 48 })
+    ? ({ y: xy, width: 48, height: thumbSize, opacity: 0.75 }) // w-12 h-16
+    : ({ x: xy, width: thumbSize, height: 48, opacity: 0.75 })
 
   const trackStyle = orientation === 'vertical'
-    ? { touchAction: 'none', height: trackSize, width: 49 }
-    : { touchAction: 'none', width: trackSize, height: 49 }
+    ? { touchAction: 'none', height: trackSize, width: 50 }
+    : { touchAction: 'none', width: trackSize, height: 50 }
 
   const getDimensions = (ref) => !ref.current
     ? 0
@@ -165,7 +165,7 @@ const Slider: FC<SliderProps> = ({
     ? 'bg-gradient-to-b from-base-2 to-base-3 inline-block rounded border border-1 border-write-1'
     : 'bg-gradient-to-r from-base-2 to-base-3 inline-block rounded border border-1 border-write-1'
 
-  const thumbClass = 'bg-write-2 rounded'
+  const thumbClass = 'bg-write-2 rounded '
 
   const getY = (e) => {
     const pos = e.pageY - trackRef.current.offsetTop - (thumbRef.current.offsetHeight / 2)
