@@ -20,9 +20,11 @@ const Sliders = () => {
   return (
     <div>
       <div className='flex flex-row bg-base-2 rounded p-4 space-x-2'>
-        <Slider slider={volSlider} trackSize={220} >
-          <div className='rounded w-12 flex justify-center'>vol</div>
-        </Slider>
+        <div className='bg-gradient-to-b from-red-300 to-red-400 p-4 w-64 rounded'>
+          <Slider slider={volSlider} trackSize={220} >
+            <div className='rounded w-12 flex justify-center'>vol</div>
+          </Slider>
+        </div>
         <div className='flex flex-col space-y-2'>
           <Slider slider={volSlider} trackSize={220} orientation='horizontal' >
             <div className='rounded w-12 flex justify-center'>volH</div>
@@ -34,10 +36,12 @@ const Sliders = () => {
       </div>
       <div className='bg-base-2 rounded p-4 space-y-2'>
         <ModalWithClose open={showOne} setOpen={setShowOne} buttonProps={{ label: 'plain modal', kind: 'plain' }}>
-          <div className='flex flex-row bg-base-2 rounded p-4 space-x-2 z-[100]'>
-            <Slider slider={volSlider} trackSize={220} >
-              <div className='rounded w-12 flex justify-center'>vol</div>
-            </Slider>
+          <div className='flex flex-row bg-base-2 rounded p-4 space-x-2' style={{ zIndex: 99 }}>
+            <div className='bg-gradient-to-b from-gray-300 to-gray-400 p-4 w-64 rounded'>
+              <Slider slider={volSlider} trackSize={220} >
+                <div className='rounded w-12 flex justify-center'>vol</div>
+              </Slider>
+            </div>
             <div className='flex flex-col space-y-2'>
               <Slider slider={volSlider} trackSize={220} orientation='horizontal' >
                 <div className='rounded w-12 flex justify-center'>volH</div>
