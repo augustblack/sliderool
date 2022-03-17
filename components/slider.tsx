@@ -78,7 +78,7 @@ const SliderMotion : FC<SliderMotionProps> = ({
          {children}
        </motion.div>
        <motion.div
-         className={'absolute ' + thumbClass}
+         className={'flex justify-center ' + thumbClass}
          style={thumbStyle}
          whileTap={{ scale: 1.1, opacity: 1.0 }}
          ref={thumbRef}
@@ -88,16 +88,14 @@ const SliderMotion : FC<SliderMotionProps> = ({
        >
         <div
           ref={valRef}
-          className='select-none bg-base-3 rounded ml-1 p-1 text-sm inline-block relative'
+          className='select-none text-base-1 text-sm inline-block'
           style={{
             pointerEvents: 'none', // allow clicks to pass through
             touchAction: 'none',
-            top: '-2rem',
             zIndex: 99,
             opacity,
             transition: 'opacity 0.75s ease-out'
-          }}></div>
-
+          }} />
        </motion.div>
      </motion.div>
   )
@@ -162,8 +160,8 @@ const Slider: FC<SliderProps> = ({
     : ({ x: childVal })
 
   const trackClass = orientation === 'vertical'
-    ? 'bg-gradient-to-b from-base-2 to-base-3 inline-block rounded border border-1 border-write-1'
-    : 'bg-gradient-to-r from-base-2 to-base-3 inline-block rounded border border-1 border-write-1'
+    ? 'bg-gradient-to-t from-base-1/25 via-base-3/25 to-base-2/50 inline-block rounded border border-1 border-write-1 '
+    : 'bg-gradient-to-r from-base-1/25 via-base-3/25 to-base-2/25 inline-block rounded border border-1 border-write-1'
 
   const thumbClass = 'bg-write-2 rounded '
 
