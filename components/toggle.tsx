@@ -29,7 +29,7 @@ export const IconToggle : FC<ToggleProps> = ({
       'rounded p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def',
       className
     ].join(' ')}
-    onClick={onClick || null}>
+    onClick={onClick}>
     <div className='relative active:scale-75'>
       <Icon size={size} className={pressed ? 'scale-75' : ''} />
       {
@@ -64,7 +64,7 @@ export const Toggle : FC<OnOffProps> = ({
       'rounded p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def ',
       className
     ].join(' ')}
-    onClick={onClick || null}>
+    onClick={onClick}>
     <Icon on={!pressed} size={size} className='active:scale-75' />
   </button>
 )

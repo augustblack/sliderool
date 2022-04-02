@@ -56,12 +56,16 @@ export const Tabs : FC<TabsProps> = ({
   children
 }) => {
   const [state, setState] = useState(headers[0].name)
-  const cRef = useRef(null)
-  const selectTab = name => setState(name)
+  const cRef = useRef<HTMLDivElement>(({ offsetTop: 0 } as HTMLDivElement))
+  const selectTab = (name:string) => setState(name)
   useEffect(() => {
-    cRef.current.childNodes.forEach(c => c.classList.add('hidden'))
-    cRef.current.querySelector('#' + state).classList.remove('hidden')
+    cRef.current.childNodes.forEach(c => (c as HTMLElement).classList.add('hidden'))
+    const o = cRef.current.querySelector('#' + state)
+    if (o) {
+      o.classList.remove('hidden')
+    }
   }, [state, cRef])
+
   return (
     <div className='flex flex-col w-full h-full'>
       <div className='space-x-4'>

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, MutableRefObject, ReactNode } from 'react'
+import React, { MouseEventHandler, ForwardedRef, ReactNode } from 'react'
 
 export type ButtonType = 'button' | 'submit' | 'reset'
 export type ButtonKind = 'plain' | 'outline' | 'round' | 'group' | 'none'
@@ -9,7 +9,7 @@ export type ButtonProps = {
   type?: ButtonType
   kind?: ButtonKind
   className?: string
-  onClick?: MouseEventHandler<HTMLButtonElement>
+  onClick?: MouseEventHandler<HTMLDivElement>
   label ?: string
   children ?: ReactNode
 }
@@ -48,13 +48,9 @@ const Button = React.forwardRef(({
   onClick,
   label,
   children
-}: ButtonProps, ref: MutableRefObject<HTMLButtonElement>) => show
+}: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) => show
   ? (
     <div
-      ref={ref}
-      disabled={disabled}
-      aria-label={label}
-      type={type}
       className={[
         'flex items-center justify-center ',
         getColorClass(kind),
@@ -63,7 +59,7 @@ const Button = React.forwardRef(({
         getExtraClass(kind),
         className
       ].join(' ')}
-      onClick={onClick || null}
+      onClick={onClick || undefined}
     >
     <button
       ref={ref}

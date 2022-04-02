@@ -3,7 +3,8 @@ import React, {
   FC,
   useRef,
   useState,
-  useEffect
+  useEffect,
+  KeyboardEvent
 } from 'react'
 import ClientOnlyPortal from './clientOnlyPortal'
 import { Clear } from './icons'
@@ -30,8 +31,8 @@ export const Modal:FC<ModalProps> = ({
   setOpen,
   children
 }) => {
-  const modalRef = useRef(null)
-  const buttonRef = useRef(null)
+  const modalRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
   const [state, setState] = useState({
     open: false,
     style: {
@@ -39,7 +40,7 @@ export const Modal:FC<ModalProps> = ({
       transition: 'opacity 0.25s ease'
     }
   })
-  const esc = (event) => event.keyCode === 27
+  const esc = (event: KeyboardEvent<HTMLDivElement>) => event.key === 'Escape'
     ? setOpen(false)
     : null
 
@@ -51,7 +52,9 @@ export const Modal:FC<ModalProps> = ({
         style: Object.assign({}, s.style, { opacity: 0.0 })
       }))
       setTimeout(() => {
-        modalRef.current.focus()
+        if (modalRef.current) {
+          modalRef.current.focus()
+        }
         return mounted
           ? setState(s => ({
             open: true,

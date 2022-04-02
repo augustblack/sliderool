@@ -11,22 +11,35 @@ import React, {
   useEffect,
   useRef,
   RefObject,
-  SyntheticEvent
+  PointerEvent, // careful, there is a global PointerEvent too
+  PointerEventHandler
 } from 'react'
 
 import { UseSliderReturn } from './sliderHook'
-interface SliderMotionProps {
+
+type InfoStyle ={
+  y?: MotionValue<number>
+  x?: MotionValue<number>
+}
+
+type ThumbStyle = InfoStyle & {
+  width: number
+  height: number
+  opacity: number
+}
+
+type SliderMotionProps = {
   trackClass: string
-  trackStyle: Record<string, string | MotionValue<number> | number>,
+  trackStyle: Record<string, string | MotionValue<number> | number>
   trackRef: RefObject<HTMLDivElement>
   thumbClass: string
   thumbRef: RefObject<HTMLDivElement>
-  thumbStyle: Record<string, MotionValue<number> | number>,
-  infoStyle: Record<string, MotionValue<number>| number>,
-  pointerUp: (e: SyntheticEvent<HTMLDivElement>) => void
-  pointerDown: (e: SyntheticEvent<HTMLDivElement>) => void
-  pointerMove: (e: SyntheticEvent<HTMLDivElement>) => void
-  dragStart: (e: DragEvent) => void,
+  thumbStyle: ThumbStyle
+  infoStyle: InfoStyle
+  pointerUp: PointerEventHandler<HTMLDivElement>
+  pointerDown: PointerEventHandler<HTMLDivElement>
+  pointerMove: PointerEventHandler<HTMLDivElement>
+  dragStart: (e: DragEvent) => void
   opacity: number
   val: MotionValue
   children?: ReactNode
@@ -50,10 +63,12 @@ const SliderMotion : FC<SliderMotionProps> = ({
   formatVal,
   children
 }: SliderMotionProps) => {
-  const valRef = useRef(null)
+  const valRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const unsubscribeVal = val.onChange(v => {
-      valRef.current.innerHTML = formatVal(v)
+      if (valRef.current) {
+        valRef.current.innerHTML = formatVal(v)
+      }
     })
     return () => unsubscribeVal()
   }, [val, formatVal])
@@ -110,7 +125,12 @@ interface SliderProps {
   children?: ReactNode
   formatVal ?: (v: number) => string
 }
-
+const blankDiv = {
+  offsetTop: 0,
+  offsetHeight: 0,
+  offsetWidth: 0,
+  offsetLeft: 0
+}
 const Slider: FC<SliderProps> = ({
   slider,
   orientation = 'vertical',
@@ -118,9 +138,9 @@ const Slider: FC<SliderProps> = ({
   formatVal = (v) => `${v.toFixed(2)}`,
   children
 }: SliderProps) => {
-  const trackRef = useRef(null)
-  const thumbRef = useRef(null)
-  const childRef = useRef(null)
+  const trackRef = useRef<HTMLDivElement>(blankDiv as HTMLDivElement)
+  const thumbRef = useRef<HTMLDivElement>(blankDiv as HTMLDivElement)
+  const childRef = useRef<HTMLDivElement>(blankDiv as HTMLDivElement)
   const [opacity, setOpacity] = useState(0)
   const thumbSize = 64
   const trackRatio = trackSize - thumbSize
@@ -136,17 +156,17 @@ const Slider: FC<SliderProps> = ({
     ? { touchAction: 'none', height: trackSize, width: 50 }
     : { touchAction: 'none', width: trackSize, height: 50 }
 
-  const getDimensions = (ref) => !ref.current
+  const getDimensions = (ref: RefObject<HTMLDivElement>) => !ref.current
     ? 0
     : orientation === 'vertical'
       ? ref.current.offsetHeight
       : ref.current.offsetWidth
 
-  const getChildValVert = latest => latest < 0.50001
+  const getChildValVert = (latest:number) => latest < 0.50001
     ? 0
     : getDimensions(trackRef) - getDimensions(childRef)
 
-  const getChildValHoriz = latest => latest < 0.50001
+  const getChildValHoriz = (latest:number) => latest < 0.50001
     ? getDimensions(trackRef) - getDimensions(childRef)
     : 0
 
@@ -165,7 +185,7 @@ const Slider: FC<SliderProps> = ({
 
   const thumbClass = 'bg-write-2 rounded '
 
-  const getY = (e) => {
+  const getY = (e:PointerEvent) => {
     const pos = e.pageY - trackRef.current.offsetTop - (thumbRef.current.offsetHeight / 2)
     const h = trackRef.current.offsetHeight - thumbRef.current.offsetHeight
     const newpos = pos < 0
@@ -178,7 +198,7 @@ const Slider: FC<SliderProps> = ({
     return yval
   }
 
-  const getX = e => {
+  const getX = (e: PointerEvent) => {
     const pos = e.pageX - trackRef.current.offsetLeft - (thumbRef.current.offsetWidth / 2)
     const w = trackRef.current.offsetWidth - thumbRef.current.offsetWidth
     const newpos = pos < 0
@@ -190,13 +210,13 @@ const Slider: FC<SliderProps> = ({
     return 1 - xval
     // return w - (xval * w)
   }
-  const pointerDown = e => {
+  const pointerDown: PointerEventHandler<HTMLDivElement> = e => {
     trackRef.current.setPointerCapture(e.pointerId)
     slider.onPress()
     setOpacity(1)
   }
   // setState(s => R.merge(s, { opacity: 1.0 }))
-  const pointerUp = (e) => {
+  const pointerUp: PointerEventHandler<HTMLDivElement> = e => {
     if (!(trackRef.current.hasPointerCapture && trackRef.current.hasPointerCapture(e.pointerId))) {
       return
     }
@@ -210,7 +230,7 @@ const Slider: FC<SliderProps> = ({
       setOpacity(0)
     }
   }
-  const pointerMove = e => {
+  const pointerMove: PointerEventHandler<HTMLDivElement> = e => {
     // console.log('move', e.pointerId)
     if ((trackRef.current.hasPointerCapture && trackRef.current.hasPointerCapture(e.pointerId))) {
       const v = orientation === 'vertical' ? getY(e) : getX(e)
@@ -220,7 +240,7 @@ const Slider: FC<SliderProps> = ({
 
   // see https://javascript.info/pointer-events
   // need to prevent browser drag n drop
-  const dragStart = e => {
+  const dragStart = (e:DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
     return false

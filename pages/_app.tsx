@@ -2,12 +2,8 @@ import '../styles/global.css'
 import React, { FC, ReactNode, useState, useEffect } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import { AppProps } from 'next/app'
 import Button from '../components/button'
-
-type MyAppProps = {
-  Component,
-  pageProps
-}
 
 type NavProps = {
   children ?: ReactNode
@@ -59,10 +55,10 @@ const Template: FC<NavProps> = ({
   )
 }
 
-const MyApp : FC<MyAppProps> = ({
+const MyApp : FC<AppProps> = ({
   Component,
   pageProps
-}: MyAppProps) => {
+}: AppProps) => {
   return (<Template>
     <Component {...pageProps} />
   </Template>

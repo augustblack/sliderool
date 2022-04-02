@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, FC } from 'react'
 import { createPortal } from 'react-dom'
 
 const ClientOnlyPortal: FC = ({ children }) => {
-  const ref = useRef(null)
+  const ref = useRef<HTMLElement>()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -10,7 +10,7 @@ const ClientOnlyPortal: FC = ({ children }) => {
     setMounted(true)
   }, [])
 
-  return mounted ? createPortal(children, ref.current) : null
+  return mounted ? createPortal(children, ref.current as HTMLElement) : null
 }
 
 export default ClientOnlyPortal
