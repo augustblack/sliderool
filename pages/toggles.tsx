@@ -9,7 +9,7 @@ const Broad = () => {
   const [pressed, setPressed] = useState(false)
   return <Toggle description='send audio to broadcast' pressed={pressed} Icon={Icons.Broadcast} size='32px' onClick={() => setPressed(p => !p)}/>
 }
-const Buttons = () => (
+const TogglePage = () => (
   <div>
     <div className='bg-base-2 rounded p-4 space-y-2'>
     <Head />
@@ -47,4 +47,4 @@ const Buttons = () => (
   </div>
 )
 
-export default Buttons
+export default TogglePage
