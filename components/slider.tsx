@@ -100,6 +100,8 @@ const SliderMotion : FC<SliderMotionProps> = ({
          onPointerDown={pointerDown}
          onDragStart={dragStart}
          dragConstraints={trackRef}
+         role='slider'
+         tabIndex={0}
        >
         <div
           ref={valRef}
@@ -143,14 +145,14 @@ const Slider: FC<SliderProps> = ({
   const childRef = useRef<HTMLDivElement>(blankDiv as HTMLDivElement)
   const [opacity, setOpacity] = useState(0)
   const thumbSize = 64
-  const trackRatio = trackSize - thumbSize
+  const trackRatio = trackSize - thumbSize - 4 // account for 2 px border
 
   const xyTransVals = orientation === 'vertical' ? [1, 0] : [0, 1]
-  const xy = useTransform(slider.spring, xyTransVals, [0, trackRatio])
+  const xy = useTransform(slider.spring, xyTransVals, [2, trackRatio])
 
   const thumbStyle = orientation === 'vertical'
-    ? ({ y: xy, width: 48, height: thumbSize, opacity: 0.75 }) // w-12 h-16
-    : ({ x: xy, width: thumbSize, height: 48, opacity: 0.75 })
+    ? ({ y: xy, x: 2, width: 44, height: thumbSize, opacity: 0.75 }) // w-12 h-16
+    : ({ x: xy, y: 2, width: thumbSize, height: 44, opacity: 0.75 })
 
   const trackStyle = orientation === 'vertical'
     ? { touchAction: 'none', height: trackSize, width: 50 }
@@ -180,8 +182,8 @@ const Slider: FC<SliderProps> = ({
     : ({ x: childVal })
 
   const trackClass = orientation === 'vertical'
-    ? 'bg-gradient-to-t from-base-1/25 via-base-3/25 to-base-2/50 inline-block rounded border border-1 border-write-1 '
-    : 'bg-gradient-to-r from-base-1/25 via-base-3/25 to-base-2/25 inline-block rounded border border-1 border-write-1'
+    ? 'bg-gradient-to-t from-base-1/25 via-base-3/25 to-base-2/50 inline-block rounded border border-write-1 '
+    : 'bg-gradient-to-r from-base-1/25 via-base-3/25 to-base-2/25 inline-block rounded border border-write-1'
 
   const thumbClass = 'bg-write-2 rounded '
 
