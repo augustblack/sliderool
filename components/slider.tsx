@@ -17,16 +17,28 @@ import React, {
 
 import { UseSliderReturn } from './sliderHook'
 
-type InfoStyle ={
-  y?: MotionValue<number>
-  x?: MotionValue<number>
-}
-
-type ThumbStyle = InfoStyle & {
+type BaseThumbStyle = {
   width: number
   height: number
   opacity: number
 }
+
+type HStyle = BaseThumbStyle & {
+  y: number
+  x: MotionValue<number>
+}
+
+type VStyle = BaseThumbStyle & {
+  x: number
+  y: MotionValue<number>
+}
+
+type InfoStyle = {
+  x ?: MotionValue<number>
+  y ?: MotionValue<number>
+}
+
+type ThumbStyle = HStyle | VStyle
 
 type SliderMotionProps = {
   trackClass: string
