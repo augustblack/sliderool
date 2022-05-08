@@ -2,7 +2,9 @@ import React, {
   ReactNode,
   FC,
   KeyboardEvent,
-  useState
+  useState,
+  useRef,
+  useEffect
 } from 'react'
 import {
   motion,
@@ -41,6 +43,7 @@ export const Backdrop: FC<BackdropProps> = ({
 
 export type ModalProps = {
   level ?:number
+  open: boolean
   setOpen: (open:boolean) => void // React.Dispatch<React.SetStateAction<boolean>>
   children?: ReactNode
 }
@@ -77,12 +80,32 @@ const dropIn = {
 
 export const Modal:FC<ModalProps> = ({
   level = 1,
+  open,
   setOpen,
   children
 }) => {
+  const modalRef = useRef<HTMLDivElement>(null)
+  const mounted = useRef<boolean>(false)
   const esc = (event: KeyboardEvent<HTMLDivElement>) => event.key === 'Escape'
     ? setOpen(false)
     : null
+
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => {
+        if (modalRef.current && mounted.current) {
+          modalRef.current.focus()
+        }
+      }, 1)
+    }
+  }, [open])
 
   return (
           <ClientOnlyPortal>
@@ -93,6 +116,7 @@ export const Modal:FC<ModalProps> = ({
             >
               <motion.div
                 onClick={(e) => e.stopPropagation()}
+                ref={modalRef}
                 role='dialog'
                 aria-modal={true}
                 tabIndex={0}
@@ -149,7 +173,7 @@ export const FModal : FC<FModalProps> = ({
     onExitComplete={() => null}
   >
     {
-      open && <Modal setOpen={setOpen} level={level}>
+      open && <Modal open={open} setOpen={setOpen} level={level}>
         {children}
       </Modal>
     }
@@ -166,9 +190,26 @@ export const FModalButton : FC<FModalButtonProps> = ({
   children
 }) => {
   const [open, setOpen] = useState(false)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const mounted = useRef<boolean>(false)
+
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (open === false && buttonRef.current && mounted.current) {
+      buttonRef.current.focus()
+    }
+  }, [open])
+
   return (
     <>
       <Button
+        ref={buttonRef}
         onClick={() => setOpen(true)}
         {...buttonProps}
       />
