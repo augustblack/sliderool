@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 // import { IconToggle, Toggle } from '../components/toggle'
 import Icons from '../components/icons'
-import { Modal, ModalWithClose, ModalButton, ModalButtonWithClose } from '../components/modal'
+import { Modal, ModalWithClose, ModalButton, ModalButtonWithClose, ButtonWithFocus } from '../components/modal'
 import { FModalButton } from '../components/fmodal'
 import Button from '../components/button'
 
@@ -16,7 +16,7 @@ const Modals = () => {
       </div>
       <div className='bg-base-2 rounded p-4 space-y-2'>
         <div className='flex flex-row space-x-2'>
-          <Button onClick={() => setShowOne(true)} label='simple modal ' kind='plain' />
+          <ButtonWithFocus open={showOne} setOpen={setShowOne} buttonProps={{ label: 'simple modal', kind: 'plain' }} />
           <Modal open={showOne} setOpen={setShowOne}>
             <div className='w-96 h-64 p-4'>
               Hello. This is a modal or also known as a dialog. This one is plain with nuthin in it. It should still have focus on open.
@@ -33,7 +33,7 @@ const Modals = () => {
       </div>
       <div className='bg-base-2 rounded p-4 space-y-2'>
         <div className='flex flex-row space-x-2'>
-          <Button onClick={() => setShowTwo(true)} label='modal w/close' kind='plain' />
+          <ButtonWithFocus open={showTwo} setOpen={setShowTwo} buttonProps={{ label: 'modal w/close', kind: 'plain' }} />
           <ModalWithClose open={showTwo} setOpen={setShowTwo}>
             <div className='w-96 p-4'>
               <div>Hello. This is a longer text to fill out the space.</div>

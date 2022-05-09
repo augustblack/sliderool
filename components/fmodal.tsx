@@ -13,7 +13,8 @@ import {
 
 import ClientOnlyPortal from './clientOnlyPortal'
 
-import Button, { ButtonProps } from './button'
+import { ButtonProps } from './button'
+import { ButtonWithFocus } from './modal'
 
 const getLevel = (lev:number, num:number) => lev === 1
   ? ({ zIndex: 30 + num })
@@ -190,28 +191,13 @@ export const FModalButton : FC<FModalButtonProps> = ({
   children
 }) => {
   const [open, setOpen] = useState(false)
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const mounted = useRef<boolean>(false)
-
-  useEffect(() => {
-    mounted.current = true
-    return () => {
-      mounted.current = false
-    }
-  }, [])
-
-  useEffect(() => {
-    if (open === false && buttonRef.current && mounted.current) {
-      buttonRef.current.focus()
-    }
-  }, [open])
 
   return (
     <>
-      <Button
-        ref={buttonRef}
-        onClick={() => setOpen(true)}
-        {...buttonProps}
+      <ButtonWithFocus
+        open={open}
+        setOpen={setOpen}
+        buttonProps={buttonProps}
       />
       <FModal open={open} setOpen={setOpen} level={level} >
         {children}

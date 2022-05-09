@@ -16,6 +16,40 @@ const getLevel = (lev:number, num:number) => lev === 1
     ? ({ zIndex: 40 + num })
     : ({})
 
+export type ButtonWithFocusProps = {
+  buttonProps: ButtonProps
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const ButtonWithFocus :FC<ButtonWithFocusProps> = ({
+  buttonProps,
+  open,
+  setOpen
+}) => {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const mounted = useRef(false)
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+    }
+  }, [])
+  useEffect(() => {
+    if (open === false && mounted.current && buttonRef.current) {
+      buttonRef.current.focus()
+    }
+  }, [open])
+
+  return (
+      <Button
+        ref={buttonRef}
+        onClick={() => setOpen(true)}
+        {...buttonProps}
+      />
+  )
+}
+
 export type ModalProps = {
   level ?:number
   open: boolean
@@ -142,27 +176,13 @@ export const ModalButton:FC<ModalButtonProps> = ({
   level = 1,
   children
 }) => {
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const mounted = useRef(false)
   const [open, setOpen] = useState(false)
-  useEffect(() => {
-    mounted.current = true
-    return () => {
-      mounted.current = false
-    }
-  }, [])
-  useEffect(() => {
-    if (open === false && mounted.current && buttonRef.current) {
-      buttonRef.current.focus()
-    }
-  }, [open])
-
   return (
     <>
-      <Button
-        ref={buttonRef}
-        onClick={() => setOpen(true)}
-        {...buttonProps}
+      <ButtonWithFocus
+        open={open}
+        setOpen={setOpen}
+        buttonProps={buttonProps}
       />
       <Modal open={open} setOpen={setOpen} level={level}>
         {children}
@@ -181,29 +201,13 @@ export const ModalButtonWithClose: FC<ModalButtonWithCloseProps> = ({
   menu,
   children
 }) => {
-  const buttonRef = useRef<HTMLButtonElement>(null)
-  const mounted = useRef(false)
   const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    mounted.current = true
-    return () => {
-      mounted.current = false
-    }
-  }, [])
-
-  useEffect(() => {
-    if (open === false && mounted.current && buttonRef.current) {
-      buttonRef.current.focus()
-    }
-  }, [open])
-
   return (
     <>
-      <Button
-        ref={buttonRef}
-        onClick={() => setOpen(true)}
-        {...buttonProps}
+      <ButtonWithFocus
+        open={open}
+        setOpen={setOpen}
+        buttonProps={buttonProps}
       />
       <Modal open={open} setOpen={setOpen} level={level}>
         <div className="flex flex-col w-full h-full" style={getLevel(level, 4)} >
