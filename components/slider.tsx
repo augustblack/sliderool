@@ -1,134 +1,22 @@
 import {
   motion,
-  useTransform,
-  MotionValue
+  useTransform
 } from 'framer-motion'
 
 import React, {
   ReactNode,
   FC,
-  useState,
-  useEffect,
   useRef,
   RefObject,
   PointerEvent, // careful, there is a global PointerEvent too
   PointerEventHandler
 } from 'react'
 
-import { UseSliderReturn } from './sliderHook'
-
-type BaseThumbStyle = {
-  width: number
-  height: number
-  opacity: number
-}
-
-type HStyle = BaseThumbStyle & {
-  y: number
-  x: MotionValue<number>
-}
-
-type VStyle = BaseThumbStyle & {
-  x: number
-  y: MotionValue<number>
-}
-
-type InfoStyle = {
-  x ?: MotionValue<number>
-  y ?: MotionValue<number>
-}
-
-type ThumbStyle = HStyle | VStyle
-
-type SliderMotionProps = {
-  trackClass: string
-  trackStyle: Record<string, string | MotionValue<number> | number>
-  trackRef: RefObject<HTMLDivElement>
-  thumbClass: string
-  thumbRef: RefObject<HTMLDivElement>
-  thumbStyle: ThumbStyle
-  infoStyle: InfoStyle
-  pointerUp: PointerEventHandler<HTMLDivElement>
-  pointerDown: PointerEventHandler<HTMLDivElement>
-  pointerMove: PointerEventHandler<HTMLDivElement>
-  dragStart: (e: DragEvent) => void
-  opacity: number
-  val: MotionValue
-  children?: ReactNode
-  formatVal: (v: number) => string
-}
-
-const SliderMotion : FC<SliderMotionProps> = ({
-  trackClass,
-  trackStyle,
-  trackRef,
-  thumbClass,
-  thumbRef,
-  thumbStyle,
-  infoStyle,
-  pointerUp,
-  pointerDown,
-  pointerMove,
-  dragStart,
-  opacity,
-  val,
-  formatVal,
-  children
-}: SliderMotionProps) => {
-  const valRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const unsubscribeVal = val.onChange(v => {
-      if (valRef.current) {
-        valRef.current.innerHTML = formatVal(v)
-      }
-    })
-    return () => unsubscribeVal()
-  }, [val, formatVal])
-
-  return (
-     <motion.div
-       className={'relative ' + trackClass}
-       ref={trackRef}
-       // onPointerDown={e => trackRef.current.setPointerCapture(e.pointerId)}
-       onPointerDown={pointerDown}
-       onPointerUp={pointerUp}
-       onPointerMove={pointerMove}
-       onPointerCancel={pointerUp}
-       // need this for pointer move
-       style={ trackStyle }
-       onDragStart={dragStart}
-     >
-       <motion.div
-         className='absolute select-none pointer-action-none '
-         style={infoStyle}
-       >
-         {children}
-       </motion.div>
-       <motion.div
-         className={'flex justify-center ' + thumbClass}
-         style={thumbStyle}
-         whileTap={{ scale: 1.1, opacity: 1.0 }}
-         ref={thumbRef}
-         onPointerDown={pointerDown}
-         onDragStart={dragStart}
-         dragConstraints={trackRef}
-         role='slider'
-         tabIndex={0}
-       >
-        <div
-          ref={valRef}
-          className='select-none text-base-1 text-sm inline-block'
-          style={{
-            pointerEvents: 'none', // allow clicks to pass through
-            touchAction: 'none',
-            zIndex: 99,
-            opacity,
-            transition: 'opacity 0.75s ease-out'
-          }} />
-       </motion.div>
-     </motion.div>
-  )
-}
+import {
+  UseSliderReturn,
+  useSlider,
+  ScaleType
+} from './sliderHook'
 
 type Orientation = 'horizontal' | 'vertical'
 
@@ -137,28 +25,20 @@ interface SliderProps {
   slider: UseSliderReturn
   trackSize ?: number,
   children?: ReactNode
-  formatVal ?: (v: number) => string
 }
-const blankDiv = {
-  offsetTop: 0,
-  offsetHeight: 0,
-  offsetWidth: 0,
-  offsetLeft: 0
-}
-const Slider: FC<SliderProps> = ({
+
+const SliderNoMemo: FC<SliderProps> = ({
   slider,
   orientation = 'vertical',
   trackSize = 192,
-  formatVal = (v) => `${v.toFixed(2)}`,
   children
 }: SliderProps) => {
-  const trackRef = useRef<HTMLDivElement>(blankDiv as HTMLDivElement)
-  const thumbRef = useRef<HTMLDivElement>(blankDiv as HTMLDivElement)
-  const childRef = useRef<HTMLDivElement>(blankDiv as HTMLDivElement)
-  const [opacity, setOpacity] = useState(0)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const thumbRef = useRef<HTMLDivElement>(null)
+  const childRef = useRef<HTMLDivElement>(null)
+
   const thumbSize = 64
   const trackRatio = trackSize - thumbSize - 4 // account for 2 px border
-
   const xyTransVals = orientation === 'vertical' ? [1, 0] : [0, 1]
   const xy = useTransform(slider.spring, xyTransVals, [2, trackRatio])
 
@@ -200,53 +80,50 @@ const Slider: FC<SliderProps> = ({
   const thumbClass = 'bg-write-2 rounded '
 
   const getY = (e:PointerEvent) => {
-    const pos = e.pageY - trackRef.current.offsetTop - (thumbRef.current.offsetHeight / 2)
-    const h = trackRef.current.offsetHeight - thumbRef.current.offsetHeight
-    const newpos = pos < 0
-      ? 0
-      : pos > h
-        ? h
-        : pos
-    const yval = (h - newpos) / h
-    // const rval = h - (yval * h)
-    return yval
+    if (trackRef.current && thumbRef.current) {
+      const pos = e.pageY - trackRef.current.offsetTop - (thumbRef.current.offsetHeight / 2)
+      const h = trackRef.current.offsetHeight - thumbRef.current.offsetHeight
+      const newpos = pos < 0
+        ? 0
+        : pos > h
+          ? h
+          : pos
+      const yval = (h - newpos) / h
+      // const rval = h - (yval * h)
+      return yval
+    }
+    return 0
   }
 
   const getX = (e: PointerEvent) => {
-    const pos = e.pageX - trackRef.current.offsetLeft - (thumbRef.current.offsetWidth / 2)
-    const w = trackRef.current.offsetWidth - thumbRef.current.offsetWidth
-    const newpos = pos < 0
-      ? 0
-      : pos > w
-        ? w
-        : pos
-    const xval = (w - newpos) / w
-    return 1 - xval
+    if (trackRef.current && thumbRef.current) {
+      const pos = e.pageX - trackRef.current.offsetLeft - (thumbRef.current.offsetWidth / 2)
+      const w = trackRef.current?.offsetWidth - thumbRef.current?.offsetWidth
+      const newpos = pos < 0
+        ? 0
+        : pos > w
+          ? w
+          : pos
+      const xval = (w - newpos) / w
+      return 1 - xval
+    }
+    return 0
     // return w - (xval * w)
   }
   const pointerDown: PointerEventHandler<HTMLDivElement> = e => {
-    trackRef.current.setPointerCapture(e.pointerId)
+    trackRef.current?.setPointerCapture(e.pointerId)
     slider.onPress()
-    setOpacity(1)
   }
-  // setState(s => R.merge(s, { opacity: 1.0 }))
   const pointerUp: PointerEventHandler<HTMLDivElement> = e => {
-    if (!(trackRef.current.hasPointerCapture && trackRef.current.hasPointerCapture(e.pointerId))) {
+    if (!(trackRef.current?.hasPointerCapture(e.pointerId))) {
       return
     }
     const v = orientation === 'vertical' ? getY(e) : getX(e)
     slider.spring.set(v)
     slider.onRelease()
-    if (e.target === trackRef.current || e.target === childRef.current) {
-      setOpacity(1)
-      setTimeout(() => setOpacity(0), 1000)
-    } else {
-      setOpacity(0)
-    }
   }
   const pointerMove: PointerEventHandler<HTMLDivElement> = e => {
-    // console.log('move', e.pointerId)
-    if ((trackRef.current.hasPointerCapture && trackRef.current.hasPointerCapture(e.pointerId))) {
+    if ((trackRef.current?.hasPointerCapture && trackRef.current.hasPointerCapture(e.pointerId))) {
       const v = orientation === 'vertical' ? getY(e) : getX(e)
       slider.spring.set(v)
     }
@@ -259,25 +136,83 @@ const Slider: FC<SliderProps> = ({
     e.stopPropagation()
     return false
   }
-  return (<SliderMotion
-    trackClass={trackClass}
-    trackRef={trackRef}
-    trackStyle={trackStyle}
-    thumbClass={thumbClass}
-    thumbRef={thumbRef}
-    thumbStyle={thumbStyle}
-    infoStyle={infoStyle}
-    pointerUp={pointerUp}
-    pointerDown={pointerDown}
-    pointerMove={pointerMove}
-    dragStart={dragStart}
-    opacity={opacity}
-    formatVal={formatVal}
-    val={slider.val}
-  >
-  <div ref={childRef}>
-    {children}
-  </div>
-  </SliderMotion>)
+  return (
+       <motion.div
+       className={'relative ' + trackClass}
+       ref={trackRef}
+       // onPointerDown={e => trackRef.current.setPointerCapture(e.pointerId)}
+       onPointerDown={pointerDown}
+       onPointerUp={pointerUp}
+       onPointerMove={pointerMove}
+       onPointerCancel={pointerUp}
+       // need this for pointer move
+       style={ trackStyle }
+       onDragStart={dragStart}
+     >
+       <motion.div
+         className='absolute select-none pointer-action-none '
+         style={infoStyle}
+       >
+         <div ref={childRef}>
+           {children}
+         </div>
+       </motion.div>
+       <motion.div
+         className={'flex justify-center ' + thumbClass}
+         style={thumbStyle}
+         whileTap={{ scale: 1.1, opacity: 1.0 }}
+         ref={thumbRef}
+         onPointerDown={pointerDown}
+         onDragStart={dragStart}
+         dragConstraints={trackRef}
+         role='slider'
+         tabIndex={0}
+       >
+        <div
+          className='select-none text-base-1 text-sm inline-block'
+          style={{
+            pointerEvents: 'none', // allow clicks to pass through
+            touchAction: 'none',
+            zIndex: 99,
+            opacity: slider.opacity,
+            transition: 'opacity 0.75s ease-out'
+          }}>{slider.format}</div>
+       </motion.div>
+     </motion.div>
+  )
 }
-export default React.memo(Slider)
+
+const Slider = React.memo(SliderNoMemo)
+
+type SliderInputProps = {
+  orientation?: Orientation
+  value:number
+  onChange: (val:number) => void
+  children?: ReactNode
+  trackSize ?: number
+  formatFunc ?: (v: number) => string
+}
+const SliderInput: FC<SliderInputProps> = ({
+  value,
+  onChange,
+  orientation = 'vertical',
+  trackSize = 192,
+  formatFunc,
+  children
+}) => {
+  const volSlider = useSlider({
+    formatFunc,
+    value,
+    onChange,
+    min: 0,
+    max: 1.3,
+    scale: ScaleType.Log
+  })
+
+  return (<Slider slider={volSlider} trackSize={trackSize} orientation={orientation} >
+    {children}
+  </Slider>
+  )
+}
+
+export default SliderInput

@@ -1,17 +1,38 @@
 import React, { useState } from 'react'
-import {
-  Slider,
-  ModalWithClose
-} from '../components/index'
-import { useSlider, ScaleType } from '../components/sliderHook'
+import { Slider } from '../components/index'
 
 const Sliders = () => {
   const [vol, setVol] = useState(0)
-  const [showOne, setShowOne] = useState(false)
-  const setV = (v:number) => setVol(v)
+  const formatFunc = (v: number) => v.toFixed(2).toString()
+  return (
+    <div>
+      <div className='flex flex-row bg-base-2 rounded p-4 space-x-2'>
+        <div className='bg-gradient-to-b from-red-300 to-red-400 p-4 w-64 rounded flex flex-row'>
+          <Slider value={vol} onChange={setVol} formatFunc={formatFunc} >
+            <div className='rounded w-12 flex justify-center'>vol</div>
+          </Slider>
+          <Slider value={vol} onChange={setVol} orientation='horizontal' trackSize={100} >
+            <div className='rounded w-12 flex justify-center'>vol</div>
+          </Slider>
+        </div>
+      </div>
+    </div>
+  )
+}
+/*
+const Sliders = () => {
+  const [vol, setVol] = useState(0)
+  const mounted = useRef(false)
+  useEffect(() => {
+    mounted.current = true
+    return () => { mounted.current = false }
+  }, [])
+  console.log('sliders')
+
   const volSlider = useSlider({
+    mounted: mounted.current,
     value: vol,
-    onChange: setV,
+    onChange: setVol,
     min: 0,
     max: 1.3,
     scale: ScaleType.Log
@@ -35,7 +56,7 @@ const Sliders = () => {
         </div>
       </div>
       <div className='bg-base-2 rounded p-4 space-y-2'>
-        <ModalWithClose open={showOne} setOpen={setShowOne} buttonProps={{ label: 'plain modal', kind: 'plain' }}>
+        <ModalButtonWithClose buttonProps={{ label: 'plain modal', kind: 'plain' }}>
           <div className='flex flex-row bg-base-2 rounded p-4 space-x-2' style={{ zIndex: 99 }}>
             <div className='bg-gradient-to-b from-gray-300 to-gray-400 p-4 w-64 rounded'>
               <Slider slider={volSlider} trackSize={220} >
@@ -51,11 +72,12 @@ const Sliders = () => {
               </Slider>
             </div>
           </div>
-        </ModalWithClose>
+        </ModalButtonWithClose>
 
       </div>
     </div>
   )
 }
+ */
 
-export default Sliders
+export default React.memo(Sliders)

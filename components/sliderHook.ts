@@ -1,6 +1,7 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import {
   MotionValue,
+  // useVelocity,
   useSpring,
   useTransform
 } from 'framer-motion'
@@ -44,7 +45,7 @@ const scaleIt = (min:number, max:number, scale:ScaleType, val:number) => scale =
         ? linear(min, max, db70(val))
         : linear(min, max, val)
 
-const scaleItInv = (min:number, max:number, scale:ScaleType, scaledVal:number) => scale === ScaleType.Log
+export const scaleItInv = (min:number, max:number, scale:ScaleType, scaledVal:number) => scale === ScaleType.Log
   ? pow4Inv(linearInv(min, max, scaledVal))
   : scale === ScaleType.Db50
     ? db50Inv(linearInv(min, max, scaledVal))
@@ -55,49 +56,69 @@ const scaleItInv = (min:number, max:number, scale:ScaleType, scaledVal:number) =
         : linearInv(min, max, scaledVal)
 
 type UseSlider = {
+  // mounted: boolean
   value: number
   min: number
   max: number
   scale: ScaleType
   onChange: (v:number) => void
+  formatFunc ?: (v:number) => string
 }
 export type UseSliderReturn = {
   val: MotionValue
   spring: MotionValue
+  format: string
+  opacity: number
   onPress: () => void
   onRelease: () => void
 }
-
+const wtf = (v : number) => v.toFixed(2).toString()
 export const useSlider = ({
   value,
   min,
   max,
   scale,
-  onChange
+  onChange,
+  formatFunc
 } : UseSlider) : UseSliderReturn => {
-  const inVal = scaleItInv(min, max, scale, value)
-  const springVal = useSpring(inVal, { stiffness: 300, damping: 45, mass: 0.1 }) // set duration for length, duration: 3000 })
+  const [opacity, setOpacity] = useState<number>(0.25)
+  const [format, setFormat] = useState<string>('')
+  const inVal = useRef(scaleItInv(min, max, scale, value))
+  const springVal = useSpring(inVal.current, { stiffness: 300, damping: 45, mass: 0.1 }) // set duration for length, duration: 3000 })
   const scalar = useCallback(newVal => scaleIt(min, max, scale, newVal), [min, max, scale])
+  // we tried setting an opacity motion val based on the velocity of the spring
+  // const formatOpacityV = useVelocity(springVal)
+  // const formatOpacityV = useSpring(useVelocity(springVal), { stiffness: 300, damping: 45, mass: 0.1 }) // set duration for length, duration: 3000 })
+  // const formatOpacity = useTransform(useTransform(formatOpacityV, Math.abs), [0, 0.2], [0.25, 1])
 
   const outVal = useTransform(springVal, scalar)
+  // const formatVal = useTransform(outVal, formatFunc)
+
+  const ff = useRef(formatFunc || wtf)
+
   const pressed = useRef(false)
   const sto = useRef<ReturnType<typeof setTimeout>>()
   const onPress = () => {
     if (sto.current) clearTimeout(sto.current)
     pressed.current = true
+    setOpacity(0.9)
   }
   const onRelease = () => {
     pressed.current = true
     if (sto.current) clearTimeout(sto.current)
     sto.current = setTimeout(() => {
       pressed.current = false
+      setOpacity(0.25)
     }, 250)
   }
+
   useEffect(() => {
-    const unsubscribeVal = outVal.onChange(v => pressed.current === true
-      ? onChange(v)
-      : null
-    )
+    const unsubscribeVal = outVal.onChange(v => {
+      if (pressed.current) {
+        onChange(v)
+      }
+      setFormat(ff.current(v))
+    })
     return () => unsubscribeVal()
   }, [outVal, onChange])
 
@@ -108,5 +129,12 @@ export const useSlider = ({
     }
   }, [value, max, min, scale, springVal])
 
-  return { val: outVal, spring: springVal, onPress, onRelease }
+  return {
+    val: outVal,
+    opacity,
+    format,
+    spring: springVal,
+    onPress,
+    onRelease
+  }
 }
