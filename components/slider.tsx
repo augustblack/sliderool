@@ -208,7 +208,7 @@ const SliderInput: FC<SliderInputProps> = ({
     onChange,
     min: 0,
     max: 1.3,
-    scale: scale || ScaleType.Log
+    scale: scale || ScaleType.Linear
   })
 
   return (<Slider slider={volSlider} trackSize={trackSize} orientation={orientation} >
