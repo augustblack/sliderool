@@ -191,6 +191,7 @@ type SliderInputProps = {
   children?: ReactNode
   trackSize ?: number
   formatFunc ?: (v: number) => string
+  scale ?: ScaleType
 }
 const SliderInput: FC<SliderInputProps> = ({
   value,
@@ -198,6 +199,7 @@ const SliderInput: FC<SliderInputProps> = ({
   orientation = 'vertical',
   trackSize = 192,
   formatFunc,
+  scale,
   children
 }) => {
   const volSlider = useSlider({
@@ -206,7 +208,7 @@ const SliderInput: FC<SliderInputProps> = ({
     onChange,
     min: 0,
     max: 1.3,
-    scale: ScaleType.Log
+    scale: scale || ScaleType.Log
   })
 
   return (<Slider slider={volSlider} trackSize={trackSize} orientation={orientation} >
