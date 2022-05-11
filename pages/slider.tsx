@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Slider } from '../components/index'
+import Slider from '../components/slider'
+import { ScaleType } from '../components/sliderHook'
 
 const Sliders = () => {
   const [vol, setVol] = useState(0)
@@ -8,10 +9,10 @@ const Sliders = () => {
     <div>
       <div className='flex flex-row bg-base-2 rounded p-4 space-x-2'>
         <div className='bg-gradient-to-b from-red-300 to-red-400 p-4 w-64 rounded flex flex-row'>
-          <Slider value={vol} onChange={setVol} formatFunc={formatFunc} >
+          <Slider value={vol} onChange={setVol} formatFunc={formatFunc} min={0} max={1.5} scale={ScaleType.Log}>
             <div className='rounded w-12 flex justify-center'>vol</div>
           </Slider>
-          <Slider value={vol} onChange={setVol} orientation='horizontal' trackSize={100} >
+          <Slider value={vol} onChange={setVol} orientation='horizontal' trackSize={150} >
             <div className='rounded w-12 flex justify-center'>vol</div>
           </Slider>
         </div>
