@@ -4,7 +4,7 @@ import Icons from '../components/icons'
 const IconsPage = () => {
   return (
     <div>
-      <div className='bg-base-2 rounded p-4 max-w-96 grid grid-rows-6 gap-4'>
+      <div className='bg-base-2 rounded p-4 w-96 grid grid-cols-4 gap-4 justify-items-center'>
         <Icons.Headset />
         <Icons.Mic />
         <Icons.Edit />
