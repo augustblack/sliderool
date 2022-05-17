@@ -83,6 +83,21 @@ const Buttons = () => (
         </div>
       </div>
     </div>
+
+    <div className='bg-base-2 rounded p-4 space-y-2'>
+      <div>Button group </div>
+      <div className='w-2/3'>
+        <form className='flex flex-row w-auto border border-1 border-write-1 rounded'>
+          <div className='rounded-l flex-grow flex space-x-2 bg-gray-100 items-center border-r border-1 border-write-1 '>
+            <img src='/icons/youtube.svg' className='h-8 w-8 pl-1' />
+            <input placeholder='search' className='flex-grow text-xl' />
+          </div>
+          <Button kind='group' label='submit' className='flex-none bg-green-200' />
+          <Button kind='group' label='cancel' className='flex-none' />
+        </form>
+      </div>
+    </div>
+
   </div>
 )
 
