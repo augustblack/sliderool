@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import Slider from '../components/slider'
 import { ScaleType } from '../components/sliderHook'
+import { PlaylistDnD, Playlist } from '../components/playlist'
 
-const Sliders = () => {
+const SliderGroup = () => {
   const [vol, setVol] = useState(0)
   const formatFunc = (v: number) => v.toFixed(2).toString()
   return (
-    <div>
-      <div className='flex flex-row bg-base-2 rounded p-4 space-x-2'>
-        <div className='bg-gradient-to-b from-red-300 to-red-400 p-4 w-64 rounded flex flex-row'>
+   <div className='bg-gradient-to-b from-red-300 to-red-400 p-4 w-64 rounded flex flex-row'>
           <Slider value={vol} onChange={setVol} formatFunc={formatFunc} min={0} max={1.5} scale={ScaleType.Log}>
             <div className='rounded w-12 flex justify-center'>vol</div>
           </Slider>
@@ -16,7 +15,59 @@ const Sliders = () => {
             <div className='rounded w-12 flex justify-center'>vol</div>
           </Slider>
         </div>
+  )
+}
+
+const Sliders = () => {
+  const [playlist, setPlaylist] = useState<Playlist>([
+    {
+      isQueued: true,
+      hasBuffer: false,
+      key: 'aldksjfa',
+      uri: 'wtf',
+      title: 'you there'
+    },
+    {
+      isQueued: false,
+      hasBuffer: false,
+      key: 'aldkalfdjas',
+      uri: 'wtf2',
+      title: 'you hellow there'
+    },
+    {
+      isQueued: false,
+      hasBuffer: false,
+      key: 'asldfjkallls',
+      uri: 'wtsss',
+      title: 'you brown there'
+    },
+    {
+      isQueued: false,
+      hasBuffer: false,
+      key: 'aldkxxlfdjas',
+      uri: 'wtf2xx',
+      title: 'you xxx there'
+    },
+    {
+      isQueued: false,
+      hasBuffer: false,
+      key: 'aldal',
+      uri: 'wtf2',
+      title: 'you hellow there'
+    }
+
+  ])
+  const orderPlaylist = (p: Playlist) => setPlaylist(p)
+  return (
+    <div>
+      <div className='flex flex-row bg-base-2 rounded p-4 space-x-2'>
+        <SliderGroup />
       </div>
+      <PlaylistDnD
+        playlist={playlist}
+        orderPlaylist={orderPlaylist}
+    />
+
     </div>
   )
 }
