@@ -286,6 +286,28 @@ export const DoNotDisturb: FC<IconProps> = ({
   </svg>
 )
 
+export const ChevronLeft : FC<IconProps> = ({
+  size = '24px',
+  fill = 'currentColor',
+  className = ''
+}: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} height={size} viewBox="0 0 24 24" width={size} fill={fill}>
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+  </svg>
+)
+
+export const ChevronRight : FC<IconProps> = ({
+  size = '24px',
+  fill = 'currentColor',
+  className = ''
+}: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} height={size} viewBox="0 0 24 24" width={size} fill={fill}>
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+  </svg>
+)
+
 export default {
   Headset,
   Mic,
@@ -307,5 +329,7 @@ export default {
   Delete,
   Pending,
   DoubleArrow,
-  DoNotDisturb
+  DoNotDisturb,
+  ChevronLeft,
+  ChevronRight
 }

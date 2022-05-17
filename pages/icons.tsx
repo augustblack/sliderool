@@ -26,6 +26,8 @@ const IconsPage = () => {
         <Icons.Pending />
         <Icons.DoubleArrow />
         <Icons.DoNotDisturb />
+        <Icons.ChevronLeft />
+        <Icons.ChevronRight />
       </div>
     </div>
   )
