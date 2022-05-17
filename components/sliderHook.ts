@@ -81,8 +81,9 @@ export const useSlider = ({
   onChange,
   formatFunc
 } : UseSlider) : UseSliderReturn => {
+  const ff = useRef(formatFunc || wtf)
   const [opacity, setOpacity] = useState<number>(0.25)
-  const [format, setFormat] = useState<string>('')
+  const [format, setFormat] = useState<string>(ff.current(value))
   const inVal = useRef(scaleItInv(min, max, scale, value))
   const springVal = useSpring(inVal.current, { stiffness: 300, damping: 45, mass: 0.1 }) // set duration for length, duration: 3000 })
   const scalar = useCallback(newVal => scaleIt(min, max, scale, newVal), [min, max, scale])
@@ -93,8 +94,6 @@ export const useSlider = ({
 
   const outVal = useTransform(springVal, scalar)
   // const formatVal = useTransform(outVal, formatFunc)
-
-  const ff = useRef(formatFunc || wtf)
 
   const pressed = useRef(false)
   const sto = useRef<ReturnType<typeof setTimeout>>()
