@@ -19,6 +19,7 @@ const Menu = () => (
     <Link href='/modals'>Modals</Link>
     <Link href='/menus'>Menus</Link>
     <Link href='/forms'>Forms</Link>
+    <Link href='/icons'>Icons</Link>
     <div>----</div>
     <Link href='/slider'>Slider</Link>
     <Link href='/rails'>Rails</Link>
