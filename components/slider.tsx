@@ -18,7 +18,7 @@ import {
   ScaleType
 } from './sliderHook'
 
-type Orientation = 'horizontal' | 'vertical'
+export type Orientation = 'horizontal' | 'vertical'
 
 interface SliderProps {
   orientation?: Orientation
