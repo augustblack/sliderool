@@ -21,6 +21,7 @@ import {
 export type Orientation = 'horizontal' | 'vertical'
 
 interface SliderProps {
+  layoutId ?: string
   orientation?: Orientation
   slider: UseSliderReturn
   trackSize ?: number,
@@ -28,6 +29,7 @@ interface SliderProps {
 }
 
 const SliderNoMemo: FC<SliderProps> = ({
+  layoutId,
   slider,
   orientation = 'vertical',
   trackSize = 192,
@@ -81,7 +83,9 @@ const SliderNoMemo: FC<SliderProps> = ({
 
   const getY = (e:PointerEvent) => {
     if (trackRef.current && thumbRef.current) {
-      const pos = e.pageY - trackRef.current.offsetTop - (thumbRef.current.offsetHeight / 2)
+      const rect = trackRef.current.getBoundingClientRect()
+      const pos = e.clientY - rect.top
+      // const pos = e.pageY - trackRef.current.offsetTop - (thumbRef.current.offsetHeight / 2)
       const h = trackRef.current.offsetHeight - thumbRef.current.offsetHeight
       const newpos = pos < 0
         ? 0
@@ -97,7 +101,9 @@ const SliderNoMemo: FC<SliderProps> = ({
 
   const getX = (e: PointerEvent) => {
     if (trackRef.current && thumbRef.current) {
-      const pos = e.pageX - trackRef.current.offsetLeft - (thumbRef.current.offsetWidth / 2)
+      // const rect = e.target.getBoundingClientRect()
+      const rect = trackRef.current.getBoundingClientRect()
+      const pos = e.clientX - rect.left // x position within the element.
       const w = trackRef.current?.offsetWidth - thumbRef.current?.offsetWidth
       const newpos = pos < 0
         ? 0
@@ -137,37 +143,40 @@ const SliderNoMemo: FC<SliderProps> = ({
     return false
   }
   return (
-       <motion.div
-       className={'relative ' + trackClass}
-       ref={trackRef}
-       // onPointerDown={e => trackRef.current.setPointerCapture(e.pointerId)}
-       onPointerDown={pointerDown}
-       onPointerUp={pointerUp}
-       onPointerMove={pointerMove}
-       onPointerCancel={pointerUp}
-       // need this for pointer move
-       style={ trackStyle }
-       onDragStart={dragStart}
-     >
-       <motion.div
-         className='absolute select-none pointer-action-none '
-         style={infoStyle}
-       >
-         <div ref={childRef}>
-           {children}
-         </div>
-       </motion.div>
-       <motion.div
-         className={'flex justify-center ' + thumbClass}
-         style={thumbStyle}
-         whileTap={{ scale: 1.1, opacity: 1.0 }}
-         ref={thumbRef}
-         onPointerDown={pointerDown}
-         onDragStart={dragStart}
-         dragConstraints={trackRef}
-         role='slider'
-         tabIndex={0}
-       >
+    <motion.div
+      layoutId={layoutId ? layoutId + '_track' : undefined}
+      className={'relative ' + trackClass}
+      ref={trackRef}
+      // onPointerDown={e => trackRef.current.setPointerCapture(e.pointerId)}
+      onPointerDown={pointerDown}
+      onPointerUp={pointerUp}
+      onPointerMove={pointerMove}
+      onPointerCancel={pointerUp}
+      // need this for pointer move
+      style={ trackStyle }
+      onDragStart={dragStart}
+    >
+      <motion.div
+        layoutId={layoutId ? layoutId + '_info' : undefined}
+        className='absolute select-none pointer-action-none '
+        style={infoStyle}
+      >
+        <div ref={childRef}>
+          {children}
+        </div>
+      </motion.div>
+      <motion.div
+        layoutId={layoutId ? layoutId + '_thumb' : undefined}
+        className={'flex justify-center ' + thumbClass}
+        style={thumbStyle}
+        whileTap={{ scale: 1.1, opacity: 1.0 }}
+        ref={thumbRef}
+        onPointerDown={pointerDown}
+        onDragStart={dragStart}
+        dragConstraints={trackRef}
+        role='slider'
+        tabIndex={0}
+      >
         <div
           className='select-none text-base-1 text-sm inline-block'
           style={{
@@ -177,8 +186,8 @@ const SliderNoMemo: FC<SliderProps> = ({
             opacity: slider.opacity,
             transition: 'opacity 0.75s ease-out'
           }}>{slider.format}</div>
-       </motion.div>
-     </motion.div>
+      </motion.div>
+    </motion.div>
   )
 }
 
@@ -194,6 +203,7 @@ type SliderInputProps = {
   max ?: number
   formatFunc ?: (v: number) => string
   scale ?: ScaleType
+  layoutId ?: string
 }
 const SliderInput: FC<SliderInputProps> = ({
   value,
@@ -204,6 +214,7 @@ const SliderInput: FC<SliderInputProps> = ({
   max = 1,
   formatFunc,
   scale,
+  layoutId,
   children
 }) => {
   const slider = useSlider({
@@ -215,7 +226,7 @@ const SliderInput: FC<SliderInputProps> = ({
     scale: scale || ScaleType.Linear
   })
 
-  return (<Slider slider={slider} trackSize={trackSize} orientation={orientation} >
+  return (<Slider slider={slider} trackSize={trackSize} orientation={orientation} layoutId={layoutId} >
     {children}
   </Slider>
   )
