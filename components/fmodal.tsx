@@ -13,8 +13,9 @@ import {
 
 import ClientOnlyPortal from './clientOnlyPortal'
 
-import { ButtonProps } from './button'
-import { ButtonWithFocus } from './modal'
+import Button, { ButtonProps } from './button'
+import { ButtonWithFocus, ModalProps } from './modal'
+import { Clear } from './icons'
 
 const getLevel = (lev:number, num:number) => lev === 1
   ? ({ zIndex: 30 + num })
@@ -42,12 +43,6 @@ export const Backdrop: FC<BackdropProps> = ({
   </motion.div>
 )
 
-export type ModalProps = {
-  level ?:number
-  open: boolean
-  setOpen: (open:boolean) => void // React.Dispatch<React.SetStateAction<boolean>>
-  children?: ReactNode
-}
 /*
 const dropIn = {
   hidden: {
@@ -79,7 +74,7 @@ const dropIn = {
 }
  */
 
-export const Modal:FC<ModalProps> = ({
+const Modal:FC<ModalProps> = ({
   level = 1,
   open,
   setOpen,
@@ -112,9 +107,16 @@ export const Modal:FC<ModalProps> = ({
           <ClientOnlyPortal>
             <div
               className={'absolute top-0 left-0 flex flex-col justify-center select-none w-screen h-screen'}
-              style={getLevel(level, 2)}
-              onClick={() => setOpen(false)}
             >
+              <motion.div
+                className={'absolute w-screen h-screen bg-gray-900'}
+                style={getLevel(level, 2)}
+                onMouseDown={() => setOpen(false)}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.5 }}
+                exit={{ opacity: 0 }}
+              />
+
               <motion.div
                 onClick={(e) => e.stopPropagation()}
                 ref={modalRef}
@@ -180,6 +182,34 @@ export const FModal : FC<FModalProps> = ({
     }
   </AnimatePresence>
 )
+
+export type FModalWithCloseProps = ModalProps & {
+  menu?: ReactNode
+}
+export const FModalWithClose: FC<FModalWithCloseProps> = ({
+  level = 1,
+  menu,
+  open,
+  setOpen,
+  children
+}) => (
+  <FModal open={open} setOpen={setOpen} level={level}>
+    <div className="flex flex-col w-full h-full" style={getLevel(level, 4)} >
+      <div className="flex flex-row flex-none items-start">
+        { menu
+          ? (<div className='flex-grow'>{menu}</div>)
+          : null
+        }
+        <div className="flex-grow" />
+        <Button kind='none' className="flex-none " onClick={() => setOpen(false)}><Clear /></Button>
+      </div>
+      <div className="flex-grow m-1 md:m-2 h-full overflow-auto" style={getLevel(level, 4)} >
+        {children}
+      </div>
+    </div>
+  </FModal>
+)
+
 type FModalButtonProps = {
   level?: 1
   buttonProps: ButtonProps
@@ -202,6 +232,35 @@ export const FModalButton : FC<FModalButtonProps> = ({
       <FModal open={open} setOpen={setOpen} level={level} >
         {children}
       </FModal>
+    </>
+  )
+}
+
+type FModalButtonWithCloseProps = {
+  level?: 1
+  buttonProps: ButtonProps
+  menu: ReactNode
+  children?: ReactNode
+}
+
+export const FModalButtonWithClose : FC<FModalButtonWithCloseProps> = ({
+  level = 1,
+  buttonProps,
+  menu,
+  children
+}) => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <ButtonWithFocus
+        open={open}
+        setOpen={setOpen}
+        buttonProps={buttonProps}
+      />
+      <FModalWithClose open={open} setOpen={setOpen} level={level} menu={menu} >
+        {children}
+      </FModalWithClose>
     </>
   )
 }

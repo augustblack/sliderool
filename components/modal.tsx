@@ -19,7 +19,7 @@ const getLevel = (lev:number, num:number) => lev === 1
 export type ButtonWithFocusProps = {
   buttonProps: ButtonProps
   open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setOpen: (open: boolean) => void
 }
 
 export const ButtonWithFocus :FC<ButtonWithFocusProps> = ({
@@ -53,7 +53,7 @@ export const ButtonWithFocus :FC<ButtonWithFocusProps> = ({
 export type ModalProps = {
   level ?:number
   open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setOpen: (open:boolean) => void
   children?: ReactNode
 }
 
