@@ -161,7 +161,7 @@ const SliderNoMemo: FC<SliderProps> = ({
   return (
     <motion.div
       layoutId={layoutId ? layoutId + '_track' : undefined}
-      className={'relative ' + trackClass}
+      className={'relative cursor-pointer ' + trackClass}
       ref={trackRef}
       // onPointerDown={e => trackRef.current.setPointerCapture(e.pointerId)}
       onPointerDown={pointerDown}
@@ -183,7 +183,7 @@ const SliderNoMemo: FC<SliderProps> = ({
       </motion.div>
       <motion.div
         layoutId={layoutId ? layoutId + '_thumb' : undefined}
-        className={'flex justify-center ' + thumbClass}
+        className={'flex justify-center cursor-grab ' + thumbClass}
         style={thumbStyle}
         whileTap={{ scale: 1.1, opacity: 1.0 }}
         ref={thumbRef}
