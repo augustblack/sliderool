@@ -38,6 +38,8 @@ const SliderNoMemo: FC<SliderProps> = ({
   const trackRef = useRef<HTMLDivElement>(null)
   const thumbRef = useRef<HTMLDivElement>(null)
   const childRef = useRef<HTMLDivElement>(null)
+  const posInThumb = useRef<{left:number, top:number}>({ left: 0, top: 0 })
+  const trackRect = useRef<{left:number, top:number}>({ left: 0, top: 0 })
 
   const thumbSize = 64
   const trackRatio = trackSize - thumbSize - 4 // account for 2 px border
@@ -83,9 +85,7 @@ const SliderNoMemo: FC<SliderProps> = ({
 
   const getY = (e:PointerEvent) => {
     if (trackRef.current && thumbRef.current) {
-      const rect = trackRef.current.getBoundingClientRect()
-      const pos = e.clientY - rect.top
-      // const pos = e.pageY - trackRef.current.offsetTop - (thumbRef.current.offsetHeight / 2)
+      const pos = e.clientY - trackRect.current.top - posInThumb.current.top
       const h = trackRef.current.offsetHeight - thumbRef.current.offsetHeight
       const newpos = pos < 0
         ? 0
@@ -101,9 +101,7 @@ const SliderNoMemo: FC<SliderProps> = ({
 
   const getX = (e: PointerEvent) => {
     if (trackRef.current && thumbRef.current) {
-      // const rect = e.target.getBoundingClientRect()
-      const rect = trackRef.current.getBoundingClientRect()
-      const pos = e.clientX - rect.left // x position within the element.
+      const pos = e.clientX - trackRect.current.left - posInThumb.current.left // x position within the element.
       const w = trackRef.current?.offsetWidth - thumbRef.current?.offsetWidth
       const newpos = pos < 0
         ? 0
@@ -117,7 +115,25 @@ const SliderNoMemo: FC<SliderProps> = ({
     // return w - (xval * w)
   }
   const pointerDown: PointerEventHandler<HTMLDivElement> = e => {
+    // set the capture pointer
     trackRef.current?.setPointerCapture(e.pointerId)
+
+    // save bounding rect here so we aren't updating while moving
+    trackRect.current = trackRef.current?.getBoundingClientRect() || { top: 0, left: 0 }
+
+    //  only save bounding rect for thumb here if we hit the thumb
+    if (e.target === thumbRef.current) {
+      const thumbRect = thumbRef.current?.getBoundingClientRect() || { top: 0, left: 0 }
+      posInThumb.current = {
+        top: e.clientY - thumbRect.top,
+        left: e.clientX - thumbRect.left
+      }
+    } else {
+      posInThumb.current = {
+        top: 0,
+        left: 0
+      }
+    }
     slider.onPress()
   }
   const pointerUp: PointerEventHandler<HTMLDivElement> = e => {
