@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import Form from '../components/form'
+import { Form } from '../components/'
 
 const verify = (v:string) => new Promise((resolve, reject) => v && v.trim().length > 0
   ? resolve(v)
@@ -20,7 +20,7 @@ const Configure :FC<ConfigureProps> = ({
     console.log('here')
   }
   return (
-    <div className='p-4 max-w-xl'>
+    <div className='p-4 w-96 border border-write-2 rounded'>
     <Form
       name='configure'
       onSubmit={onSubmit}
@@ -28,6 +28,7 @@ const Configure :FC<ConfigureProps> = ({
       onCancel={close}
       items={[
         { field: 'display', label: 'Display Name', init: '', type: 'text', verify },
+        { field: 'radio', label: 'Some radiation', init: '', type: 'radio', options: [{ f: 'one', l: 'one' }, { f: 'two', l: 'two' }], verify },
         {
           field: 'prebuffer',
           label: (<div className=''><div>Buffer 2-50</div><div className='text-sm font-normal'>(higher=better, more latency)</div></div>),

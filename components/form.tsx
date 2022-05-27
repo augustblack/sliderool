@@ -79,13 +79,13 @@ const Input: FC<InputProps> = ({
 }: InputProps) => type === 'radio'
   ? (<Radio state={state} field={field} label={label} options={options} update={update} />)
   : (
-    <React.Fragment>
+    <>
       <label
-        className={'font-bold mr-2 sm:text-right' + (hidden ? ' hidden' : '')}
+        className={'block font-bold mr-2 sm:text-right' + (hidden ? ' hidden' : '')}
         htmlFor={field}
       >{label}</label>
       <input
-        className={'mb-2 p-2 w-auto w-full rounded' + (hidden ? ' hidden' : '') + (
+        className={'p-2 w-full rounded' + (hidden ? ' hidden' : '') + (
           validated ? ' bg-gray-100 border border-gray-800' : ' bg-red-100 border border-red-700'
         )}
         name={field}
@@ -96,7 +96,7 @@ const Input: FC<InputProps> = ({
         disabled={disabled}
         {...args}
       />
-    </React.Fragment>
+    </>
     )
 
 const getInitState = (items: Array<Item>) => items && items.length
@@ -115,6 +115,7 @@ type FormItem = Item & {
 type FormProps = {
   name: string
   timeout?: number
+  className?: string
   items: Array<FormItem>
   onSubmit: ((state: Record<string, unknown>) => void) | ((state: Record<string, unknown>) => Promise<void>)
   onAction?: string
@@ -125,6 +126,7 @@ type FormProps = {
 export const Form : FC<FormProps> = ({
   name,
   items,
+  className = '',
   onSubmit,
   afterSubmit,
   onAction,
@@ -201,7 +203,7 @@ export const Form : FC<FormProps> = ({
     <div className='space-y-2'>
       <ErrorDisplay pre={name} errors={error} clearErrors={clearError} />
     <form
-      className='rounded w-full sm:items-baseline sm:grid sm:grid-cols-2 text-xs p-1 md:text-base sm:gap-2 '
+      className={'rounded w-full items-middle text-xs p-1 text-base sm:grid sm:grid-cols-2 gap-4 space-y-2 sm:space-y-0 ' + className }
       style={{ gridTemplateColumns: 'max-content auto' }}
       onSubmit={onSubmitEvent}
       action={onAction || undefined }
