@@ -1,7 +1,7 @@
 {
   "name": "sliderool",
   "author": "August Black",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "react/tailwind/framer motion UI lib",
   "license": "GPLv3",
   "repository": {
