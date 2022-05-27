@@ -122,7 +122,7 @@ type FormProps = {
   onCancel: () => void
 }
 
-const Form : FC<FormProps> = ({
+export const Form : FC<FormProps> = ({
   name,
   items,
   onSubmit,
@@ -242,5 +242,3 @@ const Form : FC<FormProps> = ({
   </div>
   )
 }
-
-export default Form
