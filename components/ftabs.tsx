@@ -20,7 +20,7 @@ export const FTabH : FC<FTabHProps> = ({
   <div className={ selected ? '' : 'opacity-50'}>
     <button
       disabled={!!selected}
-      className={'text-write-1 cursor-default' + (selected ? '' : 'truncate w-8 sm:w-auto') }
+      className={'text-write-1 cursor-default ' + (selected ? '' : ' truncate w-8 sm:w-auto') }
       onClick={selected ? () => null : () => selectTab(index)}
     >{label}</button>
 
