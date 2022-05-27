@@ -200,10 +200,10 @@ export const Form : FC<FormProps> = ({
       , 500))
   }
   return (
-    <div className='space-y-2'>
+    <div className={'space-y-2 w-full ' + className }>
       <ErrorDisplay pre={name} errors={error} clearErrors={clearError} />
     <form
-      className={'rounded w-full items-middle text-xs p-1 text-base sm:grid sm:grid-cols-2 gap-4 space-y-2 sm:space-y-0 ' + className }
+      className={'rounded w-full items-middle text-xs p-1 text-base sm:grid sm:grid-cols-2 gap-4 space-y-2 sm:space-y-0 ' }
       style={{ gridTemplateColumns: 'max-content auto' }}
       onSubmit={onSubmitEvent}
       action={onAction || undefined }
