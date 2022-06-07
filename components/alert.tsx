@@ -61,7 +61,7 @@ type ErrorDisplayProps = {
   errors: Array<string|Error|ErrorEvent>
   clearErrors ?: () => void
 }
-const ErrorDisplay :FC<ErrorDisplayProps> = ({
+export const ErrorDisplay :FC<ErrorDisplayProps> = ({
   pre,
   errors,
   clearErrors
@@ -82,5 +82,3 @@ const ErrorDisplay :FC<ErrorDisplayProps> = ({
     </div>
     )
   : null
-
-export default ErrorDisplay

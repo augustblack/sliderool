@@ -1,6 +1,5 @@
 import React, { FC, ReactNode, useState, useEffect, useCallback, useRef } from 'react'
-import Button from './button'
-import ErrorDisplay from './alert'
+import { ErrorDisplay, Button } from './index'
 
 const isNil = (v: unknown) => v === null || v === undefined
 
