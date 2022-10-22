@@ -1,7 +1,12 @@
-import { useRef, useEffect, useState, FC } from 'react'
+import { useRef, useEffect, useState, FC, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 
-const ClientOnlyPortal: FC = ({ children }) => {
+type ClientOnlyPortalProps = {
+  children: ReactNode
+}
+const ClientOnlyPortal: FC<ClientOnlyPortalProps> = ({
+  children
+}) => {
   const ref = useRef<HTMLElement>()
   const [mounted, setMounted] = useState(false)
 
