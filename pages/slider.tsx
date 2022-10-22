@@ -1,26 +1,26 @@
 import React, { useState } from 'react'
-import Slider from '../components/slider'
-import { ScaleType } from '../components/sliderHook'
+import Slider, { ScaleType } from '../components/slider'
 import { PlaylistDnD, Playlist } from '../components/playlist'
 
 const SliderGroup = () => {
   const [vol, setVol] = useState(0)
   const formatFunc = (v: number) => v.toFixed(2).toString()
   return (
-   <div className='bg-gradient-to-b from-red-300 to-red-400 p-4 rounded flex flex-row space-x-6'>
-     <Slider value={vol} onChange={setVol} formatFunc={formatFunc} min={0} max={1.5} scale={ScaleType.Log}>
-       <div className='rounded w-12 flex justify-center'>vol</div>
-     </Slider>
-     <div className='flex flex-col space-y-6'>
-       <Slider value={vol} onChange={setVol} orientation='horizontal' trackSize={150} >
-         <div className='rounded w-12 flex justify-center'>vol</div>
-       </Slider>
-       <Slider value={vol} onChange={setVol} orientation='horizontal' trackSize={150} >
-         <div className='rounded w-12 flex justify-center'>vol</div>
-       </Slider>
-     </div>
-
-   </div>
+    <div className='bg-gradient-to-b from-red-300 to-red-400 p-4 rounded flex flex-row space-x-6 h-64 w-96'>
+      <div className='w-10 flex-none'>
+        <Slider value={vol} onChange={setVol} formatFunc={formatFunc} min={0} max={1} scale={ScaleType.Log}>
+          <div className=''>vol</div>
+        </Slider>
+      </div>
+      <div className='flex-grow flex flex-col space-y-6 w-full'>
+        <Slider value={vol} onChange={setVol} orientation='horizontal' >
+          <div className='rounded w-12 flex justify-center'>vol</div>
+        </Slider>
+        <Slider value={vol} onChange={setVol} orientation='horizontal' >
+          <div className='rounded w-12 flex justify-center'>vol</div>
+        </Slider>
+      </div>
+    </div>
   )
 }
 
@@ -65,8 +65,8 @@ const Sliders = () => {
   ])
   const orderPlaylist = (p: Playlist) => setPlaylist(p)
   return (
-    <div className='flex flex-col space-y-6'>
-      <div className='flex flex-row bg-base-2 rounded p-4 space-x-2 overflow-x-auto w-96 '>
+    <div className='flex flex-col space-y-6 flex-grow'>
+      <div className='flex flex-row bg-base-2 rounded p-4 space-x-2 overflow-x-auto  '>
         <SliderGroup />
         <SliderGroup />
         <SliderGroup />
