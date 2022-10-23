@@ -182,7 +182,7 @@ const Slider: FC<SliderProps> = ({
     orientation === 'vertical' ? { y: childVal } : { x: childVal }
 
   const trackClass =
-    'cursor-pointer inline-block rounded border border-write-1 relative overflow-hidden ' +
+    'select-none pointer-action-none touch-none cursor-pointer rounded border border-write-1 relative overflow-hidden ' +
     (orientation === 'vertical'
       ? 'bg-gradient-to-t from-base-1/25 via-base-3/25 to-base-2/50 h-full w-14 '
       : 'bg-gradient-to-r from-base-1/25 via-base-3/25 to-base-2/25 w-full h-14 flex flex-col place-content-center')
@@ -300,6 +300,7 @@ const Slider: FC<SliderProps> = ({
       spring.set(v)
     }
   }
+
   useEffect(() => {
     const onResize = () => {
       trackRect.current = trackRef.current?.getBoundingClientRect() || {
@@ -324,7 +325,7 @@ const Slider: FC<SliderProps> = ({
     e.stopPropagation()
     return false
   }
-   */
+    */
 
   return (
     <div
@@ -337,7 +338,7 @@ const Slider: FC<SliderProps> = ({
     >
       <motion.div
         className={
-          'absolute select-none pointer-action-none ' +
+          'absolute  ' +
           (orientation === 'vertical'
             ? ' flex place-content-center w-full'
             : ' ')
