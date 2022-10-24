@@ -37,7 +37,7 @@
     "dev": "next dev",
     "build-tailwind": "NODE_ENV=production npx tailwindcss -o ./lib/sliderool.css --minify",
     "blah": "rm -rf ./lib && npm run build-tailwind && tsc -p tsconfig_pkg.json",
-    "tsup": "tsup --format cjs,esm --dts --clean",
+    "tsup": "tsup --format cjs,esm --dts --clean --sourcemap",
     "prepublish": "rm -rf ./dist && npm run build-tailwind && npm run tsup",
     "build": "next build",
     "export": "next build && next export",
