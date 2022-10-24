@@ -185,7 +185,7 @@ const Slider: FC<SliderProps> = ({
     'select-none pointer-action-none touch-none cursor-pointer rounded border border-write-1 relative overflow-hidden ' +
     (orientation === 'vertical'
       ? 'bg-gradient-to-t from-base-1/25 via-base-3/25 to-base-2/50 h-full w-14 '
-      : 'bg-gradient-to-r from-base-1/25 via-base-3/25 to-base-2/25 w-full h-14 flex flex-col place-content-center')
+      : 'bg-gradient-to-r from-base-1/25 via-base-3/25 to-base-2/25 w-full h-10 flex flex-col place-content-center')
 
   const thumbClass =
     'bg-write-1 rounded text-base-2 text-sm absolute left-0 bottom-0 rounded cursor-grab select-none pointer-action-none flex p-1 ' +
