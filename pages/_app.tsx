@@ -6,7 +6,7 @@ import { AppProps } from 'next/app'
 import Button from '../components/button'
 
 type NavProps = {
-  children ?: ReactNode
+  children?: ReactNode
 }
 
 const Menu = () => (
@@ -35,19 +35,19 @@ const Template: FC<NavProps> = ({
   }, [theme])
 
   return (
-    <div className={ ' p-4 bg-base-3 text-write-1 space-y-4 w-screen h-screen'} style={{ transition: 'background-color .25s' }}>
+    <div className={' p-4 bg-base-3 text-write-1 space-y-4 w-screen h-screen'} style={{ transition: 'background-color .25s' }}>
       <Head>
         <title>s l i d e r o o l</title>
       </Head>
-      <div className='flex flex-col space-x-2 '>
+      <div className='flex flex-col space-x-2 h-full '>
         <div className='flex flex-row space-x-2 p-2'>
           <div className='flex-grow' />
-          <Button kind='plain' label='dark' onClick={() => setTheme('dark')}/>
-          <Button kind='plain' label='light' onClick={() => setTheme('light')}/>
+          <Button kind='plain' label='dark' onClick={() => setTheme('dark')} />
+          <Button kind='plain' label='light' onClick={() => setTheme('light')} />
         </div>
-        <div className='flex flex-row space-x-8 p-4'>
+        <div className='flex flex-row space-x-8 p-4 h-full'>
           <Menu />
-          <div className='space-y-2 items-center w-full' >
+          <div className='space-y-2 items-center w-full h-full' >
             {children}
           </div>
         </div>
@@ -56,7 +56,7 @@ const Template: FC<NavProps> = ({
   )
 }
 
-const MyApp : FC<AppProps> = ({
+const MyApp: FC<AppProps> = ({
   Component,
   pageProps
 }: AppProps) => {
