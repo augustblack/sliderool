@@ -10,7 +10,7 @@ import ClientOnlyPortal from './clientOnlyPortal'
 import { Clear } from './icons'
 import Button, { ButtonProps } from './button'
 
-const getLevel = (lev:number, num:number) => lev === 1
+const getLevel = (lev: number, num: number) => lev === 1
   ? ({ zIndex: 30 + num })
   : lev === 2
     ? ({ zIndex: 40 + num })
@@ -22,7 +22,7 @@ export type ButtonWithFocusProps = {
   setOpen: (open: boolean) => void
 }
 
-export const ButtonWithFocus :FC<ButtonWithFocusProps> = ({
+export const ButtonWithFocus: FC<ButtonWithFocusProps> = ({
   buttonProps,
   open,
   setOpen
@@ -42,22 +42,22 @@ export const ButtonWithFocus :FC<ButtonWithFocusProps> = ({
   }, [open])
 
   return (
-      <Button
-        ref={buttonRef}
-        onClick={() => setOpen(true)}
-        {...buttonProps}
-      />
+    <Button
+      ref={buttonRef}
+      onClick={() => setOpen(true)}
+      {...buttonProps}
+    />
   )
 }
 
 export type ModalProps = {
-  level ?:number
+  level?: number
   open: boolean
-  setOpen: (open:boolean) => void
+  setOpen: (open: boolean) => void
   children?: ReactNode
 }
 
-export const Modal:FC<ModalProps> = ({
+export const Modal: FC<ModalProps> = ({
   level = 1,
   open,
   setOpen,
@@ -101,7 +101,7 @@ export const Modal:FC<ModalProps> = ({
       setTimeout(() => mounted
         ? setState(s => Object.assign({}, s, { open: false }))
         : null
-      , 250)
+        , 250)
     }
     return () => {
       mounted = false
@@ -133,7 +133,7 @@ export const Modal:FC<ModalProps> = ({
           </div>
         </div>
       </ClientOnlyPortal>
-      )
+    )
     : null
 }
 
@@ -151,7 +151,7 @@ export const ModalWithClose: FC<ModalWithCloseProps> = ({
   <Modal open={open} setOpen={setOpen} level={level}>
     <div className="flex flex-col w-full h-full" style={getLevel(level, 4)} >
       <div className="flex flex-row flex-none items-start">
-        { menu
+        {menu
           ? (<div className='flex-grow'>{menu}</div>)
           : null
         }
@@ -167,11 +167,11 @@ export const ModalWithClose: FC<ModalWithCloseProps> = ({
 
 export type ModalButtonProps = {
   buttonProps: ButtonProps
-  level ?:number
+  level?: number
   children?: ReactNode
 }
 
-export const ModalButton:FC<ModalButtonProps> = ({
+export const ModalButton: FC<ModalButtonProps> = ({
   buttonProps,
   level = 1,
   children
@@ -212,7 +212,7 @@ export const ModalButtonWithClose: FC<ModalButtonWithCloseProps> = ({
       <Modal open={open} setOpen={setOpen} level={level}>
         <div className="flex flex-col w-full h-full" style={getLevel(level, 4)} >
           <div className="flex flex-row flex-none items-start">
-            { menu
+            {menu
               ? (<div className='flex-grow'>{menu}</div>)
               : null
             }

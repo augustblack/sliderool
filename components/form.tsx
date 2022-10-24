@@ -13,7 +13,7 @@ type RadioProps = {
   field: string
   options: Array<Options>
   label: ReactNode
-  update: (f:string) => (e: React.ChangeEvent<HTMLInputElement>) => void
+  update: (f: string) => (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Radio: FC<RadioProps> = ({
@@ -26,8 +26,8 @@ const Radio: FC<RadioProps> = ({
   <React.Fragment>
     <div className='font-bold mr-2 grid-flow-col sm:text-right' >{label}</div>
     <div className='p-2 w-auto w-full'>
-      { options.map((o, idx) => (
-        <div key={field + idx} className={ idx !== (options.length - 1) ? 'pb-2' : '' }>
+      {options.map((o, idx) => (
+        <div key={field + idx} className={idx !== (options.length - 1) ? 'pb-2' : ''}>
           <input
             className='pr-4'
             id={o.f}
@@ -51,16 +51,16 @@ type Item = {
   label: ReactNode
   type?: string
   options?: Array<Options>
-  placeholder?:string
-  disabled?:boolean
-  hidden?:boolean
-  args ?: Record<string, string>
+  placeholder?: string
+  disabled?: boolean
+  hidden?: boolean
+  args?: Record<string, string>
 }
 
 type InputProps = Item & {
   state: Record<string, unknown>
   validated: boolean
-  update: (f:string) => (e: React.ChangeEvent<HTMLInputElement>) => void
+  update: (f: string) => (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Input: FC<InputProps> = ({
@@ -76,33 +76,33 @@ const Input: FC<InputProps> = ({
   type = 'text',
   args
 }: InputProps) => type === 'radio'
-  ? (<Radio state={state} field={field} label={label} options={options} update={update} />)
-  : (
-    <>
-      <label
-        className={'block font-bold mr-2 sm:text-right' + (hidden ? ' hidden' : '')}
-        htmlFor={field}
-      >{label}</label>
-      <input
-        className={'p-2 w-full rounded' + (hidden ? ' hidden' : '') + (
-          validated ? ' bg-gray-100 border border-gray-800' : ' bg-red-100 border border-red-700'
-        )}
-        name={field}
-        placeholder={placeholder}
-        type={type}
-        value={String(state[field]) || ''}
-        onChange={update(field)}
-        disabled={disabled}
-        {...args}
-      />
-    </>
+    ? (<Radio state={state} field={field} label={label} options={options} update={update} />)
+    : (
+      <>
+        <label
+          className={'block font-bold mr-2 sm:text-right' + (hidden ? ' hidden' : '')}
+          htmlFor={field}
+        >{label}</label>
+        <input
+          className={'p-2 w-full rounded' + (hidden ? ' hidden' : '') + (
+            validated ? ' bg-gray-100 border border-gray-800' : ' bg-red-100 border border-red-700'
+          )}
+          name={field}
+          placeholder={placeholder}
+          type={type}
+          value={String(state[field]) || ''}
+          onChange={update(field)}
+          disabled={disabled}
+          {...args}
+        />
+      </>
     )
 
 const getInitState = (items: Array<Item>) => items && items.length
   ? items.reduce((acc, v) => Object.assign(acc, { [v.field]: v.init }), {})
   : {}
 
-const getInitValidated = (items: Array<Item>) : Record<string, boolean> => items && items.length
+const getInitValidated = (items: Array<Item>): Record<string, boolean> => items && items.length
   ? items.reduce((acc, v) => Object.assign(acc, { [v.field]: true }), {})
   : {}
 
@@ -122,7 +122,7 @@ type FormProps = {
   onCancel: () => void
 }
 
-export const Form : FC<FormProps> = ({
+export const Form: FC<FormProps> = ({
   name,
   items,
   className = '',
@@ -138,7 +138,7 @@ export const Form : FC<FormProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isMounted = useRef(true)
   const isDisabled = useCallback(() => !allValidated(validated), [validated])
-  const setErrorSafe = (e : Error) => isMounted.current
+  const setErrorSafe = (e: Error) => isMounted.current
     ? setError([e])
     : null
   const clearError = () => isMounted.current ? setError([]) : null
@@ -147,7 +147,7 @@ export const Form : FC<FormProps> = ({
     setState(Object.assign({}, state, { [field]: e.target.value }))
   }
 
-  useEffect(() => () => { isMounted.current = false }, [])
+  useEffect(() => () => {isMounted.current = false}, [])
 
   useEffect(() => {
     const to = setTimeout(() => {
@@ -187,59 +187,59 @@ export const Form : FC<FormProps> = ({
       .then(() => setTimeout(() => isMounted.current
         ? setIsSubmitting(false)
         : null
-      , 500))
+        , 500))
       .then(() => setTimeout(() => isMounted.current && afterSubmit
         ? afterSubmit()
         : null
-      , 500))
+        , 500))
       .catch(setErrorSafe)
       .finally(() => setTimeout(() => isMounted.current
         ? setIsSubmitting(false)
         : null
-      , 500))
+        , 500))
   }
   return (
-    <div className={'space-y-2 w-full ' + className }>
+    <div className={'space-y-2 w-full ' + className}>
       <ErrorDisplay pre={name} errors={error} clearErrors={clearError} />
-    <form
-      className={'rounded w-full items-middle text-xs p-1 text-base sm:grid sm:grid-cols-2 gap-4 space-y-2 sm:space-y-0 ' }
-      style={{ gridTemplateColumns: 'max-content auto' }}
-      onSubmit={onSubmitEvent}
-      action={onAction || undefined }
-      method='post'
-    >
-      { items.map(i => (
-        <Input
-          state={state}
-          update={update}
-          key={i.field}
-          validated={validated[i.field]}
-          field={i.field}
-          label={i.label}
-          options={i.options}
-          type={i.type}
-          placeholder={i.placeholder}
-          disabled={i.disabled}
-          hidden={i.hidden}
-          args={i.args}
-        />))
-      }
-      <div />
-      <div className='mt-2 flex flex-row w-auto border border-1 border-write-1 rounded'>
-        <Button
-          kind='group'
-          disabled={isDisabled() || isSubmitting}
-          className={isDisabled() ? '' : 'bg-green-200'}
-          label={isSubmitting ? 'submitting...' : 'submit'}
-          type='submit'
-        />
-        <Button
-          kind='group'
-          label='cancel'
-          onClick={onCancel}
-        />
-      </div>
-    </form>
-  </div>
+      <form
+        className={'rounded w-full items-middle text-xs p-1 text-base sm:grid sm:grid-cols-2 gap-4 space-y-2 sm:space-y-0 '}
+        style={{ gridTemplateColumns: 'max-content auto' }}
+        onSubmit={onSubmitEvent}
+        action={onAction || undefined}
+        method='post'
+      >
+        {items.map(i => (
+          <Input
+            state={state}
+            update={update}
+            key={i.field}
+            validated={validated[i.field]}
+            field={i.field}
+            label={i.label}
+            options={i.options}
+            type={i.type}
+            placeholder={i.placeholder}
+            disabled={i.disabled}
+            hidden={i.hidden}
+            args={i.args}
+          />))
+        }
+        <div />
+        <div className='mt-2 flex flex-row w-auto border border-1 border-write-1 rounded'>
+          <Button
+            kind='group'
+            disabled={isDisabled() || isSubmitting}
+            className={isDisabled() ? '' : 'bg-green-200'}
+            label={isSubmitting ? 'submitting...' : 'submit'}
+            type='submit'
+          />
+          <Button
+            kind='group'
+            label='cancel'
+            onClick={onCancel}
+          />
+        </div>
+      </form>
+    </div>
   )
 }

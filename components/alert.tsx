@@ -46,7 +46,7 @@ export const Alert: FC<AlertProps> = ({
         >
           <Clear />
         </Button>
-        )
+      )
       : null}
   </div>
 )
@@ -75,7 +75,7 @@ export const ErrorDisplay: FC<ErrorDisplayProps> = ({
             >
               <Clear fill="#7F1D1D" />
             </button>
-            )
+          )
           : null}
         <div className="">
           {errors.map((err, idx) => (
@@ -83,5 +83,5 @@ export const ErrorDisplay: FC<ErrorDisplayProps> = ({
           ))}
         </div>
       </div>
-      )
+    )
     : null

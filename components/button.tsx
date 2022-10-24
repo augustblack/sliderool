@@ -4,14 +4,14 @@ export type ButtonType = 'button' | 'submit' | 'reset'
 export type ButtonKind = 'plain' | 'outline' | 'round' | 'group' | 'none'
 
 export type ButtonProps = {
-  show ?: boolean
-  disabled ?: boolean
+  show?: boolean
+  disabled?: boolean
   type?: ButtonType
   kind?: ButtonKind
   className?: string
   onClick?: MouseEventHandler<HTMLDivElement>
-  label ?: string
-  children ?: ReactNode
+  label?: string
+  children?: ReactNode
 }
 
 const getColorClass = (kind: ButtonKind) => kind === 'plain'
@@ -49,27 +49,27 @@ const Button = React.forwardRef(({
   label,
   children
 }: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) => show
-  ? (
-    <div
-      className={[
-        'flex items-center justify-center ',
-        getColorClass(kind),
-        getBorderClass(kind),
-        getRoundedClass(kind),
-        getExtraClass(kind),
-        className
-      ].join(' ')}
-      onClick={onClick || undefined}
-    >
-    <button
-      ref={ref}
-      disabled={disabled}
-      aria-label={label}
-      type={type}
-      className='active:scale-75 p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def flex items-center justify-center w-full'
-      >{children || label}</button></div>
+    ? (
+      <div
+        className={[
+          'flex items-center justify-center ',
+          getColorClass(kind),
+          getBorderClass(kind),
+          getRoundedClass(kind),
+          getExtraClass(kind),
+          className
+        ].join(' ')}
+        onClick={onClick || undefined}
+      >
+        <button
+          ref={ref}
+          disabled={disabled}
+          aria-label={label}
+          type={type}
+          className='active:scale-75 p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def flex items-center justify-center w-full'
+        >{children || label}</button></div>
     )
-  : null
+    : null
 )
 Button.displayName = 'Button'
 

@@ -3,7 +3,7 @@ import Icons, { IconOnOffProps, IconProps } from './icons'
 
 type ToggleProps = {
   description: string // use a unique description
-  disabled ?: boolean
+  disabled?: boolean
   Icon: FC<IconProps>
   pressed?: boolean
   className?: string
@@ -11,7 +11,7 @@ type ToggleProps = {
   onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
-export const IconToggle : FC<ToggleProps> = ({
+export const IconToggle: FC<ToggleProps> = ({
   description,
   disabled = false,
   className = '',
@@ -23,7 +23,7 @@ export const IconToggle : FC<ToggleProps> = ({
   <button
     disabled={disabled}
     role="switch"
-    aria-pressed={pressed}
+    aria-checked={pressed}
     aria-label={description}
     className={[
       'rounded p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def',
@@ -46,7 +46,7 @@ type OnOffProps = ToggleProps & {
   Icon: FC<IconOnOffProps>
 }
 
-export const Toggle : FC<OnOffProps> = ({
+export const Toggle: FC<OnOffProps> = ({
   description,
   disabled = false,
   className = '',
@@ -57,7 +57,7 @@ export const Toggle : FC<OnOffProps> = ({
 }) => (
   <button
     role="switch"
-    aria-pressed={pressed}
+    aria-checked={pressed}
     aria-label={description}
     disabled={disabled}
     className={[

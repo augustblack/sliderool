@@ -167,8 +167,8 @@ const Slider: FC<SliderProps> = ({
   })
   const spring = useSpring(defVal, sopts.current)
   const vel = useVelocity(spring)
-  const posInThumb = useRef({left: 0, top: 0})
-  const trackRect = useRef({left: 0, top: 0})
+  const posInThumb = useRef({ left: 0, top: 0 })
+  const trackRect = useRef({ left: 0, top: 0 })
 
   const xy = useTransform(spring, transXY(orientation, trackRef, thumbRef))
 
@@ -184,7 +184,8 @@ const Slider: FC<SliderProps> = ({
     getChildVal(orientation, trackRef, childRef)
   )
   const infoStyle =
-    orientation === 'vertical' ? {y: childVal} : {x: childVal}
+    orientation === 'vertical'
+      ? { y: childVal } : { x: childVal }
 
   const trackClass =
     'select-none pointer-action-none touch-none cursor-pointer rounded border border-write-1 relative overflow-hidden ' +

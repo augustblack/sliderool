@@ -29,7 +29,7 @@ type MediaBase = {
 }
 
 export type Media = MediaBase & {
-  key:string
+  key: string
   isQueued: boolean
   hasBuffer: boolean
 }
@@ -38,8 +38,8 @@ export type Playlist = Array<Media>
 
 type ItemProps = {
   media: Media
-  onClick ?: () => void
-  onDelete ?: () => void
+  onClick?: () => void
+  onDelete?: () => void
   controls: DragControls
 }
 const Item: FC<ItemProps> = ({
@@ -73,60 +73,60 @@ const Item: FC<ItemProps> = ({
   }, [menuOpen])
 
   return (
-  <>
-    <div className='flex-none '>
-    <AnimatePresence>
-      {menuOpen &&
-        <motion.div
-          className='flex flex-row space-x-1 items-center rounded-l'
-          initial={{ opacity: 0, width: 0 }}
-          animate={{ opacity: 1, width: 118 }}
-          exit={{ opacity: 0, width: 0 }}
-        >
-          <div
-            className={'flex-none rounded p-2 ml-1 ' + (media.hasBuffer ? 'bg-gray-200' : 'bg-green-200')}
-            onPointerUp={onDownloadClick}
-          >
-            <Icons.Download size='32px' fill='#34D399'/>
-          </div>
-          <div
-            className="flex-none rounded p-2 bg-red-200"
-            onPointerUp={onDelete}
-          >
-            <Icons.Delete size='32px' fill='#DC2626'/>
-          </div>
-        </motion.div>
-      }
-    </AnimatePresence>
-    </div>
-    <div
-      className='flex-none p-2'
-      onClick={toggleMenu}>
-      {
-        menuOpen
-          ? <Icons.Prev size='40px' /> // <Icons.ChevronLeft size='40px'/>
-          : <Icons.Next size='40px'/>
-      }
-    </div>
-    <div
-      ref={textRef}
-      className='flex-grow p-2 pl-0'
-      onPointerDown={onClick}
-    >
-      {media.title || media.name}
-    </div>
-    <div className='flex-none hidden sm:inline-block text-sm md:text-md ml-2 mr-4'>{media.duration}</div>
-    <div
-      className="flex-none flex flex-row items-center"
-      style={{
-        touchAction: 'none'
-      }}
-      onPointerDown={(e) => controls.start(e)}
-    >
-      <Icons.DragHandle size='36px' />
-    </div>
+    <>
+      <div className='flex-none '>
+        <AnimatePresence>
+          {menuOpen &&
+            <motion.div
+              className='flex flex-row space-x-1 items-center rounded-l'
+              initial={{ opacity: 0, width: 0 }}
+              animate={{ opacity: 1, width: 118 }}
+              exit={{ opacity: 0, width: 0 }}
+            >
+              <div
+                className={'flex-none rounded p-2 ml-1 ' + (media.hasBuffer ? 'bg-gray-200' : 'bg-green-200')}
+                onPointerUp={onDownloadClick}
+              >
+                <Icons.Download size='32px' fill='#34D399' />
+              </div>
+              <div
+                className="flex-none rounded p-2 bg-red-200"
+                onPointerUp={onDelete}
+              >
+                <Icons.Delete size='32px' fill='#DC2626' />
+              </div>
+            </motion.div>
+          }
+        </AnimatePresence>
+      </div>
+      <div
+        className='flex-none p-2'
+        onClick={toggleMenu}>
+        {
+          menuOpen
+            ? <Icons.Prev size='40px' /> // <Icons.ChevronLeft size='40px'/>
+            : <Icons.Next size='40px' />
+        }
+      </div>
+      <div
+        ref={textRef}
+        className='flex-grow p-2 pl-0'
+        onPointerDown={onClick}
+      >
+        {media.title || media.name}
+      </div>
+      <div className='flex-none hidden sm:inline-block text-sm md:text-md ml-2 mr-4'>{media.duration}</div>
+      <div
+        className="flex-none flex flex-row items-center"
+        style={{
+          touchAction: 'none'
+        }}
+        onPointerDown={(e) => controls.start(e)}
+      >
+        <Icons.DragHandle size='36px' />
+      </div>
 
-  </>
+    </>
   )
 }
 
@@ -169,9 +169,9 @@ const SortableItem: FC<SortableItemProps> = ({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.5 }}
       transition={{ ease: 'easeInOut', duration: 0.5 }}
-      // ref={mainRef}
+    // ref={mainRef}
     >
-        <Item media={media} onClick={onClick} onDelete={onDelete} controls={controls} />
+      <Item media={media} onClick={onClick} onDelete={onDelete} controls={controls} />
       { /* <motion.div className='absolute animate-pulse h-3 rounded-b left-0 bottom-0 bg-green-400 w-full' style={{ width }} /> */}
     </Reorder.Item>
   )
@@ -199,14 +199,14 @@ export const PlaylistDnDNoMemo: FC<PlaylistDnDProps> = ({
       onReorder={orderPlaylist}
     >
       <AnimatePresence>
-      {
-        playlist.map((m) => <SortableItem
-          key={m.key}
-          media={m}
-          onClick={() => null}
-          onDelete={() => null}
-        />)
-      }
+        {
+          playlist.map((m) => <SortableItem
+            key={m.key}
+            media={m}
+            onClick={() => null}
+            onDelete={() => null}
+          />)
+        }
       </AnimatePresence>
     </Reorder.Group>
   )
