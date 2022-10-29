@@ -4,6 +4,7 @@ import {
   useTransform,
   useVelocity
 } from 'framer-motion'
+
 import React, {
   FC,
   useRef,
@@ -132,7 +133,8 @@ type SliderProps = {
   max?: number
   formatFunc?: (v: number) => string
   scale?: ScaleType
-  // layoutId?: string
+  layout?: boolean | 'position' | 'size' | 'preserve-aspect'
+  layoutId?: string
   springOpts?: SpringOpts
 }
 export const DefaultSpringOpts = {
@@ -149,6 +151,8 @@ const Slider: FC<SliderProps> = ({
   orientation = 'vertical',
   springOpts = DefaultSpringOpts,
   formatFunc = (v: number) => v.toFixed(2),
+  layout = false,
+  layoutId,
   children
 }) => {
   // we do this to in order to cause redraw.
@@ -334,7 +338,9 @@ const Slider: FC<SliderProps> = ({
     */
 
   return (
-    <div
+    <motion.div
+      layout={layout}
+      layoutId={layoutId}
       role="slider"
       aria-valuenow={value}
       tabIndex={0}
@@ -370,7 +376,7 @@ const Slider: FC<SliderProps> = ({
       >
         {formatFunc(value)}
       </motion.div>
-    </div>
+    </motion.div>
   )
 }
 
