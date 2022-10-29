@@ -303,9 +303,9 @@ const Slider: FC<SliderProps> = ({
 
     if (
       trackRef.current?.hasPointerCapture &&
-      trackRef.current.hasPointerCapture(e.pointerId) &&
-      pressed.current
+      trackRef.current.hasPointerCapture(e.pointerId)
     ) {
+      pressed.current = true
       const v = orientation === 'vertical' ? getY(e) : getX(e)
       spring.set(v)
     }
