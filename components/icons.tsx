@@ -308,7 +308,7 @@ export const ChevronRight: FC<IconProps> = ({
   </svg>
 )
 
-export default {
+const Default = {
   Headset,
   Mic,
   Edit,
@@ -333,3 +333,4 @@ export default {
   ChevronLeft,
   ChevronRight
 }
+export default Default
