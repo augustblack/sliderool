@@ -124,6 +124,34 @@ export type SpringOpts = {
   mass: number
 }
 
+export type ThumbSize = 'sm' | 'md' | 'lg'
+
+const ThumbSize: Record<Orientation, Record<ThumbSize, string>> = {
+  "vertical": {
+    'sm': 'h-12',
+    'md': 'h-14',
+    'lg': 'h-16'
+  },
+  "horizontal": {
+    'sm': 'w-14',
+    'md': 'w-20',
+    'lg': 'w-24'
+  }
+}
+
+const TrackWidth: Record<Orientation, Record<ThumbSize, string>> = {
+  "vertical": {
+    'sm': 'w-10',
+    'md': 'w-14',
+    'lg': 'w-20'
+  },
+  "horizontal": {
+    'sm': 'h-10',
+    'md': 'h-14',
+    'lg': 'h-18'
+  }
+}
+
 type SliderProps = {
   orientation?: Orientation
   value: number
@@ -136,6 +164,8 @@ type SliderProps = {
   layout?: boolean | 'position' | 'size' | 'preserve-aspect'
   layoutId?: string
   springOpts?: SpringOpts
+  trackWidth ?: ThumbSize
+  thumbSize ?: ThumbSize
 }
 export const DefaultSpringOpts = {
   stiffness: 100,
@@ -153,6 +183,8 @@ const Slider: FC<SliderProps> = ({
   formatFunc = (v: number) => v.toFixed(2),
   layout = false,
   layoutId,
+  trackWidth = 'md',
+  thumbSize = 'md',
   children
 }) => {
   // we do this to in order to cause redraw.
@@ -193,15 +225,19 @@ const Slider: FC<SliderProps> = ({
 
   const trackClass =
     'select-none pointer-action-none touch-none cursor-pointer rounded border border-write-1 relative overflow-hidden ' +
-    (orientation === 'vertical'
-      ? 'bg-gradient-to-t from-base-1/25 via-base-3/25 to-base-2/50 h-full w-14 '
-      : 'bg-gradient-to-r from-base-1/25 via-base-3/25 to-base-2/25 w-full h-10 flex flex-col place-content-center')
+    (
+      orientation === 'vertical'
+        ? 'bg-gradient-to-t from-base-1/25 via-base-3/25 to-base-2/50 h-full ' + TrackWidth['vertical'][trackWidth]
+        : 'bg-gradient-to-r from-base-1/25 via-base-3/25 to-base-2/25 w-full flex flex-col place-content-center ' + TrackWidth['horizontal'][trackWidth]
+    )
 
   const thumbClass =
     'bg-write-1 rounded text-base-2 text-sm absolute left-0 bottom-0 rounded cursor-grab select-none pointer-action-none flex p-1 ' +
-    (orientation === 'vertical'
-      ? ' w-full h-20 place-content-center place-items-center'
-      : ' h-full w-20 place-content-center place-items-center ')
+    (
+      orientation === 'vertical'
+        ? ' w-full place-content-center place-items-center ' + ThumbSize['vertical'][thumbSize]
+        : ' h-full place-content-center place-items-center ' + ThumbSize['horizontal'][thumbSize]
+    )
 
   const thumbStyle = {
     y: orientation === 'vertical' ? xy : undefined,
