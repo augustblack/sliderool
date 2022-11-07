@@ -308,6 +308,21 @@ export const ChevronRight: FC<IconProps> = ({
   </svg>
 )
 
+export const ArrowLeft: FC<IconProps> = ({
+  size = '24px',
+  fill = 'currentColor',
+  className = ''
+}: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg"
+  className={className}
+  height={size}
+  width={size}
+  viewBox="0 0 40 40"
+  fill={fill}>
+  <path d="M24 40 8 24 24 8l2.1 2.1-12.4 12.4H40v3H13.7l12.4 12.4Z"/>
+  </svg>
+)
+
 const Default = {
   Headset,
   Mic,
@@ -331,6 +346,7 @@ const Default = {
   DoubleArrow,
   DoNotDisturb,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  ArrowLeft
 }
 export default Default
