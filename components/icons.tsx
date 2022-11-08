@@ -317,7 +317,7 @@ export const ArrowLeft: FC<IconProps> = ({
   className={className}
   height={size}
   width={size}
-  viewBox="0 0 40 40"
+  viewBox="0 0 50 50"
   fill={fill}>
   <path d="M24 40 8 24 24 8l2.1 2.1-12.4 12.4H40v3H13.7l12.4 12.4Z"/>
   </svg>
