@@ -105,17 +105,24 @@ const transXY = (
       : latest * (getDims(trackRef) - getDims(thumbRef))
 }
 
-const getChildVal = (
+const getFlexDirection = (
   orientation: Orientation,
-  trackRef: RefObject<HTMLDivElement>,
-  childRef: RefObject<HTMLDivElement>
 ) => {
-  const getDims = getDimensions(orientation)
   return orientation === 'vertical'
     ? (latest: number) =>
-      latest < 0.50001 ? 0 : getDims(trackRef) - getDims(childRef)
+      latest < 0.50001 ? 'column' : 'column-reverse' 
     : (latest: number) =>
-      latest < 0.50001 ? getDims(trackRef) - getDims(childRef) : 0
+      latest < 0.50001 ?  'row-reverse' : 'row'
+}
+
+const getContentPlacement = (
+  orientation: Orientation,
+) => {
+  return orientation === 'vertical'
+    ? (latest: number) =>
+      latest < 0.50001 ? 'start' : 'end' 
+    : (latest: number) =>
+      latest < 0.50001 ?  'end' : 'start'
 }
 
 export type SpringOpts = {
@@ -193,7 +200,6 @@ const Slider: FC<SliderProps> = ({
   const [opacity, setOpacity] = useState(0)
   const trackRef = useRef<HTMLDivElement>(null)
   const thumbRef = useRef<HTMLDivElement>(null)
-  const childRef = useRef<HTMLDivElement>(null)
   const pressed = useRef(false)
   const defVal = scaleItInv(min, max, scale, value)
   const sopts = useRef({
@@ -215,13 +221,17 @@ const Slider: FC<SliderProps> = ({
 
   const outVal = useTransform(spring, scalar)
 
-  const childVal = useTransform(
+  const placeContent = useTransform(
     spring,
-    getChildVal(orientation, trackRef, childRef)
+    getContentPlacement(orientation)
   )
+  const flexDirection = useTransform(
+    spring,
+    getFlexDirection(orientation)
+  )
+
   const infoStyle =
-    orientation === 'vertical'
-      ? { y: childVal } : { x: childVal }
+      { placeContent, flexDirection }
 
   const trackClass =
     'select-none pointer-action-none touch-none cursor-pointer rounded border border-write-1 relative overflow-hidden ' +
@@ -386,17 +396,10 @@ const Slider: FC<SliderProps> = ({
       onPointerMove={pointerMove}
     >
       <motion.div
-        className={
-          'absolute  ' +
-          (orientation === 'vertical'
-            ? ' flex place-content-center w-full'
-            : ' ')
-        }
+        className='flex w-full h-full place-items-center gap-1 p-1'
         style={infoStyle}
       >
-        <div ref={childRef} className="p-1">
-          {children}
-        </div>
+      {children}
       </motion.div>
 
       <motion.div

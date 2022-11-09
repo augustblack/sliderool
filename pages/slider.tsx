@@ -9,15 +9,17 @@ const SliderGroup = () => {
     <div className='bg-gradient-to-b from-red-300 to-red-400 p-4 rounded flex flex-row space-x-6 h-64 w-96'>
       <div className='w-10 flex-none'>
         <Slider value={vol} onChange={setVol} formatFunc={formatFunc} min={0} max={1} scale={ScaleType.Log} trackWidth='sm' thumbSize='sm'>
-          vol
+          <div>vol</div>
+          <div>hmm</div>
         </Slider>
       </div>
       <div className='flex-grow flex flex-col space-y-6 w-full'>
         <Slider value={vol} onChange={setVol} orientation='horizontal' trackWidth='sm' thumbSize='md'>
-          <div className='rounded w-12 flex justify-center'>vol</div>
+          <div className=''>vol</div>
+          <div className=''>something</div>
         </Slider>
         <Slider value={vol} onChange={setVol} orientation='horizontal' >
-          <div className='rounded w-12 flex justify-center'>vol</div>
+          <div className=''>vol</div>
         </Slider>
       </div>
     </div>
