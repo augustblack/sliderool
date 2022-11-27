@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { IconToggle, Toggle } from '../components/toggle'
-import Icons from '../components/icons'
+import { IconToggle, Toggle, Switch, Icons } from '../components'
 const Head = () => {
   const [pressed, setPressed] = useState(false)
   return <Toggle description='send audio  to headphones' pressed={pressed} Icon={Icons.Headset} size='32px' onClick={() => setPressed(p => !p)}/>
@@ -9,6 +8,12 @@ const Broad = () => {
   const [pressed, setPressed] = useState(false)
   return <Toggle description='send audio to broadcast' pressed={pressed} Icon={Icons.Broadcast} size='32px' onClick={() => setPressed(p => !p)}/>
 }
+
+const SSwitch = () => {
+  const [pressed, setPressed] = useState(false)
+  return <Switch description='send on or off' pressed={pressed} onClick={() => setPressed(p => !p)}/>
+}
+
 const TogglePage = () => (
   <div>
     <div className='bg-base-2 rounded p-4 space-y-2'>
@@ -43,6 +48,14 @@ const TogglePage = () => (
         <Toggle Icon={Icons.Broadcast} size='32px' description='sized broadcast off' pressed={true} />
       </div>
     </div>
+
+    <div className='bg-base-2 rounded p-4 space-y-2'>
+      <div>Basic &lt;Switch&gt; </div>
+      <div className='space-x-2'>
+        <SSwitch />
+      </div>
+    </div>
+
 
   </div>
 )
