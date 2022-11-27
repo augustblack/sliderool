@@ -17,7 +17,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react" // we export to react style jsx
+    "jsx": "react"
   },
   "include": [
     "next-env.d.ts",
