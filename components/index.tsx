@@ -1,4 +1,5 @@
 export * from './alert'
+export * from './accordion'
 export { default as Button } from './button'
 export * from './button'
 export * from './tabs'

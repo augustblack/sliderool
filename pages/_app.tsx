@@ -12,6 +12,7 @@ type NavProps = {
 const Menu = () => (
   <div className='flex flex-col space-y-4 p-4' >
     <Link href='/alerts'>Alerts</Link>
+    <Link href='/accordians'>Accordians</Link>
     <Link href='/buttons'>Buttons</Link>
     <Link href='/toggles'>Toggles</Link>
     <Link href='/tabs'>Tabs</Link>
