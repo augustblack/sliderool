@@ -103,3 +103,41 @@ export const FToggle: FC<FOnOffProps> = ({
     <Icon on={!pressed} size={size} className='active:scale-75' />
   </motion.button>
 )
+
+type SwitchProps = {
+  description: string // use a unique description
+  disabled?: boolean
+  pressed?: boolean
+  className?: string
+  onClick?: MouseEventHandler<HTMLButtonElement>
+}
+
+const spring = {
+  type: "spring",
+  stiffness: 700,
+  damping: 30
+}
+
+export const Switch: FC<SwitchProps> = ({
+  description,
+  disabled = false,
+  className = '',
+  pressed = false,
+  onClick
+}) => (
+  <button
+    // layout={layout}
+    // layoutId={layoutId}
+    role="switch"
+    aria-checked={pressed}
+    aria-label={description}
+    disabled={disabled}
+    className={[
+    'w-20 h-12 rounded-full p-1 flex',
+    pressed ? 'bg-info-2 justify-end' : 'bg-info-1 justify-start',
+      className
+    ].join(' ')}
+    onClick={onClick}>
+    <motion.div layout className={'w-10 h-10 rounded-full bg-base-1' } transition={spring} />
+  </button>
+)
