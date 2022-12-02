@@ -65,7 +65,7 @@ export const Page: FC<PageProps> = ({
 
 const range = [-1, 0, 1]
 
-type SwiperProps = {
+export type SwiperProps = {
   index?: number
   length: number
   children: (props: SwiperState) => ReactNode

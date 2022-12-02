@@ -1,8 +1,7 @@
 import React from 'react'
 import type { NextPage } from 'next'
 import Image from 'next/image'
-// import { motion, AnimatePresence, PanInfo } from 'framer-motion'
-import Swiper from '../components/swiper'
+import { Swiper } from '../components'
 
 type Img = {
   src: string
