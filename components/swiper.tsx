@@ -160,7 +160,7 @@ export const Swiper: FC<SwiperProps> = ({
       x.set(calculateNewX(state.idx, containerRef.current))
     }
     window.addEventListener('resize', onResize)
-    onResize()
+    // onResize()
     return () => {
       window.removeEventListener('resize', onResize)
     }
