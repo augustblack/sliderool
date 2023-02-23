@@ -1,7 +1,7 @@
 import React from 'react'
 import type { NextPage } from 'next'
 import Image from 'next/image'
-import { Swiper } from '../components'
+import { Swiper, SwiperConfig } from '../components'
 
 type Img = {
   src: string
@@ -56,17 +56,23 @@ const tracks: Array<Track> = [
     bg: 'bg-yellow-200'
   }
 ]
+const config: SwiperConfig = {
+  pagination: {
+    pos:'bottom',
+    numbers: false
+  }
+}
 const Home: NextPage = () => {
   return (
     <div className='w-full h-full bg-red-100 flex flex-row'>
       <div className='flex-grow' />
       <div className='w-full md:w-5/6 lg:w-3/4 h-full bg-blue-100'>
-        <Swiper length={tracks.length}>
+        <Swiper length={tracks.length} config={config}>
           {({ wrappedIdx }) => {
             const t = tracks[wrappedIdx]
             return (
               <div key={t.id} className={'w-full h-full ' + t.bg + ' relative items-center justify-center'}>
-              {t.img && <Image
+                {t.img && <Image
                 className='object-cover'
                 draggable={false}
                 src={t.img.src}
