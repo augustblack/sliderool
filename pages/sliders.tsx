@@ -1,12 +1,67 @@
 import React, { useState } from 'react'
-import Slider, { ScaleType } from '../components/slider'
-import { PlaylistDnD, Playlist } from '../components/playlist'
+import Slider, { ScaleType, SpringOpts, DefaultSpringOpts } from '../components/slider'
+import { Button } from '../components'
+
+const SliderGroupWithOpts = () => {
+  const [vol, setVol] = useState(0)
+  const [pan, setPan] = useState(0)
+  const [sopts, setSopts] = useState<SpringOpts>(DefaultSpringOpts)
+  const setSlider = () => setVol(Math.random)
+
+  const setStiffness = (stiffness: number) =>
+    setSopts((so) => Object.assign({}, so, { stiffness }))
+
+  const setDamping = (damping: number) =>
+    setSopts((so) => Object.assign({}, so, { damping }))
+
+  const setMass = (mass: number) => {
+    setSopts((so) => Object.assign({}, so, { mass }))
+  }
+  const formatPan = (v: number) =>
+    v >= 0 ? v.toFixed(2) + ' R' : 'L ' + Math.abs(v).toFixed(2)
+
+  return (
+    <div className="bg-gradient-to-b from-blue-300 to-blue-400 p-4 rounded flex flex-row space-x-6 h-96 ">
+      <Slider value={vol} onChange={setVol} min={0} max={2} springOpts={sopts}>
+        <div>vol</div>
+      </Slider>
+      <div className="flex-none w-64 flex flex-col space-y-4 h-2/3">
+        <Slider
+          value={pan}
+          onChange={setPan}
+          orientation="horizontal"
+          min={-1}
+          max={1}
+          formatFunc={formatPan}
+        >
+          <div>pan</div>
+        </Slider>
+        <div className="flex-grow w-full flex flex-row place-content-between">
+          <Slider
+            value={sopts.stiffness}
+            onChange={setStiffness}
+            min={0.0001}
+            max={2000}
+          />
+          <Slider
+            value={sopts.damping}
+            onChange={setDamping}
+            min={0.001}
+            max={200}
+          />
+          <Slider value={sopts.mass} onChange={setMass} min={0} max={2} />
+        </div>
+      </div>
+      <Button onClick={setSlider} label="Random" kind="plain"/>
+    </div>
+  )
+}
 
 const SliderGroup = () => {
   const [vol, setVol] = useState(0)
   const formatFunc = (v: number) => v.toFixed(2).toString()
   return (
-    <div className='bg-gradient-to-b from-red-300 to-red-400 p-4 rounded flex flex-row space-x-6 h-64 w-96'>
+    <div className='bg-gradient-to-b from-red-300 to-red-400 p-4 rounded flex flex-row space-x-6 h-96 w-96'>
       <div className='w-10 flex-none'>
         <Slider value={vol} onChange={setVol} formatFunc={formatFunc} min={0} max={1} scale={ScaleType.Log} trackWidth='sm' thumbSize='sm'>
           <div>vol</div>
@@ -27,63 +82,10 @@ const SliderGroup = () => {
 }
 
 const Sliders = () => {
-  const [playlist, setPlaylist] = useState<Playlist>([
-    {
-      isQueued: true,
-      hasBuffer: false,
-      key: 'aldksjfa',
-      uri: 'wtf',
-      title: 'you there'
-    },
-    {
-      isQueued: false,
-      hasBuffer: false,
-      key: 'aldkalfdjas',
-      uri: 'wtf2',
-      title: 'you hellow there'
-    },
-    {
-      isQueued: false,
-      hasBuffer: false,
-      key: 'asldfjkallls',
-      uri: 'wtsss',
-      title: 'you brown there'
-    },
-    {
-      isQueued: false,
-      hasBuffer: false,
-      key: 'aldkxxlfdjas',
-      uri: 'wtf2xx',
-      title: 'you xxx there'
-    },
-    {
-      isQueued: false,
-      hasBuffer: false,
-      key: 'aldal',
-      uri: 'wtf2',
-      title: 'you hellow there'
-    }
-
-  ])
-  const orderPlaylist = (p: Playlist) => setPlaylist(p)
   return (
-    <div className='flex flex-col space-y-6 flex-grow'>
-      <div className='flex flex-row bg-base-2 rounded p-4 space-x-2 overflow-x-auto  '>
-        <SliderGroup />
-        <SliderGroup />
-        <SliderGroup />
-        <SliderGroup />
-        <SliderGroup />
-        <SliderGroup />
-      </div>
-      { /* include this to check for layout bug in framer-motion
-          that seems to happen when we use 'layout' on  motion.div
-         */ }
-      <PlaylistDnD
-        playlist={playlist}
-        orderPlaylist={orderPlaylist}
-      />
-
+    <div className='flex flex-row bg-base-2 rounded p-2 lg:p-4 gap-2 overflow-x-auto w-full '>
+      <SliderGroup />
+      <SliderGroupWithOpts />
     </div>
   )
 }
