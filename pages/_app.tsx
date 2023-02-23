@@ -16,14 +16,15 @@ const Menu = () => (
     <Link href='/buttons'>Buttons</Link>
     <Link href='/toggles'>Toggles</Link>
     <Link href='/tabs'>Tabs</Link>
-    <Link href='/labels'>Labels</Link>
     <Link href='/modals'>Modals</Link>
     <Link href='/menus'>Menus</Link>
     <Link href='/forms'>Forms</Link>
     <Link href='/icons'>Icons</Link>
+    <Link href='/sliders'>Sliders</Link>
     <div>----</div>
-    <Link href='/slider'>Slider</Link>
-    <Link href='/rails'>Rails</Link>
+    <Link href='/tracks'>Tracks</Link>
+    <Link href='/tracksUp'>TracksUp</Link>
+    <Link href='/tracksAlt'>TracksAlt</Link>
   </div>
 )
 
