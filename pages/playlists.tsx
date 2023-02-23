@@ -42,7 +42,7 @@ const Playlists = () => {
   ])
   const orderPlaylist = (p: Playlist) => setPlaylist(p)
   return (
-    <div className='flex flex-row bg-base-2 rounded p-2 lg:p-4 gap-2 lg:gap-4 overflow-x-auto w-full '>
+    <div className='flex flex-row '>
       <PlaylistDnD playlist={playlist} orderPlaylist={orderPlaylist} />
     </div>
   )

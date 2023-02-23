@@ -194,7 +194,7 @@ export const PlaylistDnDNoMemo: FC<PlaylistDnDProps> = ({
     <Reorder.Group
       layoutScroll
       axis="y"
-      className="space-y-1 select-none"
+      className="space-y-1 select-none w-full"
       values={playlist}
       onReorder={orderPlaylist}
     >
