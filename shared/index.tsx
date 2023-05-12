@@ -23,10 +23,8 @@ export const Menu = () => (
     <Link href='/sliders'>Sliders</Link>
     <Link href='/playlists'>Playlists</Link>
     <div>----</div>
-    <Link href='/tracksWtf'>TracksWtf</Link>
-    <Link href='/tracksNew'>TracksNew</Link>
+    <Link href='/tracks'>Tracks</Link>
     <Link href='/tracksUp'>TracksUp</Link>
-    <Link href='/tracksAlt'>TracksAlt</Link>
   </div>
 )
 

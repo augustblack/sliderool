@@ -1,6 +1,6 @@
-import React, { FC, ReactNode, useState } from 'react'
+import React, { FC, useState } from 'react'
 import {
-  DragControls,
+  LayoutGroup,
   useDragControls,
   AnimatePresence,
   motion,
@@ -11,284 +11,309 @@ import {
   Slider,
   Orientation,
   Button,
-  Toggle,
+  FToggle,
   Icons
 } from '../components/'
 
-const SendBus = () => {
-  const [m, setM] = useState(false)
-  const [b, setB] = useState(false)
+
+type MenuKind = 'levels' | 'list' | 'search'
+
+type SProps = {
+  orientation?: Orientation
+  label ?: string
+  layoutId?: string
+  size ?: 'sm' | 'md' | 'lg'
+  thumbSize ?: 'sm' | 'md' | 'lg'
+}
+export const S: FC<SProps> = ({
+  orientation = 'vertical',
+  label = 'vol',
+  size= 'md',
+  thumbSize= 'md',
+}) => {
+  const [vol, setVol] = useState(0)
+    const formatFunc = (v: number) => v.toFixed(2).toString()
+    return (
+      <Slider value={vol} onChange={setVol} trackWidth={size} thumbSize={thumbSize} formatFunc={formatFunc} min={0} max={1.5} orientation={orientation} >
+        <div className='rounded w-12 flex justify-center'>{label}</div>
+      </Slider>
+   )
+}
+type SmProps = {
+toggleBig : () => void
+}
+
+const Small: FC<SmProps> = ({
+  toggleBig
+}) => (
+  <motion.div
+    // initial={false}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    layout className='w-full h-full bg-pink-800 '>
+    <Button onClick={toggleBig}><Icons.Play size='36px' /></Button>
+    <Button onClick={toggleBig}><Icons.List size='36px' /></Button>
+  </motion.div>
+)
+
+type TrackProps = {
+  id: string
+  big: Array<string>
+  setBig: React.Dispatch<React.SetStateAction<Array<string>>>
+}
+
+type SendBusProps = TrackProps & {
+  menu: MenuKind
+  setMenu: React.Dispatch<React.SetStateAction<MenuKind>>
+}
+
+const SendBus: FC<SendBusProps> = ({
+    id,
+    big,
+    setBig,
+    menu,
+    setMenu
+}) => {
+  const [m, setM] = useState(true)
+  const [b, setB] = useState(true)
+  const toggleBig = () => setBig(b => b.includes(id)
+    ? b.filter(x => x !== id)
+    : b.concat(id)
+  )
+
   return (
-    <div className='flex flex-row space-x-1 flex-none'>
-      <Toggle
+    <motion.div layout="position" className='flex flex-row gap-1 flex-none'>
+      <FToggle
+        layout="position"
+        className='flex-none'
         description='send audio  to headphones'
         pressed={!m}
         Icon={Icons.Headset}
         size='24px'
         onClick={() => setM(i => !i)}
       />
-      <Toggle
+      <FToggle
+        layout="position"
+        className='flex-none'
         description='send audio to broadcast'
         pressed={!b}
         Icon={Icons.Broadcast}
         size='24px'
         onClick={() => setB(i => !i)}
       />
-      <div className='flex-grow' />
-      <Button kind='none' >
+      <motion.div layout className='flex-grow flex flex-row gap-5 justify-center' >
+        { big.includes(id)
+        ? (
+          <>
+            <div className={'rounded p-2 ' + (menu === 'levels' ? 'bg-blue-200': '' )} onClick={() => setMenu('levels')}>
+              <Icons.Levels size='24px' />
+            </div>
+            <div className={'rounded p-2 ' + (menu === 'list' ? 'bg-blue-200': '' )} onClick={() => setMenu('list')}>
+              <Icons.List size='24px' />
+            </div>
+            <div className={'rounded p-2 ' + (menu === 'search' ? 'bg-blue-200': '' )} onClick={() => setMenu('search')}>
+              <Icons.Search size='24px' />
+            </div>
+          </>
+        )
+        :null
+       }
+      </motion.div>
+      <button onClick={toggleBig} className="flex-none">
         <Icons.Clear size='24px' />
-      </Button>
-    </div>
+      </button>
+    </motion.div>
   )
 }
 
-const text = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
-
-type ListProps = {
-  withText?: boolean
-}
-
-const List: FC<ListProps> = ({
-  withText = false
-}) => {
-  return (
-    <ul className='w-full space-y-1'>
-      {
-        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(i => <li key={i} className='p-4 rounded bg-gray-300' >{i} {withText ? text : ''} </li>)
-      }
-    </ul>
-  )
-}
-
-type SProps = {
-  orientation?: Orientation
-  layoutId?: string
-}
-const S: FC<SProps> = ({
-  orientation = 'vertical'
-}) => {
-  const [vol, setVol] = useState(0)
-  const formatFunc = (v: number) => v.toFixed(2).toString()
-  return (
-    <Slider value={vol} onChange={setVol} formatFunc={formatFunc} min={0} max={1.5} orientation={orientation} >
-      <div className='rounded w-12 flex justify-center'>vol</div>
-    </Slider>
-  )
-}
-
-type SmallShellContainerProps = {
+type BigType = {
   id: string
-  children: ReactNode
-  dragControls?: DragControls
 }
+const Levels: FC<BigType> = ({
+   id
+}) => (
+  <motion.div
+    key={id + 'levels'}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    layout
+    className='w-full h-full bg-pink-600 flex portrait:flex-col landscape:flex-row p-2 gap-2'
+  >
+    <motion.div layout className="flex flex-col gap-2 portrait:h-2/5 landscape:h-full place-content-between">
+      <motion.div className="flex flex-row gap-2 h-full place-content-between">
+        <S size='md' label='hi' />
+        <S size='md' label='md' />
+        <S size='md' label='lo' />
+      </motion.div>
+      <S size='md' thumbSize='sm' orientation='horizontal' label='pan' />
+    </motion.div>
+    <motion.div className="flex flex-col gap-2 w-full portrait:h-3/5 place-content-between ">
+      <S size='md' thumbSize='sm' orientation='horizontal' label='speed'/>
+      <motion.div className='w-full place-content-between'>
+        the track title
+      </motion.div>
+      <motion.div className='w-full flex flex-row bg-blue-200 place-content-between'>
+        <Icons.Prev size="36px" />
+        <Icons.Stop size="36px" />
+        <Icons.Play size="36px" />
+        <Icons.Loop size="36px" />
+        <Icons.Next size="36px" />
+      </motion.div>
+      <S size='md' thumbSize='sm' orientation='horizontal' label='time'/>
+    </motion.div>
+  </motion.div>
+)
 
-type ShellContainerProps = SmallShellContainerProps & {
-  big: boolean
+const Playlist: FC<BigType> = ({
+   id
+}) => (
+  <motion.div
+    key={id + 'levels'}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    layout className='w-full h-full bg-pink-600 flex flex-col p-2 gap-2'
+  >
+    <div className="flex-grow w-full overflow-y-auto h-24 flex flex-col gap-1 ">
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+    </div>
+  </motion.div>
+)
+const Search: FC<BigType> = ({
+   id
+}) => (
+  <motion.div
+    key={id + 'levels'}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    layout
+    className='w-full h-full bg-pink-600 flex flex-col p-2 gap-2 '
+  >
+    <div className="flex-grow w-full overflow-y-auto h-24 flex flex-col gap-1 ">
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+      <div className='rounded p-2 bg-gray-200' >one</div>
+    </div>
+
+  </motion.div>
+)
+
+type ControlsProps = {
+  id: string
+  menu: MenuKind
 }
+const Controls: FC<ControlsProps> = ({
+   id,
+   menu
+}) => menu === 'levels'
+  ? <Levels id={id} />
+  : menu === 'list'
+    ? <Playlist id={id} />
+    : <Search id={id} />
 
-const SmallContainer: FC<SmallShellContainerProps> = ({
+export const Track: FC<TrackProps> = ({
   id,
-  dragControls,
-  children
+  big,
+  setBig
 }) => {
+  // const [big, setBig] = useState(false)
+  const [menu, setMenu] = useState<MenuKind>('levels')
+  const dragControls = useDragControls()
+  const toggleBig = () => setBig(b => b.includes(id)
+    ? b.filter(x => x !== id)
+    : b.concat(id)
+  )
   return (
     <Reorder.Item
       value={id}
       dragListener={false}
       dragControls={dragControls}
-      className='flex flex-col sm:flex-row space-y-1 sm:space-y-0 space-x-0 sm:space-x-1 bg-base-2 rounded '
-    >{children}</Reorder.Item>
-  )
-}
+      className={'snap-center flex flex-col flex-none gap-1 rounded bg-red-100 p-1 overflow-hidden ' + (big.includes(id) ? "w-full sm:w-3/4 md:w-2/3 xl:w-1/3" : "w-32") }
+    >
 
-export const ShellContainer: FC<ShellContainerProps> = ({
-  id,
-  big,
-  dragControls,
-  children
-}) => big
-  ? (
-    <motion.div
-        layoutId={`track_${id}`}
-        className='flex flex-col sm:flex-row space-y-2 sm:space-y-0 space-x-0 sm:space-x-2 absolute left-0 w-full h-screen md:w-full bg-base-3'
-      >{children}</motion.div>
-    )
-  : (
-    <SmallContainer id={id} dragControls={dragControls}>{children}</SmallContainer>
-    )
+      <SendBus
+        key={id}
+        id={id}
+        big={big}
+        setBig={setBig}
+        menu={menu}
+        setMenu={setMenu}
 
-type TrackShellProps = {
-  id: string
-  big: boolean
-  dragControls?: DragControls
-  controls: ReactNode
-  content: ReactNode
-}
+      />
 
-export const TrackShell: FC<TrackShellProps> = ({
-  id,
-  big,
-  dragControls,
-  controls,
-  content
-}) => {
-  return (
-    <ShellContainer id={id} big={big} dragControls={dragControls}>
-
-      {/* left/top   */}
-      <motion.div layoutId={`track_lt_${id}`} className='flex-shrink flex flex-col w-full sm:w-auto h-auto'>
-        <SendBus />
-        <motion.div layoutId={`track_l_${id}`} className='flex space-x-2 justify-center'>
-          <S layoutId={id} />
-          {
-            controls
+      {/* bottom   */}
+      <motion.div layout className='w-full h-full bg-green-400 flex flex-row '>
+        <S key={'mainvol' + id} thumbSize='lg'/>
+        <motion.div layout className='flex-grow '>
+          <AnimatePresence initial={false} mode="wait">
+            { big.includes(id)
+            ? <Controls id={id} menu={menu} />
+            : <Small toggleBig={toggleBig} key={'small' + id} />
           }
+          </AnimatePresence>
         </motion.div>
       </motion.div>
+    </Reorder.Item>
 
-      {/* right/bottom   */}
-      <motion.div
-        layoutId={`track_rb_${id}`}
-        className={big
-          ? 'flex-grow flex flex-col w-full h-auto sm:h-full '
-          : 'flex-grow flex flex-col w-full h-auto sm:h-full '
-        }
-      >
-        {
-          content
-        }
-      </motion.div>
-    </ShellContainer>
-  )
-}
-type TrackProps = {
-  id: string
-  onSelect: () => void
-}
-export const TrackBig: FC<TrackProps> = ({
-  id,
-  onSelect
-}) => {
-  return (
-    <TrackShell
-      id={id}
-      big={true}
-      controls={
-        <div className='flex flex-col space-y-2 '>
-          <div className='flex flex-row space-x-6 justify-center'>
-            <S />
-            <S />
-            <S />
-          </div>
-          <S orientation='horizontal' />
-          <S orientation='horizontal' />
-        </div>
-      }
-      content={
-        <>
-          <div className='flex-shrink flex w-full p-2 space-x-1'>
-            <input className='flex-grow' />
-            <button onClick={onSelect} >submit</button>
-            <button>cancel</button>
-          </div>
-
-          <div className='flex-grow w-full bg-orange-200 p-1 overflow-y-auto h-24 '>
-            <List withText={true} />
-          </div>
-
-          <div className='flex-grow w-full bg-yellow-200 p-1 overflow-y-auto h-24 '>
-            <List />
-          </div>
-        </>
-      }
-    />
-  )
-}
-
-export const TrackSmall: FC<TrackProps> = ({
-  id,
-  onSelect
-}) => {
-  const dragControls = useDragControls()
-  return (
-    <TrackShell
-      id={id}
-      big={false}
-      dragControls={dragControls}
-      controls={
-        <>
-          <div className='flex flex-col '>
-            <div className='text-2xl flex w-full justify-center'>00:00</div>
-            <div><Icons.Play size='48px' /></div>
-            <div >
-              <Button onClick={onSelect}><Icons.List size='36px' /></Button>
-            </div>
-            <div className='flex-grow' />
-            <div className='flex-none flex flex-row w-full' >
-              <div className={'flex-grow flex items-end justify-center pb-2'}>
-                <Icons.DoubleArrow size='18px' fill='#374151' /> {/* grey-700 */}
-              </div>
-              <div
-                className={'flex-none'}
-                style={{ touchAction: 'none' }}
-                onPointerDown={(e) => dragControls.start(e)}
-              >
-                <Icons.DragHandle size='36px' fill='#374151' /> {/* grey-700 */}
-              </div>
-            </div>
-          </div>
-          <div className='relative select-none h-56 w-3'>
-            <motion.div
-              style={{ rotate: 270, originX: 0, originY: 0.0, translateY: 220, translateX: -2 }}
-              className='absolute text-sm text-gray-700 truncate h-4 w-56 '
-            >
-              The Fucking Title of the Track
-            </motion.div>
-          </div>
-
-        </>
-      }
-      content={null}
-    />
   )
 }
 export const Tracks = () => {
   const [tracksOrder, setTracksOrder] = useState(['one', 'two', 'three', 'four', 'five'])
-  const [selectedTrack, setSelectedTrack] = React.useState<string | null>(null)
+  const [big, setBig] = useState<Array<string>>([])
   return (
-    <div className="flex flex-row space-x-2 h-auto w-96 overflow-x-auto">
-      <MotionConfig
-        transition={{ duration: 0.5, type: 'tween', ease: 'easeInOut' }}
-      >
-        <AnimatePresence>
+    <div className="h-screen w-screen overscroll-contain flex flex-col">
+      <MotionConfig transition={{ duration: 0.3, type: 'tween', ease: 'easeInOut' }}>
+        <LayoutGroup>
           <Reorder.Group
-            layoutId='tracksGroup'
-            layoutScroll
             axis="x"
-            className={'flex w-full overflow-x-auto select-none ' + (selectedTrack ? '' : 'space-x-1 lg:space-x-2')}
+            layout
+            layoutScroll
+            className={'flex flex-row bg-green-100 w-full select-none gap-2 overflow-x-auto snap-x snap-mandatory ' +
+            (big.length ? "portrait:h-4/5 landscape:h-5/6 landscape:md:h-5/6 landscape:lg:h-3/5" : "portrait:h-1/3 landscape:h-2/3 landscape:lg:h-1/3") }
             values={tracksOrder}
             onReorder={setTracksOrder}
           >
-            {
+            <AnimatePresence>
+              {
               tracksOrder.map(id => (
-                <TrackSmall
+                <Track
                   key={id}
                   id={id}
-                  onSelect={() => setSelectedTrack(id)}
+                  big={big}
+                  setBig={setBig}
                 />
               ))
             }
+            </AnimatePresence>
           </Reorder.Group>
-          {selectedTrack && (
-            <TrackBig
-              id={selectedTrack}
-              onSelect={() => setSelectedTrack(null)}
-            />
-          )}
-        </AnimatePresence>
+        </LayoutGroup>
       </MotionConfig>
+      <motion.div layout className="flex-grow flex portrait:flex-col landscape:flex-row-reverse bg-orange-200 w-full h-auto">
+        <div className='bg-orange-400 portrait:w-full landscape:w-1/5 h-full' />
+        <div className='bg-orange-600 portrait:w-full landscape:w-4/5 h-full'>chat</div>
+      </motion.div>
     </div>
   )
 }
+
 
 export default Tracks
