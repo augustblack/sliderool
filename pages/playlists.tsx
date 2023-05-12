@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { PlaylistDnD, Playlist } from '../components/playlist'
+import { Template } from '../shared'
 
 const Playlists = () => {
   const [playlist, setPlaylist] = useState<Playlist>([
@@ -42,9 +43,11 @@ const Playlists = () => {
   ])
   const orderPlaylist = (p: Playlist) => setPlaylist(p)
   return (
-    <div className='flex flex-row '>
-      <PlaylistDnD playlist={playlist} orderPlaylist={orderPlaylist} />
-    </div>
+    <Template>
+      <div className='flex flex-row '>
+        <PlaylistDnD playlist={playlist} orderPlaylist={orderPlaylist} />
+      </div>
+    </Template>
   )
 }
 

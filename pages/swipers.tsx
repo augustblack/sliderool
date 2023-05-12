@@ -1,6 +1,7 @@
 import React from 'react'
 import type { NextPage } from 'next'
 import Image from 'next/image'
+import { Template } from '../shared'
 import { Swiper, SwiperConfig } from '../components'
 
 type Img = {
@@ -64,11 +65,12 @@ const config: SwiperConfig = {
 }
 const Home: NextPage = () => {
   return (
-    <div className='w-full h-full bg-red-100 flex flex-row'>
-      <div className='flex-grow' />
-      <div className='w-full md:w-5/6 lg:w-3/4 h-full bg-blue-100'>
-        <Swiper length={tracks.length} config={config}>
-          {({ wrappedIdx }) => {
+    <Template>
+      <div className='w-full h-full bg-red-100 flex flex-row'>
+        <div className='flex-grow' />
+        <div className='w-full md:w-5/6 lg:w-3/4 h-full bg-blue-100'>
+          <Swiper length={tracks.length} config={config}>
+            {({ wrappedIdx }) => {
             const t = tracks[wrappedIdx]
             return (
               <div key={t.id} className={'w-full h-full ' + t.bg + ' relative items-center justify-center'}>
@@ -87,10 +89,11 @@ const Home: NextPage = () => {
               </div>
             )
           }}
-        </Swiper>
+          </Swiper>
+        </div>
+        <div className='flex-grow' />
       </div>
-      <div className='flex-grow' />
-    </div>
+    </Template>
   )
 }
 

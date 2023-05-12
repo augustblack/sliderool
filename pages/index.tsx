@@ -1,7 +1,8 @@
 import React from 'react'
+import { Template } from '../shared'
 
 const Home = () => (
-  <div />
+  <Template />
 )
 
 export default Home

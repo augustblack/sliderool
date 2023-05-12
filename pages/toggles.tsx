@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { IconToggle, Toggle, Switch, Icons } from '../components'
+import { Template } from '../shared'
+
 const Head = () => {
   const [pressed, setPressed] = useState(false)
   return <Toggle description='send audio  to headphones' pressed={pressed} Icon={Icons.Headset} size='32px' onClick={() => setPressed(p => !p)}/>
@@ -15,10 +17,10 @@ const SSwitch = () => {
 }
 
 const TogglePage = () => (
-  <div>
+  <Template>
     <div className='bg-base-2 rounded p-4 space-y-2'>
-    <Head />
-    <Broad />
+      <Head />
+      <Broad />
     </div>
     <div className='bg-base-2 rounded p-4 space-y-2'>
       <div>Basic &lt;IconToggle&gt; or Switch</div>
@@ -57,7 +59,7 @@ const TogglePage = () => (
     </div>
 
 
-  </div>
+  </Template>
 )
 
 export default TogglePage

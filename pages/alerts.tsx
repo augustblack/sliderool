@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react'
 import { Alert, AlertProps } from '../components/alert'
+import { Template } from '../shared'
 
 const AlertClose: FC<AlertProps> = ({
   kind,
@@ -14,7 +15,7 @@ const AlertClose: FC<AlertProps> = ({
 }
 const Alerts = () => {
   return (
-    <div>
+    <Template>
       <div className='bg-base-2 rounded p-4 space-y-2'>
         <Alert kind='info'>
           This is a basic info alert. You would use it sparingly or never in Mezcal.
@@ -44,8 +45,7 @@ const Alerts = () => {
           This is an error alert. You would use it in Mezcal to indicate malfunction.
         </AlertClose>
       </div>
-
-    </div>
+    </Template>
   )
 }
 

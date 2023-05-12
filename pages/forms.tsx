@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { Form } from '../components/'
+import { Template } from '../shared'
 
 const verify = (v:string) => new Promise((resolve, reject) => v && v.trim().length > 0
   ? resolve(v)
@@ -21,7 +22,7 @@ const Configure :FC<ConfigureProps> = ({
   }
   return (
     <div className='p-4 w-96 border border-write-2 rounded'>
-    <Form
+      <Form
       name='configure'
       onSubmit={onSubmit}
       afterSubmit={close}
@@ -47,17 +48,17 @@ const Configure :FC<ConfigureProps> = ({
         }
       ]}
     />
-  </div>
+    </div>
   )
 }
 
 const FormPage = () => {
   return (
-    <div>
+    <Template>
       <div className='bg-base-2 rounded p-4 space-y-2'>
         <Configure close={() => null} />
       </div>
-    </div>
+    </Template>
   )
 }
 

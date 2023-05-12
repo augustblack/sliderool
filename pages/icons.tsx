@@ -1,9 +1,10 @@
 import React from 'react'
 import Icons from '../components/icons'
+import { Template } from '../shared'
 
 const IconsPage = () => {
   return (
-    <div>
+    <Template>
       <div className='bg-base-2 rounded p-4 w-96 grid grid-cols-4 gap-4 justify-items-center'>
         <Icons.Headset />
         <Icons.Mic />
@@ -30,7 +31,7 @@ const IconsPage = () => {
         <Icons.ChevronRight />
         <Icons.ArrowLeft />
       </div>
-    </div>
+    </Template>
   )
 }
 

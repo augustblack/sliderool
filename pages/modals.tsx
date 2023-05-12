@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Template } from '../shared'
 // import { IconToggle, Toggle } from '../components/toggle'
 import Icons from '../components/icons'
 import { Modal, ModalWithClose, ModalButton, ModalButtonWithClose, ButtonWithFocus } from '../components/modal'
@@ -10,9 +11,9 @@ const Modals = () => {
   const [showTwo, setShowTwo] = useState(false)
 
   return (
-    <div>
+    <Template>
       <div>
-          Modal button types are better for accessibility as they focus the button on close.
+        Modal button types are better for accessibility as they focus the button on close.
       </div>
       <div className='bg-base-2 rounded p-4 space-y-2'>
         <div className='flex flex-row space-x-2'>
@@ -145,7 +146,7 @@ const Modals = () => {
         </div>
       </div>
 
-    </div>
+    </Template>
   )
 }
 

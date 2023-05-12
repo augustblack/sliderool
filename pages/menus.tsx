@@ -1,8 +1,9 @@
 import React from 'react'
+import { Template } from '../shared'
 
 const Labels = () => {
   return (
-    <div>hi</div>
+    <Template>hi</Template>
   )
 }
 

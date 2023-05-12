@@ -1,10 +1,12 @@
 import React, { ReactNode, useState } from 'react'
 import { Accordion } from '../components'
+import { Template } from '../shared'
 
 type AccItem = {
   header: ReactNode
   child: ReactNode
 }
+
 const booya: Record<string, AccItem> = {
   'ayao': {
 header: (<div><strong>conductions series</strong> is going on</div>),
@@ -24,9 +26,10 @@ header: (<div><strong>conductions series</strong> is going on</div>),
 const Accordians = () => {
   const [expanded, setExpanded] = useState<string>('')
   return (
-    <div className='w-full flex flex-col gap-4'>
-    {
-        Object.entries(booya).map(([id, { header, child }] ) =>  (
+    <Template>
+      <div className='w-full flex flex-col gap-4'>
+        {
+        Object.entries(booya).map(([id, { header, child }] ) => (
           <Accordion
             key={id}
             id={id}
@@ -37,8 +40,9 @@ const Accordians = () => {
           >{child}</Accordion>
         ))
     }
-    </div>
+      </div>
+    </Template>
   )
 }
 
-export default Accordians 
+export default Accordians

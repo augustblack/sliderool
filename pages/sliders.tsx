@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Template } from '../shared'
 import Slider, { ScaleType, SpringOpts, DefaultSpringOpts } from '../components/slider'
 import { Button } from '../components'
 
@@ -83,10 +84,12 @@ const SliderGroup = () => {
 
 const Sliders = () => {
   return (
-    <div className='flex flex-row bg-base-2 rounded p-2 lg:p-4 gap-2 overflow-x-auto w-full '>
-      <SliderGroup />
-      <SliderGroupWithOpts />
-    </div>
+    <Template>
+      <div className='flex flex-row bg-base-2 rounded p-2 lg:p-4 gap-2 overflow-x-auto w-full '>
+        <SliderGroup />
+        <SliderGroupWithOpts />
+      </div>
+    </Template>
   )
 }
 
