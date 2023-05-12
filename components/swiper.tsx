@@ -5,11 +5,11 @@ import { Pagination, PaginationNumbers } from '../components/pagination'
 import {
   motion,
   MotionStyle,
-  AnimationOptions,
   animate,
   PanInfo,
   MotionValue,
-  useMotionValue
+  useMotionValue,
+  ValueAnimationTransition
 } from 'framer-motion'
 
 type SwiperState = {
@@ -103,7 +103,7 @@ const containerStyle: MotionStyle = {
   overflowX: 'hidden'
 }
 
-const transition: AnimationOptions<number> = {
+const transition: ValueAnimationTransition<number> = {
   type: 'spring',
   bounce: 0
 }
