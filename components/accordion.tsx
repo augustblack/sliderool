@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 // import Icons, { IconOnOffProps, IconProps } from './icons'
 
-export type  AccordionProps = {
+export type AccordionProps = {
   id: string
   expanded: string
   setExpanded: (v: string) => void
@@ -12,8 +12,8 @@ export type  AccordionProps = {
   children: ReactNode
 }
 
-export const Accordion: FC<AccordionProps> = ({ 
-    id, 
+export const Accordion: FC<AccordionProps> = ({
+    id,
     expanded,
     setExpanded,
     header,
@@ -34,14 +34,14 @@ export const Accordion: FC<AccordionProps> = ({
       <div
           className={'overflow-hidden transition-all duration-700 ' + childClass + (isOpen ? 'max-h-60' : 'max-h-0' )}
       >
-          {children}
+        {children}
       </div>
     </>
   )
 }
 
-export const AccordionOld: FC<AccordionProps> = ({ 
-    id, 
+export const AccordionOld: FC<AccordionProps> = ({
+    id,
     expanded,
     setExpanded,
     header,
