@@ -244,7 +244,7 @@ export const Pending: FC<IconProps> = ({
   >
     <g>
       <rect fill="none" height="24" width="24" /></g><g><path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M7,13.5c-0.83,0-1.5-0.67-1.5-1.5 c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5C8.5,12.83,7.83,13.5,7,13.5z M12,13.5c-0.83,0-1.5-0.67-1.5-1.5 c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5C13.5,12.83,12.83,13.5,12,13.5z M17,13.5c-0.83,0-1.5-0.67-1.5-1.5 c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5C18.5,12.83,17.83,13.5,17,13.5z" />
-    </g>
+      </g>
   </svg>
 )
 export const DoubleArrow: FC<IconProps> = ({
@@ -277,8 +277,8 @@ export const DoNotDisturb: FC<IconProps> = ({
     fill={fill}
     className={className}
   ><g>
-      <path d="M0,0h24v24H0V0z" fill="none" />
-    </g>
+    <path d="M0,0h24v24H0V0z" fill="none" />
+  </g>
     <g><g><g>
       <path
         d="M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10s10-4.5,10-10S17.5,2,12,2z M4,12c0-4.4,3.6-8,8-8c1.8,0,3.5,0.6,4.9,1.7L5.7,16.9 C4.6,15.5,4,13.8,4,12z M12,20c-1.8,0-3.5-0.6-4.9-1.7L18.3,7.1C19.4,8.5,20,10.2,20,12C20,16.4,16.4,20,12,20z" />
@@ -319,9 +319,25 @@ export const ArrowLeft: FC<IconProps> = ({
   width={size}
   viewBox="0 0 50 50"
   fill={fill}>
-  <path d="M24 40 8 24 24 8l2.1 2.1-12.4 12.4H40v3H13.7l12.4 12.4Z"/>
+    <path d="M24 40 8 24 24 8l2.1 2.1-12.4 12.4H40v3H13.7l12.4 12.4Z"/>
   </svg>
 )
+export const Search: FC<IconProps> = ({
+  size = '24px',
+  fill = 'currentColor',
+  className = ''
+}: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    height={size}
+    width={size}
+    viewBox="0 96 960 960"
+    fill={fill}
+  >
+    <path d="M796 935 533 672q-30 26-69.959 40.5T378 727q-108.162 0-183.081-75Q120 577 120 471t75-181q75-75 181.5-75t181 75Q632 365 632 471.15 632 514 618 554q-14 40-42 75l264 262-44 44ZM377 667q81.25 0 138.125-57.5T572 471q0-81-56.875-138.5T377 275q-82.083 0-139.542 57.5Q180 390 180 471t57.458 138.5Q294.917 667 377 667Z"/>
+  </svg>
+)
+
 
 const Default = {
   Headset,
@@ -347,6 +363,7 @@ const Default = {
   DoNotDisturb,
   ChevronLeft,
   ChevronRight,
-  ArrowLeft
+  ArrowLeft,
+  Search
 }
 export default Default
