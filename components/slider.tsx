@@ -2,7 +2,8 @@ import {
   motion,
   useSpring,
   useTransform,
-  useVelocity
+  useVelocity,
+  useMotionValueEvent
 } from 'framer-motion'
 
 import React, {
@@ -16,6 +17,14 @@ import React, {
   RefObject,
   ReactNode
 } from 'react'
+
+export const debounce = (fn: Function, ms = 300) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return function (this: any, ...args: any[]) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn.apply(this, args), ms)
+  }
+}
 
 export type Orientation = 'horizontal' | 'vertical'
 
@@ -110,9 +119,9 @@ const getFlexDirection = (
 ) => {
   return orientation === 'vertical'
     ? (latest: number) =>
-      latest < 0.50001 ? 'column' : 'column-reverse' 
+      latest < 0.50001 ? 'column' : 'column-reverse'
     : (latest: number) =>
-      latest < 0.50001 ?  'row-reverse' : 'row'
+      latest < 0.50001 ? 'row-reverse' : 'row'
 }
 
 const getContentPlacement = (
@@ -120,9 +129,9 @@ const getContentPlacement = (
 ) => {
   return orientation === 'vertical'
     ? (latest: number) =>
-      latest < 0.50001 ? 'start' : 'end' 
+      latest < 0.50001 ? 'start' : 'end'
     : (latest: number) =>
-      latest < 0.50001 ?  'end' : 'start'
+      latest < 0.50001 ? 'end' : 'start'
 }
 
 export type SpringOpts = {
@@ -168,8 +177,6 @@ type SliderProps = {
   max?: number
   formatFunc?: (v: number) => string
   scale?: ScaleType
-  layout?: boolean | 'position' | 'size' | 'preserve-aspect'
-  layoutId?: string
   springOpts?: SpringOpts
   trackWidth ?: ThumbSize
   thumbSize ?: ThumbSize
@@ -188,8 +195,6 @@ const Slider: FC<SliderProps> = ({
   orientation = 'vertical',
   springOpts = DefaultSpringOpts,
   formatFunc = (v: number) => v.toFixed(2),
-  layout = false,
-  layoutId,
   trackWidth = 'md',
   thumbSize = 'md',
   children
@@ -198,10 +203,10 @@ const Slider: FC<SliderProps> = ({
   // we want redraw because the first time we render we don't know the size of the track
   // we need to re-render to get the size and set the xy transform correctly
   const [opacity, setOpacity] = useState(0)
+  const defVal = scaleItInv(min, max, scale, value)
   const trackRef = useRef<HTMLDivElement>(null)
   const thumbRef = useRef<HTMLDivElement>(null)
   const pressed = useRef(false)
-  const defVal = scaleItInv(min, max, scale, value)
   const sopts = useRef({
     stiffness: springOpts.stiffness,
     damping: springOpts.damping,
@@ -213,13 +218,29 @@ const Slider: FC<SliderProps> = ({
   const trackRect = useRef({ left: 0, top: 0 })
 
   const xy = useTransform(spring, transXY(orientation, trackRef, thumbRef))
-
   const scalar = useCallback(
     (newVal: number) => scaleIt(min, max, scale, newVal),
     [min, max, scale]
   )
 
   const outVal = useTransform(spring, scalar)
+  //useMotionValueEvent(outVal, "change", onChange)
+  useMotionValueEvent(outVal, "change", (v) => window.requestAnimationFrame(() => onChange(v)))
+
+  useMotionValueEvent(outVal, "animationComplete", () => {
+    console.log('animationComplete')
+  })
+  useMotionValueEvent(outVal, "animationStart", () => {
+    console.log('animationStart')
+  })
+
+  useMotionValueEvent(vel, "change", (latestVelocity: number) => {
+      if (latestVelocity === 0) {
+        // console.log('vel', latestVelocity)
+        window.requestAnimationFrame(() => (pressed.current = false))
+      }
+    }
+  )
 
   const placeContent = useTransform(
     spring,
@@ -234,7 +255,7 @@ const Slider: FC<SliderProps> = ({
       { placeContent, flexDirection }
 
   const trackClass =
-    'select-none pointer-action-none touch-none cursor-pointer rounded border border-write-1 relative overflow-hidden ' +
+    'flex-none select-none pointer-action-none touch-none cursor-pointer rounded border border-write-1 relative overflow-hidden ' +
     (
       orientation === 'vertical'
         ? 'bg-gradient-to-t from-base-1/25 via-base-3/25 to-base-2/50 h-full ' + TrackWidth['vertical'][trackWidth]
@@ -270,25 +291,30 @@ const Slider: FC<SliderProps> = ({
   }, [springOpts])
 
   useEffect(() => {
-    return outVal.onChange((v) =>
-      window.requestAnimationFrame(() => (pressed.current ? onChange(v) : null))
-    )
-  }, [outVal, onChange])
+      const tr = trackRef.current || document.createElement('div')
+      const resizeObserver = new ResizeObserver((_entries) => {
+        trackRect.current = trackRef.current?.getBoundingClientRect() || {
+          top: 0,
+          left: 0
+        }
+        const xyTmp = transXY(orientation, trackRef, thumbRef)(spring.get())
+        // console.log('on resize', xyTmp, spring.get(), xy.get())
+        xy.set(xyTmp)
+      })
 
-  useEffect(() => {
-    return vel.onChange((latestVelocity) => {
-      if (latestVelocity === 0) {
-        window.requestAnimationFrame(() => (pressed.current = false))
+      resizeObserver.observe(tr)
+      return () => {
+        resizeObserver.unobserve(tr)
       }
-    })
-  }, [vel, onChange])
+  }, [orientation, spring, xy])
 
   useEffect(() => {
     if (pressed.current === false) {
       const v = scaleItInv(min, max, scale, value)
-      spring.set(v, false)
+      spring.set(v)
     }
   }, [value, spring, min, max, scale])
+
 
   const getX = (e: PointerEvent) => {
     if (trackRef.current && thumbRef.current) {
@@ -341,6 +367,7 @@ const Slider: FC<SliderProps> = ({
     }
     const v = orientation === 'vertical' ? getY(e) : getX(e)
     spring.set(v)
+    // onChange(scalar(v))
   }
 
   const pointerMove: PointerEventHandler<HTMLDivElement> = (e) => {
@@ -354,6 +381,7 @@ const Slider: FC<SliderProps> = ({
       pressed.current = true
       const v = orientation === 'vertical' ? getY(e) : getX(e)
       spring.set(v)
+      // onChange(scalar(v))
     }
   }
 
@@ -381,12 +409,10 @@ const Slider: FC<SliderProps> = ({
     e.stopPropagation()
     return false
   }
-    */
+  */
 
   return (
-    <motion.div
-      layout={layout}
-      layoutId={layoutId}
+    <div
       role="slider"
       aria-valuenow={value}
       tabIndex={0}
@@ -399,28 +425,20 @@ const Slider: FC<SliderProps> = ({
         className='flex w-full h-full place-items-center gap-1 p-1'
         style={infoStyle}
       >
-      {children}
+        {children}
       </motion.div>
 
       <motion.div
         ref={thumbRef}
         className={thumbClass}
-        dragConstraints={trackRef}
-        dragElastic={1}
-        whileTap={{
-          scale: 1.025,
-          opacity: 1
-        }}
+        // whileTap={{
+         // scale: 1.025,
+         // opacity: 1
+        //}}
         style={thumbStyle}
-      >
-        {formatFunc(value)}
-      </motion.div>
-    </motion.div>
+      >{formatFunc(value)}</motion.div>
+    </div>
   )
 }
 
-export const SliderInput = () => {
-  const [vol, setVol] = useState(0)
-  return <Slider onChange={setVol} value={vol} />
-}
 export default Slider
