@@ -17,7 +17,7 @@ export default function Document() {
             content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1"
           />
       </Head>
-      <body className='bg-base-3 text-write-1 w-screen h-screen light dark ' style={{ transition: 'background-color .25s' }}>
+      <body className='bg-base-3 text-write-1 w-screen h-screen light ' style={{ transition: 'background-color .25s' }}>
         <Main />
         <NextScript />
       </body>

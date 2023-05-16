@@ -17,6 +17,7 @@ export const Menu = () => (
     <Link href='/toggles'>Toggles</Link>
     <Link href='/tabs'>Tabs</Link>
     <Link href='/modals'>Modals</Link>
+    <Link href='/sortables'>Sortable</Link>
     <Link href='/menus'>Menus</Link>
     <Link href='/forms'>Forms</Link>
     <Link href='/icons'>Icons</Link>
