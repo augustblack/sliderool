@@ -83,9 +83,9 @@ const SendBus: FC<SendBusProps> = ({
   )
 
   return (
-    <motion.div layout="position" className='flex flex-row gap-1 flex-none'>
+    <motion.div layout className='flex flex-row gap-1 flex-none'>
       <FToggle
-        layout="position"
+        layout
         className='flex-none'
         description='send audio  to headphones'
         pressed={!m}
@@ -94,7 +94,7 @@ const SendBus: FC<SendBusProps> = ({
         onClick={() => setM(i => !i)}
       />
       <FToggle
-        layout="position"
+        layout
         className='flex-none'
         description='send audio to broadcast'
         pressed={!b}
@@ -120,9 +120,9 @@ const SendBus: FC<SendBusProps> = ({
         :null
        }
       </motion.div>
-      <button onClick={toggleBig} className="flex-none">
+      <motion.button layout onClick={toggleBig} className="flex-none">
         <Icons.Clear size='24px' />
-      </button>
+      </motion.button>
     </motion.div>
   )
 }
@@ -243,13 +243,14 @@ export const Track: FC<TrackProps> = ({
     : b.concat(id)
   )
   return (
-    <Reorder.Item
-      value={id}
+    <motion.div
+      //value={id}
       dragListener={false}
-      dragControls={dragControls}
-      className={'snap-center flex flex-col flex-none gap-1 rounded bg-red-100 p-1 overflow-hidden ' + (big.includes(id) ? "w-full sm:w-3/4 md:w-2/3 xl:w-1/3" : "w-32") }
+      layout
+      // dragControls={dragControls}
+      className={'snap-center flex flex-col flex-none gap-1 rounded bg-red-100 p-1 overflow-hidden ' +
+        (big.includes(id) ? "w-full sm:w-3/4 md:w-2/3 xl:w-1/3" : "w-32") }
     >
-
       <SendBus
         key={id}
         id={id}
@@ -257,12 +258,11 @@ export const Track: FC<TrackProps> = ({
         setBig={setBig}
         menu={menu}
         setMenu={setMenu}
-
       />
 
       {/* bottom   */}
       <motion.div layout className='w-full h-full bg-green-400 flex flex-row '>
-        <S key={'mainvol' + id} thumbSize='lg'/>
+        <S thumbSize='lg'/>
         <motion.div layout className='flex-grow '>
           <AnimatePresence initial={false} mode="wait">
             { big.includes(id)
@@ -272,7 +272,7 @@ export const Track: FC<TrackProps> = ({
           </AnimatePresence>
         </motion.div>
       </motion.div>
-    </Reorder.Item>
+    </motion.div>
 
   )
 }
@@ -281,21 +281,17 @@ export const Tracks = () => {
   const [big, setBig] = useState<Array<string>>([])
   return (
     <div className="h-screen w-screen overscroll-contain flex flex-col">
-      <MotionConfig transition={{ duration: 0.3, type: 'tween', ease: 'easeInOut' }}>
+      <MotionConfig transition={{ duration: 1, type: 'tween', ease: 'easeInOut' }}>
         <LayoutGroup>
-          <Reorder.Group
-            axis="x"
+          <motion.div
             layout
             layoutScroll
-            className={'flex flex-row bg-green-100 w-full select-none gap-2 overflow-x-auto snap-x snap-mandatory ' +
+            className={'flex flex-row bg-green-100 w-full h-full select-none gap-2 overflow-x-auto snap-x snap-mandatory ' +
             (big.length ? "portrait:h-4/5 landscape:h-5/6 landscape:md:h-5/6 landscape:lg:h-3/5" : "portrait:h-1/3 landscape:h-2/3 landscape:lg:h-1/3") }
-            values={tracksOrder}
-            onReorder={setTracksOrder}
           >
-            <AnimatePresence>
-              {
-              tracksOrder.map(id => (
-                <Track
+            {
+                tracksOrder.map(id => (
+                  <Track
                   key={id}
                   id={id}
                   big={big}
@@ -303,14 +299,13 @@ export const Tracks = () => {
                 />
               ))
             }
-            </AnimatePresence>
-          </Reorder.Group>
+          </motion.div>
+          <motion.div layout className="flex-grow flex portrait:flex-col landscape:flex-row-reverse bg-orange-200 w-full h-auto">
+            <div className='bg-orange-400 portrait:w-full landscape:w-1/5 h-full' />
+            <div className='bg-orange-600 portrait:w-full landscape:w-4/5 h-full'>chat</div>
+          </motion.div>
         </LayoutGroup>
       </MotionConfig>
-      <motion.div layout className="flex-grow flex portrait:flex-col landscape:flex-row-reverse bg-orange-200 w-full h-auto">
-        <div className='bg-orange-400 portrait:w-full landscape:w-1/5 h-full' />
-        <div className='bg-orange-600 portrait:w-full landscape:w-4/5 h-full'>chat</div>
-      </motion.div>
     </div>
   )
 }
