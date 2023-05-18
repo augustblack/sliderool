@@ -1,49 +1,122 @@
 import React, {
   FC,
-  useState,
+  // useState,
   useRef,
   DragEventHandler,
   createContext,
   useContext,
-  DragEvent
+  DragEvent,
+  useEffect
 } from 'react'
 
-type DragRect = DOMRect & {id:string} | undefined
-
-type DragType = {
-  dragging: string
-  onDragEnter: (rect: DragRect) => void
+export type TargetInfo = {
+  containerId: string
+  x:number
+  y:number
+  width:number
+  height:number
+  id:string
 }
-const DragggingContext = createContext<DragType>({
-  dragging: '',
-  onDragEnter: () => null
+
+export type DragState = 'dragging' | 'limbo' | 'copying'
+
+export type DragInfo = TargetInfo & {
+  state: DragState
+  data: unknown
+}
+
+export type DragContextType = {
+  dragItemInfo: DragInfo
+  targetItemInfo: TargetInfo
+  setDragInfo: (info: DragInfo) => void
+  setTargetInfo: (info: TargetInfo) => void
+}
+
+export const DragContext = createContext<DragContextType>({
+  dragItemInfo: { containerId:'', x:0, y:0, width: 0, height: 0, id: '', data: {}, state: 'dragging' },
+  targetItemInfo: { containerId: '', x:0, y:0, width: 0, height: 0, id: '' },
+  setDragInfo: () => null,
+  setTargetInfo: () => null
 })
+type PushIt = {
+  addedDragItem: boolean
+  length: number
+  values: Array<string>
+}
+
+export const pushItem = ( p: PushIt, id: string, dragId : string) => {
+  if (id === dragId ) {
+    if (p.addedDragItem === false) {
+      p.values.push(id)
+      p.addedDragItem = true
+    }
+  } else {
+    p.values.push(id)
+  }
+}
 
 type SortItemProps = {
   id: string
+  containerId: string
   className?: string
   children: React.ReactNode
 }
 
 export const SortItem: FC<SortItemProps> = ({
   id,
+  containerId,
   className,
   children
 }) => {
+  const { dragItemInfo, setDragInfo, setTargetInfo } = useContext(DragContext);
   const divRef = useRef<HTMLDivElement>(null)
-  const { dragging, onDragEnter } = useContext(DragggingContext);
+  /*
+  useEffect(() => {
+    if ( targetItemInfo.id === id) {
+      console.log('scrolling into view')
+      divRef.current?.scrollIntoView()
+    }
+  }, [id, dragItemInfo, targetItemInfo])
+  */
 
-  const dragEnter = () => onDragEnter(divRef.current
-    ? Object.assign(divRef.current.getBoundingClientRect(), { id: divRef.current.id })
-    : undefined
-  )
+  const dragStart: DragEventHandler<HTMLDivElement> = (e) => {
+    // should set the data here
+
+    e.dataTransfer.setData("text", id);
+    // e.dataTransfer.effectAllowed = "copyMove";
+    const br = divRef.current?.getBoundingClientRect() || { x:0, y:0, width: 0, height: 0, id: '', data: {} }
+    setDragInfo(Object.assign(br, { id, containerId, data: {}, state: 'dragging' as DragState }))
+    console.log('dragStart child', id)
+  }
+
+  const dragEnd: DragEventHandler<HTMLDivElement> = (e) => {
+    setDragInfo({ x:0, y:0, width: 0, height: 0, id: '', containerId:'', data: {}, state:'dragging' })
+    console.log('drag end', containerId, e)
+  }
+
+  const dragEnter: DragEventHandler<HTMLDivElement> = (e: DragEvent) => {
+    e.preventDefault()
+    // e.stopPropagation()
+    const br = divRef.current?.getBoundingClientRect() || { x:0, y:0, width: 0, height: 0, id: '', data: {} }
+    setTargetInfo(Object.assign(br, { id, containerId, data: {} }))
+  }
 
   return (
     <div
       ref={divRef}
       draggable={true}
+      onDragStart={dragStart}
       onDragEnter={dragEnter}
-      className={className + (dragging === id ? ' opacity-30' : '' )}
+      onDragEnd={dragEnd}
+      // onDragLeave={dragLeave}
+      className={className + (dragItemInfo.id === id
+        ? dragItemInfo.state === 'dragging'
+          ? ' opacity-30'
+          : dragItemInfo.state === 'limbo'
+              ? ' hidden'
+              : ' '
+        : ''
+      )}
       id={id}
     >
       {children}
@@ -52,109 +125,111 @@ export const SortItem: FC<SortItemProps> = ({
 }
 
 type SortableProps = {
-  listId: string
+  containerId: string
   values: Array<string>
   className?: string
   onReorder: (a: Array<string>) => void
-  children: React.ReactElement<SortItemProps>[] | React.ReactElement<SortItemProps>
+  children: React.ReactElement<SortItemProps>[] // | React.ReactElement<SortItemProps>
 }
 
 export const Sortable: FC<SortableProps> = ({
-    listId,
+    containerId,
     values,
     onReorder,
     className,
     children
 }) => {
-  const [dragging, setDragging] = useState('')
-  const containerRef = useRef<HTMLDivElement>(null)
-  const valuesMinus = useRef<Array<string>>(values)
-  const dragId = useRef<string>('')
-  const dragCounter = useRef<number>(0)
-  // const targetId = useRef<string>('')
-  const targetRect = useRef<DragRect>(undefined)
+  const { dragItemInfo, setDragInfo, targetItemInfo } = useContext(DragContext);
 
-  const setDragId = (id: string) => {
-    valuesMinus.current = values.filter(i => i !== id)
-    dragId.current = id
-    setDragging(id)
-    //console.log('setting dragid', dragId.current, valuesMinus.current)
-  }
+  const containerRef = useRef<HTMLDivElement>(null)
+  const minusValues = useRef(values)
+
+  const dragCounter = useRef<number>(0)
 
   const dragStart: DragEventHandler<HTMLDivElement> = (e) => {
-    dragCounter.current =0
-    const id = (e.target as HTMLDivElement).id
-    console.log('drag start on', listId, 'with', id, 'dragCounter', dragCounter.current)
-    if (id && values.includes(id) ) {
-      e.dataTransfer.setData('text', id)
-      setDragId(id)
-    }
+    // we don't get the dragItemInfo fast enough when we sit it in the child dragStart
+    const dragId = (e.target as HTMLDivElement).id
+    minusValues.current = values.filter(v => v!== dragId)
+    console.log('dragStart', dragItemInfo, minusValues.current, (e.target as HTMLDivElement).id)
   }
-
 
   const dragOver: DragEventHandler<HTMLDivElement> = (e: DragEvent) => {
     e.preventDefault()
-    // console.log(targetRect.current?.id, dragId.current)
-    if (dragId.current === '') return
-    if (targetRect.current?.id === dragId.current) return
-    const newOrder = valuesMinus.current.reduce((acc, i) => {
-      if (i === targetRect.current?.id) {
-        if (e.clientX > (targetRect.current.x + targetRect.current.width/2)) {
-          acc.push(i)
-          acc.push(dragId.current)
-        } else {
-          acc.push(dragId.current)
-          acc.push(i)
-        }
-      } else {
-        acc.push(i)
-      }
-      return acc
-    }, [] as Array<string>)
-    // console.log('newOrder is zero', newOrder, targetRect.current?.id, valuesMinus.current)
-    onReorder(newOrder)
-    // console.log(e.target.id)
+    e.stopPropagation()
+
+    if (dragItemInfo.id !== '' && targetItemInfo.id !== dragItemInfo.id) {
+      // if (dragItemInfo.containerId !== containerId ) return
+      // console.log('over', targetItemInfo.id, dragItemInfo.id)
+
+      const newOrder = minusValues.current.reduce((acc, i, idx, arr ) => {
+          if (i === targetItemInfo.id ) {
+            if (e.clientX > (targetItemInfo.x + targetItemInfo.width/2)) {
+              acc.values.push(i)
+              acc.values.push(dragItemInfo.id)
+              acc.addedDragItem = true
+            } else {
+              acc.values.push(dragItemInfo.id)
+              acc.values.push(i)
+              acc.addedDragItem = true
+            }
+          } else {
+          acc.values.push(i)
+          }
+          if (idx === arr.length -1 && !acc.addedDragItem) {
+          acc.values.push(dragItemInfo.id)
+          }
+          return acc
+          }, { addedDragItem: false, length: minusValues.current.length, values: [] as Array<string> })
+      // console.log('newOrder is zero', newOrder, targetRect.current?.id, valuesMinus.current)
+      onReorder(newOrder.values)
+        // console.log(e.target.id)
+    }
+    const br = containerRef.current?.getBoundingClientRect() || { left:0, top: 0, width:0, height: 0 }
+    if (e.clientX > (br.left + br.width * 0.7)) {
+      containerRef.current?.scrollBy({ top:0, left: 3, behavior: 'smooth' })
+      console.log('scrollBy right')
+      return
+    }
+    if (e.clientX > br.left && e.clientX < br.left + br.width * 0.1) {
+      containerRef.current?.scrollBy({ top:0, left: -1, behavior: 'smooth' })
+      console.log('scrollBy left')
+      return
+    }
+
+
   }
 
   const drop: DragEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault()
-    console.log("dropped on", listId, e.dataTransfer.getData('text'))
+    dragCounter.current = 0
+    console.log("dropped on", containerId, e.dataTransfer.getData('text'))
+    setDragInfo({ x:0, y:0, width: 0, height: 0, id: '', containerId:'', data: {}, state:'dragging' })
   }
 
-  const dragEnd: DragEventHandler<HTMLDivElement> = () => {
-    // console.log('drag end on', listId)
-    setDragging('')
-    dragId.current = ''
-    dragCounter.current= 0
-    targetRect.current = undefined
+  const dragEnter: DragEventHandler<HTMLDivElement> = (e) => {
+    e.preventDefault()
+    console.log(containerId, 'enter on', Date.now() )
+    if (dragItemInfo.containerId !== containerId) {
+      e.dataTransfer.dropEffect = "none"
+    }
+    // e.stopPropagation()
+    setDragInfo(Object.assign({}, dragItemInfo, { state:'dragging' }))
+    // console.log('enter on', containerId )
   }
 
   const dragLeave: DragEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault()
-    e.stopPropagation()
-    dragCounter.current--
-    // console.log('drag leave on', listId, dragCounter.current, e.target)
-    if (dragCounter.current === 0) {
-      console.log('  -- leave on', listId, dragCounter.current )
-      //console.log('-- drag container')
+    // e.stopPropagation()
+    const br = containerRef.current?.getBoundingClientRect() || { left:0, top: 0, width:0, height: 0 }
+    console.log('leave on', containerId, e.clientY, br) //, e.clientX, containerRef.current?.getBoundingClientRect().x)
+    if (
+      (e.clientX < br.left || e.clientX > (br.left + br.width)) ||
+      (e.clientY < br.top || e.clientY >= (br.top + br.height))) {
+      console.log('  --', containerId, 'leave on', Date.now() )
+      setDragInfo(Object.assign({}, dragItemInfo, { state:'limbo' }))
+      return
     }
    }
-
-  const dragEnter: DragEventHandler<HTMLDivElement> = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (dragCounter.current === 0) {
-      console.log('drag enter on', listId, dragCounter.current)
-    }
-    dragCounter.current++
-   }
-
-  const onDragEnter = (rect: DragRect) => {
-    if (rect && rect !== targetRect.current) {
-      targetRect.current = rect
-      // console.log('drag Enter', rect, targetRect.current)
-    }
-  }
 
   return (
     <div
@@ -162,15 +237,13 @@ export const Sortable: FC<SortableProps> = ({
       className={className}
       onDragStart={dragStart}
       onDragOver={dragOver}
-      onDragEnd={dragEnd}
+      // onDragEnd={dragEnd}
       onDragLeave={dragLeave}
       onDragEnter={dragEnter}
       onDrop={drop}
+      style ={{ scrollBehavior: 'smooth' }}
      >
-      <DragggingContext.Provider value={{ dragging, onDragEnter }}>
-        { children }
-      </DragggingContext.Provider>
-
+      { children }
     </div>
   )
 }
