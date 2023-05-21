@@ -9,7 +9,7 @@ export type NavProps = {
 }
 
 export const Menu = () => (
-  <div className='flex flex-col gap-2 lg:gap-4 px-1 lg:px-4' >
+  <div className='flex flex-col gap-2 md:gap-4 ml-8 flex-none' >
     <Link href='/alerts'>Alerts</Link>
     <Link href='/accordians'>Accordians</Link>
     <Link href='/swipers'>Swipers</Link>
@@ -37,16 +37,16 @@ export const Template: FC<NavProps> = ({
       <Head>
         <title>s l i d e r o o l</title>
       </Head>
-      <div className='flex flex-col space-x-2 h-full w-full ' draggable={false}>
-        <div className='flex flex-row space-x-2 p-2 w-full'>
+      <div className='flex flex-col gap-2 h-full w-full ' draggable={false}>
+        <div className='flex flex-row gap-2 w-full'>
           <div className='flex-grow' />
           <Button kind='plain' label='dark' onClick={ () => { document.body.classList.remove('light'); document.body.classList.add('dark') }} />
           <Button kind='plain' label='light' onClick={ () => { document.body.classList.remove('dark'); document.body.classList.add('light')}} />
         </div>
 
-        <div className='flex flex-row gap-2 md:gap-8 p-2 md:p-4 h-full w-full'>
+        <div className='flex flex-row gap-10 h-full w-full'>
           <Menu />
-          <div className='gap-0 lg:gap-2 items-center w-full overflow-x-hidden' draggable={false}>
+          <div className='items-center flex-grow w-full h-full' draggable={false}>
             {children}
           </div>
         </div>
