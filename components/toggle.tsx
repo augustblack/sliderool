@@ -1,8 +1,7 @@
 import React, { FC, MouseEventHandler } from 'react'
-import { motion } from 'framer-motion'
 import Icons, { IconOnOffProps, IconProps } from './icons'
 
-const baseToggleClass = 'rounded p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def'
+const baseToggleClass = 'rounded p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def transition-transform '
 
 type ToggleProps = {
   description: string // use a unique description
@@ -82,15 +81,11 @@ export const FToggle: FC<FOnOffProps> = ({
   disabled = false,
   className = '',
   pressed = false,
-  layout = false,
-  layoutId,
   onClick,
   size,
   Icon
 }) => (
-  <motion.button
-    layout={layout}
-    layoutId={layoutId}
+  <button
     role="switch"
     aria-checked={pressed}
     aria-label={description}
@@ -101,7 +96,7 @@ export const FToggle: FC<FOnOffProps> = ({
     ].join(' ')}
     onClick={onClick}>
     <Icon on={!pressed} size={size} className='active:scale-75' />
-  </motion.button>
+  </button>
 )
 
 type SwitchProps = {
@@ -133,11 +128,11 @@ export const Switch: FC<SwitchProps> = ({
     aria-label={description}
     disabled={disabled}
     className={[
-    'w-20 h-12 rounded-full p-1 flex',
-    pressed ? 'bg-info-2 justify-end' : 'bg-info-1 justify-start',
+      'w-20 h-10 rounded-full p-1 flex transition-opacity ',
+      pressed ? 'bg-info-2 justify-end' : 'bg-info-1 justify-start',
       className
     ].join(' ')}
     onClick={onClick}>
-    <motion.div layout className={'w-10 h-10 rounded-full bg-base-1' } transition={spring} />
+    <div className={'w-8 h-8 rounded-full bg-base-1 '} />
   </button>
 )
