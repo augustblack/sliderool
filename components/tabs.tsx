@@ -48,11 +48,13 @@ export const Tab: FC<TabProps> = ({
 
 export type TabsProps = {
   headers: Array<TabHeaderProps>
+  rightside?: ReactNode
   children: ReactNode
 }
 
 export const Tabs: FC<TabsProps> = ({
   headers,
+  rightside,
   children
 }) => {
   const [state, setState] = useState(headers[0].name)
@@ -68,8 +70,12 @@ export const Tabs: FC<TabsProps> = ({
 
   return (
     <div className='flex flex-col w-full h-full'>
-      <div className='space-x-4'>
+      <div className='flex flex-row gap-4'>
         {headers.map((h, idx) => <TabH key={h.name + idx} name={h.name} label={h.label} selectTab={selectTab} selected={state === h.name} />)}
+        <div className='flex-grow' />
+        {
+          rightside
+        }
       </div>
       <div ref={cRef} className='flex-grow overflow-auto'>
         {children}

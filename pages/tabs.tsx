@@ -4,7 +4,7 @@ import { Tabs, Tab } from '../components/tabs'
 import { FTabs, FTab } from '../components/ftabs'
 import { Template } from '../shared'
 
-const TabDiv: FC<{children:ReactNode}> = ({
+const TabDiv: FC<{ children: ReactNode }> = ({
   children
 }) => <div className="p-2">{children}</div>
 
@@ -17,7 +17,11 @@ const TabPage = () => {
           { name: 'stats', label: 'Stats' },
           { name: 'record', label: 'Record' },
           { name: 'icecast', label: 'Icecast' }
-        ]}>
+        ]}
+          rightside={
+            <div className='flex-none'><Icons.Clear /></div>
+          }
+        >
           <Tab name='info'>
             <TabDiv>
               Some info. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
