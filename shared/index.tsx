@@ -37,16 +37,16 @@ export const Template: FC<NavProps> = ({
       <Head>
         <title>s l i d e r o o l</title>
       </Head>
-      <div className='flex flex-col gap-2 h-full w-full ' draggable={false}>
+      <div className='flex flex-col gap-2 h-screen w-screen ' draggable={false}>
         <div className='flex flex-row gap-2 w-full'>
           <div className='flex-grow' />
           <Button kind='plain' label='dark' onClick={ () => { document.body.classList.remove('light'); document.body.classList.add('dark') }} />
           <Button kind='plain' label='light' onClick={ () => { document.body.classList.remove('dark'); document.body.classList.add('light')}} />
         </div>
 
-        <div className='flex flex-row gap-10 h-full w-full'>
+        <div className='flex flex-row gap-10 h-full w-full bg-green-200'>
           <Menu />
-          <div className='items-center flex-grow w-full h-full' draggable={false}>
+          <div className='items-center flex-grow h-full' draggable={false}>
             {children}
           </div>
         </div>
