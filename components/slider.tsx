@@ -224,22 +224,16 @@ const Slider: FC<SliderProps> = ({
   )
 
   const outVal = useTransform(spring, scalar)
-  //useMotionValueEvent(outVal, "change", onChange)
-  useMotionValueEvent(outVal, "change", (v) => window.requestAnimationFrame(() => onChange(v)))
 
-  useMotionValueEvent(outVal, "animationComplete", () => {
-    console.log('animationComplete')
-  })
-  useMotionValueEvent(outVal, "animationStart", () => {
-    console.log('animationStart')
-  })
+  useMotionValueEvent(outVal, "change", (v) => window.requestAnimationFrame(() => {
+    return pressed.current ? onChange(v) : null
+  }))
 
-  useMotionValueEvent(vel, "change", (latestVelocity: number) => {
+  useMotionValueEvent(vel, "change", (latestVelocity: number) => window.requestAnimationFrame(() => {
       if (latestVelocity === 0) {
-        // console.log('vel', latestVelocity)
-        window.requestAnimationFrame(() => (pressed.current = false))
+        pressed.current = false
       }
-    }
+    })
   )
 
   const placeContent = useTransform(
