@@ -73,7 +73,7 @@ export type SwiperConfig = {
 }
 
 type SwiperPaginationProps = {
-  config ?: SwiperConfig
+  config?: SwiperConfig
   currentIdx: number
   length: number
   onChange: (n: number) => void
@@ -91,8 +91,8 @@ const SwiperPagination: FC<SwiperPaginationProps> = ({
 export type SwiperProps = {
   index?: number
   length: number
-  config ?: SwiperConfig
-  onChange ?: (n: number) => void
+  config?: SwiperConfig
+  onChange?: (n: number) => void
   children: (props: SwiperState) => ReactNode
 }
 
@@ -108,7 +108,7 @@ const transition: ValueAnimationTransition<number> = {
   bounce: 0
 }
 
-const getSwipeState = (index:number, length:number): SwiperState => {
+const getSwipeState = (index: number, length: number): SwiperState => {
   const modulo = index % length
   const wrappedIdx = modulo < 0 ? length + modulo : modulo
   return {
@@ -118,7 +118,7 @@ const getSwipeState = (index:number, length:number): SwiperState => {
   }
 }
 
-const calculateNewX = (i: number, div: HTMLDivElement | null ) => -i * (div?.getBoundingClientRect().width || 0)
+const calculateNewX = (i: number, div: HTMLDivElement | null) => -i * (div?.getBoundingClientRect().width || 0)
 
 const baseIconClass = 'absolute z-10 place-items-center hidden sm:flex'
 const iconClassL = baseIconClass + ' left-0'
@@ -186,7 +186,7 @@ export const Swiper: FC<SwiperProps> = ({
           : getSwipeState(state.idx + rangeValue, state.length)
         return (
           <Page
-            key={rngState.wrappedIdx}
+            key={rngState.idx}
             x={x}
             onDragEnd={handleEndDrag}
             idx={rngState.idx}
@@ -196,27 +196,27 @@ export const Swiper: FC<SwiperProps> = ({
           />
         )
       })}
-      { length > 1 && (
-      <>
-        <button className={iconClassL} onClick={goLeft}><Icons.ChevronLeft size='4rem' className={arrowClass} /></button>
-        <button className={iconClassR} onClick={goRight}><Icons.ChevronRight size='4rem' className={arrowClass} /></button>
-        { config?.pagination && (
-          <div className={
-          'absolute z-10 left-0 ' +
-          (config.pagination.pos === 'bottom' ? 'bottom-0' : 'top-0') +
-          ' h-8 text-xs w-full flex flex-row place-items-center place-content-center '
-          }>
-            <SwiperPagination
-              config={config}
-              currentIdx={state.wrappedIdx}
-              length={state.length}
-              onChange={(n:number) => setState(s => getSwipeState(n, s.length))}
-            />
-          </div>
+      {length > 1 && (
+        <>
+          <button className={iconClassL} onClick={goLeft}><Icons.ChevronLeft size='4rem' className={arrowClass} /></button>
+          <button className={iconClassR} onClick={goRight}><Icons.ChevronRight size='4rem' className={arrowClass} /></button>
+          {config?.pagination && (
+            <div className={
+              'absolute z-10 left-0 ' +
+              (config.pagination.pos === 'bottom' ? 'bottom-0' : 'top-0') +
+              ' h-8 text-xs w-full flex flex-row place-items-center place-content-center '
+            }>
+              <SwiperPagination
+                config={config}
+                currentIdx={state.wrappedIdx}
+                length={state.length}
+                onChange={(n: number) => setState(s => getSwipeState(n, s.length))}
+              />
+            </div>
           )
-        }
-      </>
-          )
+          }
+        </>
+      )
       }
     </motion.div>
   )
