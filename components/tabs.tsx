@@ -49,11 +49,13 @@ export const Tab: FC<TabProps> = ({
 export type TabsProps = {
   headers: Array<TabHeaderProps>
   rightside?: ReactNode
+  className?: string
   children: ReactNode
 }
 
 export const Tabs: FC<TabsProps> = ({
   headers,
+  className,
   rightside,
   children
 }) => {
@@ -69,7 +71,7 @@ export const Tabs: FC<TabsProps> = ({
   }, [state, cRef])
 
   return (
-    <div className='flex flex-col w-full h-full'>
+    <div className={'flex flex-col ' + (className || ' w-full h-full')}>
       <div className='flex flex-row gap-4'>
         {headers.map((h, idx) => <TabH key={h.name + idx} name={h.name} label={h.label} selectTab={selectTab} selected={state === h.name} />)}
         <div className='flex-grow' />
