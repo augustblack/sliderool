@@ -5,7 +5,7 @@ const isNil = (v: unknown) => v === null || v === undefined
 
 type Options = {
   f: string
-  l: string
+  l: ReactNode
 }
 
 type RadioProps = {
@@ -25,7 +25,7 @@ const Radio: FC<RadioProps> = ({
 }: RadioProps) => (
   <React.Fragment>
     <div className='font-bold mr-2 grid-flow-col sm:text-right' >{label}</div>
-    <div className='p-2 w-auto w-full'>
+    <div className='p-2 w-full'>
       {options.map((o, idx) => (
         <div key={field + idx} className={idx !== (options.length - 1) ? 'pb-2' : ''}>
           <input
@@ -118,7 +118,7 @@ type FormProps = {
   items: Array<FormItem>
   onSubmit: ((state: Record<string, unknown>) => void) | ((state: Record<string, unknown>) => Promise<void>)
   onAction?: string
-  afterSubmit?: (() => void)
+  afterSubmit?: ((state: Record<string, unknown>) => void) | (() => void)
   onCancel: () => void
 }
 
@@ -147,7 +147,7 @@ export const Form: FC<FormProps> = ({
     setState(Object.assign({}, state, { [field]: e.target.value }))
   }
 
-  useEffect(() => () => {isMounted.current = false}, [])
+  useEffect(() => () => { isMounted.current = false }, [])
 
   useEffect(() => {
     const to = setTimeout(() => {
@@ -189,7 +189,7 @@ export const Form: FC<FormProps> = ({
         : null
         , 500))
       .then(() => setTimeout(() => isMounted.current && afterSubmit
-        ? afterSubmit()
+        ? afterSubmit(state)
         : null
         , 500))
       .catch(setErrorSafe)
@@ -202,7 +202,7 @@ export const Form: FC<FormProps> = ({
     <div className={'space-y-2 w-full ' + className}>
       <ErrorDisplay pre={name} errors={error} clearErrors={clearError} />
       <form
-        className={'rounded w-full items-middle text-xs p-1 text-base sm:grid sm:grid-cols-2 gap-4 space-y-2 sm:space-y-0 '}
+        className={'rounded w-full items-middle items-center p-1 text-base lg:text-lg sm:grid sm:grid-cols-2 gap-4 space-y-2 sm:space-y-0 '}
         style={{ gridTemplateColumns: 'max-content auto' }}
         onSubmit={onSubmitEvent}
         action={onAction || undefined}
