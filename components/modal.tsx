@@ -55,12 +55,14 @@ export type ModalProps = {
   open: boolean
   setOpen: (open: boolean) => void
   children?: ReactNode
+  full?: boolean
 }
 
 export const Modal: FC<ModalProps> = ({
   level = 1,
   open,
   setOpen,
+  full,
   children
 }) => {
   const modalRef = useRef<HTMLDivElement>(null)
@@ -125,7 +127,8 @@ export const Modal: FC<ModalProps> = ({
             role='dialog'
             aria-modal={true}
             tabIndex={0}
-            className={'bg-base-1 text-write-1 shadow-lg w-full h-full m-0 md:w-auto md:h-auto md:rounded md:m-auto'}
+            //className={'bg-base-1 text-write-1 shadow-lg w-full h-full m-0 md:w-auto md:h-auto md:rounded md:m-auto'}
+            className={'bg-base-1 text-write-1 shaddow-lg w-11/12 md:w-5/6 lg:w-3/4 mx-auto rounded space-y-4 ' + (full ? 'm-4' : 'm-auto')}
             style={getLevel(level, 3)}
             onKeyDown={esc}
           >
@@ -146,9 +149,10 @@ export const ModalWithClose: FC<ModalWithCloseProps> = ({
   menu,
   open,
   setOpen,
+  full,
   children
 }) => (
-  <Modal open={open} setOpen={setOpen} level={level}>
+  <Modal open={open} setOpen={setOpen} level={level} full={full}>
     <div className="flex flex-col w-full h-full" style={getLevel(level, 4)} >
       <div className="flex flex-row flex-none items-start">
         {menu
