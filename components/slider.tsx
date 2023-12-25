@@ -20,7 +20,7 @@ import React, {
 
 export const debounce = (fn: Function, ms = 300) => {
   let timeoutId: ReturnType<typeof setTimeout>;
-  return function (this: any, ...args: any[]) {
+  return function(this: any, ...args: any[]) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn.apply(this, args), ms)
   }
@@ -178,8 +178,8 @@ type SliderProps = {
   formatFunc?: (v: number) => string
   scale?: ScaleType
   springOpts?: SpringOpts
-  trackWidth ?: ThumbSize
-  thumbSize ?: ThumbSize
+  trackWidth?: ThumbSize
+  thumbSize?: ThumbSize
 }
 export const DefaultSpringOpts = {
   stiffness: 100,
@@ -230,10 +230,10 @@ const Slider: FC<SliderProps> = ({
   }))
 
   useMotionValueEvent(vel, "change", (latestVelocity: number) => window.requestAnimationFrame(() => {
-      if (latestVelocity === 0) {
-        pressed.current = false
-      }
-    })
+    if (latestVelocity === 0) {
+      pressed.current = false
+    }
+  })
   )
 
   const placeContent = useTransform(
@@ -246,7 +246,7 @@ const Slider: FC<SliderProps> = ({
   )
 
   const infoStyle =
-      { placeContent, flexDirection }
+    { placeContent, flexDirection }
 
   const trackClass =
     'flex-none select-none pointer-action-none touch-none cursor-pointer rounded border border-write-1 relative overflow-hidden ' +
@@ -285,21 +285,21 @@ const Slider: FC<SliderProps> = ({
   }, [springOpts])
 
   useEffect(() => {
-      const tr = trackRef.current || document.createElement('div')
-      const resizeObserver = new ResizeObserver((_entries) => {
-        trackRect.current = trackRef.current?.getBoundingClientRect() || {
-          top: 0,
-          left: 0
-        }
-        const xyTmp = transXY(orientation, trackRef, thumbRef)(spring.get())
-        // console.log('on resize', xyTmp, spring.get(), xy.get())
-        xy.set(xyTmp)
-      })
-
-      resizeObserver.observe(tr)
-      return () => {
-        resizeObserver.unobserve(tr)
+    const tr = trackRef.current || document.createElement('div')
+    const resizeObserver = new ResizeObserver((_entries) => {
+      trackRect.current = trackRef.current?.getBoundingClientRect() || {
+        top: 0,
+        left: 0
       }
+      const xyTmp = transXY(orientation, trackRef, thumbRef)(spring.get())
+      // console.log('on resize', xyTmp, spring.get(), xy.get())
+      xy.set(xyTmp)
+    })
+
+    resizeObserver.observe(tr)
+    return () => {
+      resizeObserver.unobserve(tr)
+    }
   }, [orientation, spring, xy])
 
   useEffect(() => {
@@ -426,8 +426,8 @@ const Slider: FC<SliderProps> = ({
         ref={thumbRef}
         className={thumbClass}
         // whileTap={{
-         // scale: 1.025,
-         // opacity: 1
+        // scale: 1.025,
+        // opacity: 1
         //}}
         style={thumbStyle}
       >{formatFunc(value)}</motion.div>
