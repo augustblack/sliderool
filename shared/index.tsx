@@ -25,7 +25,6 @@ export const Menu = () => (
     <Link href='/playlists'>Playlists</Link>
     <div>----</div>
     <Link href='/tracks'>Tracks</Link>
-    <Link href='/tracksUp'>TracksUp</Link>
   </div>
 )
 
@@ -40,11 +39,11 @@ export const Template: FC<NavProps> = ({
       <div className='flex flex-col gap-2 h-screen w-screen ' draggable={false}>
         <div className='flex flex-row gap-2 w-full'>
           <div className='flex-grow' />
-          <Button kind='plain' label='dark' onClick={ () => { document.body.classList.remove('light'); document.body.classList.add('dark') }} />
-          <Button kind='plain' label='light' onClick={ () => { document.body.classList.remove('dark'); document.body.classList.add('light')}} />
+          <Button kind='plain' label='dark' onClick={() => { document.body.classList.remove('light'); document.body.classList.add('dark') }} />
+          <Button kind='plain' label='light' onClick={() => { document.body.classList.remove('dark'); document.body.classList.add('light') }} />
         </div>
 
-        <div className='flex flex-row gap-10 h-full w-full bg-green-200'>
+        <div className='flex flex-row gap-10 h-full w-full '>
           <Menu />
           <div className='items-center flex-grow h-full' draggable={false}>
             {children}
