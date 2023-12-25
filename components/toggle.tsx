@@ -107,12 +107,6 @@ type SwitchProps = {
   onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
-const spring = {
-  type: "spring",
-  stiffness: 700,
-  damping: 30
-}
-
 export const Switch: FC<SwitchProps> = ({
   description,
   disabled = false,
@@ -121,14 +115,12 @@ export const Switch: FC<SwitchProps> = ({
   onClick
 }) => (
   <button
-    // layout={layout}
-    // layoutId={layoutId}
     role="switch"
     aria-checked={pressed}
     aria-label={description}
     disabled={disabled}
     className={[
-      'w-20 h-10 rounded-full p-1 flex transition-opacity ',
+      'w-20 h-10 rounded-full p-1 flex transition-colors ',
       pressed ? 'bg-info-2 justify-end' : 'bg-info-1 justify-start',
       className
     ].join(' ')}
