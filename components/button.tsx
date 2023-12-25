@@ -66,7 +66,7 @@ const Button = React.forwardRef(({
           disabled={disabled}
           aria-label={label}
           type={type}
-          className='active:scale-75 p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def flex items-center justify-center w-full'
+          className={(disabled ? '' : 'active:scale-75') + ' p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def flex items-center justify-center w-full'}
         >{children || label}</button></div>
     )
     : null
