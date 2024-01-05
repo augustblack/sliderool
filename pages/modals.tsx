@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Template } from '../shared'
-// import { IconToggle, Toggle } from '../components/toggle'
 import Icons from '../components/icons'
 import { Modal, ModalWithClose, ModalButton, ModalButtonWithClose, ButtonWithFocus } from '../components/modal'
 import Button from '../components/button'

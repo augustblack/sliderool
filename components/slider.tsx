@@ -18,6 +18,8 @@ import React, {
   ReactNode
 } from 'react'
 
+import { Colors, baseRingClass } from './utils'
+
 export const debounce = (fn: Function, ms = 300) => {
   let timeoutId: ReturnType<typeof setTimeout>;
   return function(this: any, ...args: any[]) {
@@ -180,6 +182,7 @@ type SliderProps = {
   springOpts?: SpringOpts
   trackWidth?: ThumbSize
   thumbSize?: ThumbSize
+  colors?: Colors
 }
 export const DefaultSpringOpts = {
   stiffness: 100,
@@ -197,12 +200,13 @@ const Slider: FC<SliderProps> = ({
   formatFunc = (v: number) => v.toFixed(2),
   trackWidth = 'md',
   thumbSize = 'md',
+  colors = { track: "bg-gradient-to-t from-base-1 to-base-3", thumb: "bg-base-con text-base-1" },
   children
 }) => {
   // we do this to in order to cause redraw.
   // we want redraw because the first time we render we don't know the size of the track
   // we need to re-render to get the size and set the xy transform correctly
-  const [opacity, setOpacity] = useState(0)
+  // const [opacity, setOpacity] = useState(0)
   const defVal = scaleItInv(min, max, scale, value)
   const trackRef = useRef<HTMLDivElement>(null)
   const thumbRef = useRef<HTMLDivElement>(null)
@@ -248,16 +252,18 @@ const Slider: FC<SliderProps> = ({
   const infoStyle =
     { placeContent, flexDirection }
 
-  const trackClass =
-    'flex-none select-none pointer-action-none touch-none cursor-pointer rounded border border-write-1 relative overflow-hidden ' +
+  const trackCl =
+    ' flex-none select-none pointer-action-none touch-none cursor-pointer rounded relative overflow-hidden ' +
+    colors.track +
     (
       orientation === 'vertical'
-        ? 'bg-gradient-to-t from-base-1/25 via-base-3/25 to-base-2/50 h-full ' + TrackWidth['vertical'][trackWidth]
-        : 'bg-gradient-to-r from-base-1/25 via-base-3/25 to-base-2/25 w-full flex flex-col place-content-center ' + TrackWidth['horizontal'][trackWidth]
+        ? ' h-full ' + TrackWidth['vertical'][trackWidth]
+        : ' bg-gradient-to-r from-base-1/25 via-base-3/25 to-base-2/25 w-full flex flex-col place-content-center ' + TrackWidth['horizontal'][trackWidth]
     )
 
-  const thumbClass =
-    'bg-write-1 rounded text-base-2 text-sm absolute left-0 bottom-0 rounded cursor-grab select-none pointer-action-none flex p-1 ' +
+  const thumbCl =
+    ' rounded text-sm absolute left-0 bottom-0 rounded cursor-grab select-none pointer-action-none flex p-1 ' +
+    colors.thumb +
     (
       orientation === 'vertical'
         ? ' w-full place-content-center place-items-center ' + ThumbSize['vertical'][thumbSize]
@@ -268,13 +274,7 @@ const Slider: FC<SliderProps> = ({
     y: orientation === 'vertical' ? xy : undefined,
     x: orientation === 'horizontal' ? xy : undefined,
     scale: 0.9,
-    opacity
   }
-
-  useEffect(() => {
-    // set on load to get re-render started
-    setOpacity(0.8)
-  }, [])
 
   useEffect(() => {
     sopts.current = {
@@ -411,7 +411,7 @@ const Slider: FC<SliderProps> = ({
       aria-valuenow={value}
       tabIndex={0}
       ref={trackRef}
-      className={trackClass}
+      className={baseRingClass + trackCl}
       onPointerDown={pointerDown}
       onPointerMove={pointerMove}
     >
@@ -424,7 +424,7 @@ const Slider: FC<SliderProps> = ({
 
       <motion.div
         ref={thumbRef}
-        className={thumbClass}
+        className={thumbCl}
         // whileTap={{
         // scale: 1.025,
         // opacity: 1

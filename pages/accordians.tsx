@@ -36,7 +36,7 @@ const Accordians = () => {
               expanded={expanded}
               setExpanded={setExpanded}
               header={header}
-              headerClass={'p-2 rounded ' + (expanded === id ? 'bg-blue-200' : 'bg-write-2 text-base-1')}
+              headerClass={'p-2 rounded ' + (expanded === id ? 'bg-blue-200' : 'bg-base-con text-base-1')}
             >{child}</Accordion>
           ))
         }

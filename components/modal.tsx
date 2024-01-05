@@ -29,12 +29,14 @@ export const ButtonWithFocus: FC<ButtonWithFocusProps> = ({
 }) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const mounted = useRef(false)
+
   useEffect(() => {
     mounted.current = true
     return () => {
       mounted.current = false
     }
   }, [])
+
   useEffect(() => {
     if (open === false && mounted.current && buttonRef.current) {
       buttonRef.current.focus()
@@ -127,8 +129,7 @@ export const Modal: FC<ModalProps> = ({
             role='dialog'
             aria-modal={true}
             tabIndex={0}
-            //className={'bg-base-1 text-write-1 shadow-lg w-full h-full m-0 md:w-auto md:h-auto md:rounded md:m-auto'}
-            className={'bg-base-1 text-write-1 shaddow-lg w-11/12 md:w-5/6 lg:w-3/4 mx-auto rounded space-y-4 ' + (full ? 'm-4' : 'm-auto')}
+            className={'bg-base-1 text-base-con shaddow-lg w-11/12 md:w-5/6 lg:w-3/4 mx-auto rounded space-y-4 ' + (full ? 'm-4' : 'm-auto')}
             style={getLevel(level, 3)}
             onKeyDown={esc}
           >

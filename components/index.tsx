@@ -1,3 +1,4 @@
+export * from './utils'
 export * from './alert'
 export * from './accordion'
 export { default as Button } from './button'

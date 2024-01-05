@@ -1,5 +1,6 @@
 import React, { FC, ReactNode, useState, useEffect, useCallback, useRef } from 'react'
-import { ErrorDisplay, Button } from './index'
+import { ErrorDisplay, Button, ButtonGroup } from './index'
+import { baseRingClass, Colors } from './utils'
 
 const isNil = (v: unknown) => v === null || v === undefined
 
@@ -10,16 +11,20 @@ type Options = {
 
 type RadioProps = {
   state: Record<string, unknown>
+  className?: string
   field: string
   options: Array<Options>
   label: ReactNode
+  validated: boolean
   update: (f: string) => (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const Radio: FC<RadioProps> = ({
   state,
   field,
+  className = '',
   options,
+  validated,
   label,
   update
 }: RadioProps) => (
@@ -29,7 +34,7 @@ const Radio: FC<RadioProps> = ({
       {options.map((o, idx) => (
         <div key={field + idx} className={idx !== (options.length - 1) ? 'pb-2' : ''}>
           <input
-            className='pr-4'
+            className={'pr-4 ' + className + ' ' + (validated ? '' : ' bg-error-1 text-error-con')}
             id={o.f}
             name={field}
             type='radio'
@@ -37,7 +42,9 @@ const Radio: FC<RadioProps> = ({
             checked={state[field] === o.f}
             onChange={update(field)}
           />
-          <label className='p-2 pr-4' htmlFor={o.f}>{o.l}</label>
+          <label
+            className={'p-2 pr-4' + (validated ? '' : ' text-error-con')}
+            htmlFor={o.f}>{o.l}</label>
         </div>
       ))
       }
@@ -59,12 +66,14 @@ type Item = {
 
 type InputProps = Item & {
   state: Record<string, unknown>
+  className?: string
   validated: boolean
   update: (f: string) => (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const Input: FC<InputProps> = ({
+export const Input: FC<InputProps> = ({
   state,
+  className = '',
   field,
   validated,
   options = [],
@@ -76,17 +85,23 @@ const Input: FC<InputProps> = ({
   type = 'text',
   args
 }: InputProps) => type === 'radio'
-    ? (<Radio state={state} field={field} label={label} options={options} update={update} />)
+    ? (<Radio state={state} field={field} label={label} options={options} update={update} validated={validated} className={className} />)
     : (
       <>
         <label
-          className={'block font-bold mr-2 sm:text-right' + (hidden ? ' hidden' : '')}
+          className={
+            baseRingClass +
+            'block font-bold mr-2 sm:text-right' +
+            (hidden ? ' hidden ' : ' ')
+          }
           htmlFor={field}
         >{label}</label>
         <input
-          className={'p-2 w-full rounded' + (hidden ? ' hidden' : '') + (
-            validated ? ' bg-gray-100 border border-gray-800' : ' bg-red-100 border border-red-700'
-          )}
+          className={
+            baseRingClass +
+            'p-2 w-full rounded transition-colors border ' + (hidden ? ' hidden' : '') +
+            (validated ? className : ' bg-error-1 border-error-con focus:ring-error-con')
+          }
           name={field}
           placeholder={placeholder}
           type={type}
@@ -115,6 +130,7 @@ type FormProps = {
   name: string
   timeout?: number
   className?: string
+  colors?: Colors
   items: Array<FormItem>
   onSubmit: ((state: Record<string, unknown>) => void) | ((state: Record<string, unknown>) => Promise<void>)
   onAction?: string
@@ -125,7 +141,10 @@ type FormProps = {
 export const Form: FC<FormProps> = ({
   name,
   items,
-  className = '',
+  colors = {
+    track: "accent-base-con bg-base-1 text-base-con border-1 border-base-con ",
+    thumb: "accent-base-1 bg-base-con text-base-1 border-1 border-base-1 "
+  },
   onSubmit,
   afterSubmit,
   onAction,
@@ -138,16 +157,24 @@ export const Form: FC<FormProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isMounted = useRef(true)
   const isDisabled = useCallback(() => !allValidated(validated), [validated])
-  const setErrorSafe = (e: Error) => isMounted.current
-    ? setError([e])
-    : null
+  const setErrorSafe = (e: Error) => {
+    console.log('FORM ERROR:', e)
+    return isMounted.current
+      ? setError([e])
+      : null
+  }
   const clearError = () => isMounted.current ? setError([]) : null
 
   const update = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setState(Object.assign({}, state, { [field]: e.target.value }))
   }
 
-  useEffect(() => () => { isMounted.current = false }, [])
+  useEffect(() => {
+    isMounted.current = true
+    return () => {
+      isMounted.current = false
+    }
+  }, [])
 
   useEffect(() => {
     const to = setTimeout(() => {
@@ -155,7 +182,9 @@ export const Form: FC<FormProps> = ({
         ? i.verify(state[i.field])
           .then(() => ({ field: i.field, verified: true }))
           .catch(() => ({ field: i.field, verified: false }))
-        : Promise.resolve({ field: i.field, verified: true })
+        : i.type === 'radio'
+          ? Promise.resolve({ field: i.field, verified: state[i.field] || false })
+          : Promise.resolve({ field: i.field, verified: true })
       ))
         .then(vals => vals
           .reduce((acc, v) => Object.assign(acc, { [v.field]: v.verified }), {})
@@ -193,13 +222,15 @@ export const Form: FC<FormProps> = ({
         : null
         , 500))
       .catch(setErrorSafe)
-      .finally(() => setTimeout(() => isMounted.current
-        ? setIsSubmitting(false)
-        : null
-        , 500))
+      .finally(() => setTimeout(() => {
+        console.log('finally', isMounted.current)
+        return isMounted.current
+          ? setIsSubmitting(false)
+          : null
+      }, 500))
   }
   return (
-    <div className={'space-y-2 w-full ' + className}>
+    <div className="space-y-2 w-full">
       <ErrorDisplay pre={name} errors={error} clearErrors={clearError} />
       <form
         className={'rounded w-full items-middle items-center p-1 text-base lg:text-lg sm:grid sm:grid-cols-2 gap-4 space-y-2 sm:space-y-0 '}
@@ -210,6 +241,7 @@ export const Form: FC<FormProps> = ({
       >
         {items.map(i => (
           <Input
+            className={colors.track}
             state={state}
             update={update}
             key={i.field}
@@ -225,11 +257,14 @@ export const Form: FC<FormProps> = ({
           />))
         }
         <div />
-        <div className='mt-2 flex flex-row w-auto border border-1 border-write-1 rounded'>
+        <ButtonGroup className={'mt-2 ' + colors.thumb}>
           <Button
             kind='group'
             disabled={isDisabled() || isSubmitting}
-            className={isDisabled() ? '' : 'bg-green-200'}
+            className={
+              baseRingClass +
+              (isDisabled() ? 'bg-error-1 text-error-con cursor-not-allowed' : colors.thumb)
+            }
             label={isSubmitting ? 'submitting...' : 'submit'}
             type='submit'
           />
@@ -237,8 +272,12 @@ export const Form: FC<FormProps> = ({
             kind='group'
             label='cancel'
             onClick={onCancel}
+            className={
+              baseRingClass +
+              colors.track
+            }
           />
-        </div>
+        </ButtonGroup>
       </form>
     </div>
   )

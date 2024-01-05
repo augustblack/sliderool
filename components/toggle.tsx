@@ -1,10 +1,11 @@
 import React, { FC, MouseEventHandler } from 'react'
 import Icons, { IconOnOffProps, IconProps } from './icons'
+import { Colors, baseRingClass } from './utils'
 
-const baseToggleClass = 'rounded p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def transition-transform '
+const baseToggleClass = 'rounded p-2 transition-transform '
 
 type ToggleProps = {
-  description: string // use a unique description
+  label: string // use a unique description
   disabled?: boolean
   Icon: FC<IconProps>
   pressed?: boolean
@@ -14,7 +15,7 @@ type ToggleProps = {
 }
 
 export const IconToggle: FC<ToggleProps> = ({
-  description,
+  label,
   disabled = false,
   className = '',
   pressed = false,
@@ -26,11 +27,8 @@ export const IconToggle: FC<ToggleProps> = ({
     disabled={disabled}
     role="switch"
     aria-checked={pressed}
-    aria-label={description}
-    className={[
-      baseToggleClass,
-      className
-    ].join(' ')}
+    aria-label={label}
+    className={baseToggleClass + baseRingClass + className}
     onClick={onClick}>
     <div className='relative active:scale-75'>
       <Icon size={size} className={pressed ? 'scale-75' : ''} />
@@ -49,7 +47,7 @@ type OnOffProps = ToggleProps & {
 }
 
 export const Toggle: FC<OnOffProps> = ({
-  description,
+  label,
   disabled = false,
   className = '',
   pressed = false,
@@ -60,71 +58,43 @@ export const Toggle: FC<OnOffProps> = ({
   <button
     role="switch"
     aria-checked={pressed}
-    aria-label={description}
+    aria-label={label}
     disabled={disabled}
-    className={[
-      baseToggleClass,
-      className
-    ].join(' ')}
-    onClick={onClick}>
-    <Icon on={!pressed} size={size} className='active:scale-75' />
-  </button>
-)
-
-type FOnOffProps = OnOffProps & {
-  layout?: boolean | 'position' | 'size' | 'preserve-aspect'
-  layoutId?: string
-}
-
-export const FToggle: FC<FOnOffProps> = ({
-  description,
-  disabled = false,
-  className = '',
-  pressed = false,
-  onClick,
-  size,
-  Icon
-}) => (
-  <button
-    role="switch"
-    aria-checked={pressed}
-    aria-label={description}
-    disabled={disabled}
-    className={[
-      baseToggleClass,
-      className
-    ].join(' ')}
+    className={baseToggleClass + baseRingClass + className}
     onClick={onClick}>
     <Icon on={!pressed} size={size} className='active:scale-75' />
   </button>
 )
 
 type SwitchProps = {
-  description: string // use a unique description
+  label: string // use a unique description
   disabled?: boolean
   pressed?: boolean
   className?: string
+  colors?: Colors
   onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
 export const Switch: FC<SwitchProps> = ({
-  description,
+  label,
   disabled = false,
   className = '',
   pressed = false,
+  colors = { track: 'bg-primary-2', thumb: 'bg-primary-con' },
   onClick
 }) => (
   <button
     role="switch"
     aria-checked={pressed}
-    aria-label={description}
+    aria-label={label}
     disabled={disabled}
     className={[
       'w-20 h-10 rounded-full p-1 flex transition-colors ',
-      pressed ? 'bg-info-2 justify-end' : 'bg-info-1 justify-start',
+      baseRingClass,
+      pressed ? ('justify-end ' + colors.track) : ('justify-start ' + colors.thumb),
       className
     ].join(' ')}
     onClick={onClick}>
-    <div className={'w-8 h-8 rounded-full bg-base-1 '} />
+    <div className={'w-8 h-8 rounded-full transition-colors ' + (pressed ? colors.thumb : colors.track)} />
   </button>
 )

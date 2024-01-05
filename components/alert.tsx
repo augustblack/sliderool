@@ -9,16 +9,16 @@ export type AlertProps = {
   onClose?: () => void
 }
 const classes: Record<AlertKind, string> = {
-  info: 'bg-info-1 border-info-2 text-info-2',
-  success: 'bg-success-1 border-success-2 text-success-2',
-  warning: 'bg-warning-1 border-warning-2 text-warning-2',
-  error: 'bg-error-1 border-error-2 text-error-2'
+  info: 'bg-info-1 border-info-con text-info-con focus:ring-info-con',
+  success: 'bg-success-1 border-success-con text-success-con focus:ring-success-con',
+  warning: 'bg-warning-1 border-warning-con text-warning-con focus:ring-warning-con',
+  error: 'bg-error-1 border-error-2 text-error-con ring-error-con focus:ring-error-con'
 }
 const hoverClasses: Record<AlertKind, string> = {
-  info: 'hover:bg-info-2 hover:text-info-1',
-  success: 'hover:bg-success-2 hover:text-success-1',
-  warning: 'hover:bg-warning-2 hover:text-warning-1',
-  error: 'hover:bg-error-2 hover:text-error-1'
+  info: 'hover:bg-info-2 hover:text-info-con',
+  success: 'hover:bg-success-2 hover:text-success-con',
+  warning: 'hover:bg-warning-2 hover:text-warning-con',
+  error: 'hover:bg-error-2 hover:text-error-con'
 }
 
 export const Alert: FC<AlertProps> = ({
@@ -41,7 +41,7 @@ export const Alert: FC<AlertProps> = ({
       ? (
         <Button
           kind="none"
-          className={['flex-shrink', hoverClasses[kind]].join(' ')}
+          className={['flex-shrink', classes[kind], hoverClasses[kind]].join(' ')}
           onClick={onClose}
         >
           <Clear />

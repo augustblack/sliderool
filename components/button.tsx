@@ -1,76 +1,68 @@
-import React, { MouseEventHandler, ForwardedRef, ReactNode } from 'react'
+import React, { MouseEventHandler, ReactNode } from 'react'
+import { baseRingClass } from './utils'
 
 export type ButtonType = 'button' | 'submit' | 'reset'
 export type ButtonKind = 'plain' | 'outline' | 'round' | 'group' | 'none'
 
 export type ButtonProps = {
-  show?: boolean
   disabled?: boolean
   type?: ButtonType
   kind?: ButtonKind
   className?: string
-  onClick?: MouseEventHandler<HTMLDivElement>
+  onClick?: MouseEventHandler<HTMLDivElement | HTMLButtonElement>
   label?: string
   children?: ReactNode
 }
 
-const getColorClass = (kind: ButtonKind) => kind === 'plain'
-  ? 'bg-primary-1 hover:bg-primary-2 text-write-1'
-  : kind === 'outline' || kind === 'round'
-    ? 'hover:bg-primary-1 bg-base-2 text-primary-3'
-    : kind === 'group'
-      ? 'hover:bg-primary-1'
-      : '' // for icons, use none and carry color in from container
-
-const getBorderClass = (kind: ButtonKind) => kind === 'plain'
-  ? 'border border-primary-1 text-primary-4'
-  : kind === 'outline' || kind === 'round'
-    ? 'border border-primary-3 hover:border-primary-4'
-    : kind === 'group'
-      ? 'first:rounded-l last:rounded-r border-1 border-write-1 border-r last:border-none '
-      : ''
+const getBorderClass = (kind: ButtonKind) => kind === 'group'
+  ? baseRingClass + ' border-1 border-r last:border-none flex-1'
+  : baseRingClass + ' border-1 '
 
 const getRoundedClass = (kind: ButtonKind) => kind === 'round'
-  ? 'rounded-full'
+  ? ' rounded-full '
   : kind !== 'group'
-    ? 'rounded-md'
-    : ''
-const getExtraClass = (kind: ButtonKind) => kind === 'group'
-  ? 'flex-1'
-  : ''
+    ? ' rounded '
+    : ' first:rounded-l last:rounded-r '
 
+// we forward the ref so that we can call button.current.focus in <Modal />
+// among other things
 const Button = React.forwardRef(({
-  show = true,
   disabled = false,
   type = 'button',
-  kind = 'none',
-  className = '',
-  onClick,
+  kind = 'plain',
+  className = 'bg-primary-con text-primary-1 hover:bg-primary-1 hover:text-primary-con ',
+  onClick = undefined,
   label,
   children
-}: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) => show
-    ? (
-      <div
-        className={[
-          'flex items-center justify-center ',
-          getColorClass(kind),
-          getBorderClass(kind),
-          getRoundedClass(kind),
-          getExtraClass(kind),
-          className
-        ].join(' ')}
-        onClick={onClick || undefined}
-      >
-        <button
-          ref={ref}
-          disabled={disabled}
-          aria-label={label}
-          type={type}
-          className={(disabled ? '' : 'active:scale-75') + ' p-2 outline-none focus:ring-primary-4 focus:ring-def focus:drop-shadow-def flex items-center justify-center w-full'}
-        >{children || label}</button></div>
-    )
-    : null
+}: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) =>
+(
+  <button
+    ref={ref}
+    aria-label={label}
+    disabled={disabled}
+    type={type}
+    className={[
+      getBorderClass(kind),
+      getRoundedClass(kind),
+      className
+    ].join(' ')}
+    onClick={onClick}
+  ><div className="flex items-center justify-center p-2 active:scale-90 transition-transform">{children || label}</div></button >
+))
+Button.displayName = "Button"
+
+export type ButtonGroupProps = {
+  className?: string
+  children?: React.ReactElement<ButtonProps>[]
+}
+
+export const ButtonGroup = ({
+  className = '',
+  children
+}: ButtonGroupProps) =>
+(
+  <div className={"flex flex-row w-auto border border-1 rounded-md " + className}>{children}</div>
 )
-Button.displayName = 'Button'
+
 
 export default Button

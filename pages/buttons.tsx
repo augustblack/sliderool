@@ -8,8 +8,8 @@ const Buttons = () => (
     <div className='bg-base-2 rounded p-4 space-y-2'>
       <div>Buttons of kind=plain</div>
       <div className='flex flex-row space-x-2'>
-        <Button label='one' kind='plain'/>
-        <Button label='one' kind='plain'/>
+        <Button label='one' kind='plain' />
+        <Button label='one' kind='plain' />
         <Button kind='plain' className='flex flex-row space-x-4'>
           <Icons.Mic size='24px' />
           <div>mic</div>
@@ -20,16 +20,16 @@ const Buttons = () => (
     <div className='bg-base-2 rounded p-4 space-y-2'>
       <div>Buttons of kind=outline</div>
       <div className='flex flex-row space-x-2'>
-        <Button label='one' kind='outline'/>
-        <Button label='one' kind='outline'/>
-        <Button label='one' kind='outline'/>
+        <Button label='one' kind='outline' />
+        <Button label='one' kind='outline' />
+        <Button label='one' kind='outline' />
       </div>
     </div>
 
     <div className='bg-base-2 rounded p-4 space-y-2'>
       <div>Buttons of kind=none</div>
       <div className='flex flex-row space-x-2'>
-        <Button kind='none'>
+        <Button kind='none' className="">
           <Icons.Headset size='24px' />
         </Button>
         <Button kind='none'>
@@ -67,7 +67,7 @@ const Buttons = () => (
     <div className='bg-base-2 rounded p-4 space-y-2'>
       <div>Button group </div>
       <div className='w-1/3'>
-        <div className='flex flex-row w-auto border border-1 border-write-1 rounded'>
+        <div className='flex flex-row w-auto border border-1 border-base-con rounded'>
           <Button kind='group'>
             <Icons.Headset size='32px' />
           </Button>
@@ -88,12 +88,11 @@ const Buttons = () => (
     <div className='bg-base-2 rounded p-4 space-y-2'>
       <div>Button group </div>
       <div className='w-2/3'>
-        <form className='flex flex-row w-auto border border-1 border-write-1 rounded'>
-          <div className='rounded-l flex-grow flex space-x-2 bg-gray-100 items-center border-r border-1 border-write-1 '>
-            <img src='/icons/youtube.svg' className='h-8 w-8 pl-1' />
-            <input placeholder='search' className='flex-grow text-xl' />
+        <form className='flex flex-row w-auto border border-1 border-base-con rounded'>
+          <div className='rounded-l flex-grow flex space-x-2 bg-gray-100 items-center border-r border-1 border-base-con '>
+            <input placeholder='search' className='flex-grow text-xl bg-gray-100 ring-0' />
           </div>
-          <Button kind='group' label='submit' className='flex-none bg-green-200' />
+          <Button kind='group' label='submit' className='flex-none bg-green-200 text-green-900' />
           <Button kind='group' label='cancel' className='flex-none' />
         </form>
       </div>

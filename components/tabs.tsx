@@ -20,13 +20,13 @@ export const TabH: FC<TabHProps> = ({
     ? (
       <button
         disabled={true}
-        className={'bg-base-1 border-l border-t border-r border-black text-write-1 cursor-default' + base + ' px-3 md:px-4'}
+        className={'bg-base-1 border-l border-t border-r border-black text-base-con cursor-default' + base + ' px-3 md:px-4'}
         style={{ top: '1px', left: '-1px', zIndex: 2, position: 'relative' }}
       >{label}</button>
     )
     : (
       <button
-        className={'bg-base-2 border-l border-t border-r border-black hover:bg-base-1 text-write-1 truncate w-8 sm:overlow-auto sm:w-auto ' + base}
+        className={'bg-base-2 border-l border-t border-r border-black hover:bg-base-1 text-base-con truncate w-8 sm:overlow-auto sm:w-auto ' + base}
         onClick={() => selectTab(name)}
         style={{ left: '-1px', zIndex: 2, position: 'relative' }}
       >{label}</button>
