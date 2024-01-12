@@ -100,7 +100,7 @@ export const Input: FC<InputProps> = ({
           className={
             baseRingClass +
             'p-2 w-full rounded transition-colors border ' + (hidden ? ' hidden' : '') +
-            (validated ? className : ' bg-error-1 border-error-con focus:ring-error-con')
+            (validated ? className : ' bg-error-1 border-error-con focus:ring-error-con placeholder:text-error-con/50  ')
           }
           name={field}
           placeholder={placeholder}
@@ -230,7 +230,6 @@ export const Form: FC<FormProps> = ({
         , 500))
       .catch(setErrorSafe)
       .finally(() => setTimeout(() => {
-        console.log('finally', isMounted.current)
         return isMounted.current
           ? setIsSubmitting(false)
           : null
