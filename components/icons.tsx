@@ -5,12 +5,27 @@ export type IconProps = {
   fill?: string
   className?: string
 }
+
+export type IconPropsWAdd = IconProps & {
+  add?: boolean
+  transform?: string
+}
+
 export type IconOnOffProps = {
   size?: string
   fill?: string
   on?: boolean
   className?: string
 }
+
+const AddPath: FC<{ transform?: string }> = ({
+  transform
+}) => (
+  <g transform={transform}>
+    <path d="M0 0h24v24H0z" fill="none" />
+    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+  </g>
+)
 
 export const Headset: FC<IconOnOffProps> = ({
   size = '24px',
@@ -37,14 +52,23 @@ export const Headset: FC<IconOnOffProps> = ({
     }
   </svg>
 )
-export const Mic: FC<IconProps> = ({
+
+export const Mic: FC<IconPropsWAdd> = ({
   size = '24px',
   fill = 'currentColor',
-  className = ''
-}: IconProps) => (
+  className = '',
+  add = false,
+  transform
+}) => (
   <svg xmlns="http://www.w3.org/2000/svg" height={size || '24px'} viewBox="0 0 24 24" width={size || '24px'} fill={fill} className={className}>
     <path d="M0 0h24v24H0z" fill="none" />
     <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z" />
+    {
+      add
+        ? <AddPath transform={transform} />
+        : null
+    }
+
   </svg>
 )
 
@@ -93,16 +117,43 @@ export const Clear: FC<IconProps> = ({
     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
   </svg>
 )
-export const Play: FC<IconProps> = ({
+
+export const Play: FC<IconPropsWAdd> = ({
   size = '24px',
   fill = 'currentColor',
-  className = ''
-}: IconProps) => (
+  className = '',
+  add = false,
+  transform
+}) => (
   <svg xmlns="http://www.w3.org/2000/svg" height={size || '24px'} viewBox="0 0 24 24" width={size || '24px'} fill={fill} className={className}>
     <path d="M0 0h24v24H0z" fill="none" />
     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+    {
+      add
+        ? <AddPath transform={transform} />
+        : null
+    }
   </svg>
 )
+
+export const PlayArrow: FC<IconPropsWAdd> = ({
+  size = '24px',
+  fill = 'currentColor',
+  className = '',
+  add = false,
+  transform
+}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" height={size || '24px'} viewBox="0 0 24 24" width={size || '24px'} fill={fill} className={className}>
+    <path d="M0 0h24v24H0z" fill="none" />
+    <path d="M8 5v14l11-7z" />
+    {
+      add
+        ? <AddPath transform={transform} />
+        : null
+    }
+  </svg>
+)
+
 
 export const Pause: FC<IconProps> = ({
   size = '24px',
@@ -273,7 +324,9 @@ export const Pending: FC<IconProps> = ({
     fill={fill}
   >
     <g>
-      <rect fill="none" height="24" width="24" /></g><g><path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M7,13.5c-0.83,0-1.5-0.67-1.5-1.5 c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5C8.5,12.83,7.83,13.5,7,13.5z M12,13.5c-0.83,0-1.5-0.67-1.5-1.5 c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5C13.5,12.83,12.83,13.5,12,13.5z M17,13.5c-0.83,0-1.5-0.67-1.5-1.5 c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5C18.5,12.83,17.83,13.5,17,13.5z" />
+      <rect fill="none" height="24" width="24" /></g>
+    <g>
+      <path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M7,13.5c-0.83,0-1.5-0.67-1.5-1.5 c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5C8.5,12.83,7.83,13.5,7,13.5z M12,13.5c-0.83,0-1.5-0.67-1.5-1.5 c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5C13.5,12.83,12.83,13.5,12,13.5z M17,13.5c-0.83,0-1.5-0.67-1.5-1.5 c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5C18.5,12.83,17.83,13.5,17,13.5z" />
     </g>
   </svg>
 )
@@ -369,6 +422,21 @@ export const Search: FC<IconProps> = ({
   </svg>
 )
 
+export const Settings: FC<IconProps> = ({
+  size = '24px',
+  fill = 'currentColor',
+  className = ''
+}: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    height={size}
+    width={size}
+    viewBox="0 -960 960 960"
+    fill={fill}
+  >
+    <path d="m388-80-20-126q-19-7-40-19t-37-25l-118 54-93-164 108-79q-2-9-2.5-20.5T185-480q0-9 .5-20.5T188-521L80-600l93-164 118 54q16-13 37-25t40-18l20-127h184l20 126q19 7 40.5 18.5T669-710l118-54 93 164-108 77q2 10 2.5 21.5t.5 21.5q0 10-.5 21t-2.5 21l108 78-93 164-118-54q-16 13-36.5 25.5T592-206L572-80H388Zm92-270q54 0 92-38t38-92q0-54-38-92t-92-38q-54 0-92 38t-38 92q0 54 38 92t92 38Zm0-60q-29 0-49.5-20.5T410-480q0-29 20.5-49.5T480-550q29 0 49.5 20.5T550-480q0 29-20.5 49.5T480-410Zm0-70Zm-44 340h88l14-112q33-8 62.5-25t53.5-41l106 46 40-72-94-69q4-17 6.5-33.5T715-480q0-17-2-33.5t-7-33.5l94-69-40-72-106 46q-23-26-52-43.5T538-708l-14-112h-88l-14 112q-34 7-63.5 24T306-642l-106-46-40 72 94 69q-4 17-6.5 33.5T245-480q0 17 2.5 33.5T254-413l-94 69 40 72 106-46q24 24 53.5 41t62.5 25l14 112Z" />
+  </svg>
+)
 
 const Default = {
   Headset,
@@ -378,6 +446,7 @@ const Default = {
   Clear,
   Pause,
   Play,
+  PlayArrow,
   Loop,
   Stop,
   Record,
@@ -398,6 +467,7 @@ const Default = {
   ChevronLeft,
   ChevronRight,
   ArrowLeft,
-  Search
+  Search,
+  Settings
 }
 export default Default
