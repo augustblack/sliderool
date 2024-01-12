@@ -170,6 +170,13 @@ export const Form: FC<FormProps> = ({
   }
 
   useEffect(() => {
+    setState(s => items && items.length
+      ? items.reduce((acc, v) => Object.assign({}, acc, acc.hasOwnProperty(v.field) ? { [v.field]: acc[v.field] } : { [v.field]: v.init }), s)
+      : {}
+    )
+  }, [items])
+
+  useEffect(() => {
     isMounted.current = true
     return () => {
       isMounted.current = false
