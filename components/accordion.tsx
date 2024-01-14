@@ -9,7 +9,7 @@ export type AccordionProps = {
   childClass?: string
   children: ReactNode
 }
-
+// style="max-height: 0; transition: margin 0.5s ease-in-out, max-height 0.5s ease-in-out, opacity 0.5s ease-in-out; overflow: hidden;">
 export const Accordion: FC<AccordionProps> = ({
   id,
   expanded,
@@ -21,16 +21,14 @@ export const Accordion: FC<AccordionProps> = ({
 }) => {
   const isOpen = id === expanded
 
-  // By using `AnimatePresence` to mount and unmount the contents, we can animate
-  // them in and out while also only rendering the contents of open accordions
   return (
     <>
-      <div
+      <button
         className={'cursor-pointer transition-all duration-700 ' + headerClass}
         onClick={() => setExpanded(isOpen ? '' : id)}
-      >{header}</div>
+      >{header}</button>
       <div
-        className={'overflow-hidden transition-all duration-700 ' + childClass + (isOpen ? 'max-h-60' : 'max-h-0')}
+        className={'transition-all duration-700 ' + childClass + (isOpen ? 'max-h-screen overflow-scroll' : 'max-h-0 overflow-hidden')}
       >
         {children}
       </div>
