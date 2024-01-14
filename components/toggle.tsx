@@ -73,6 +73,7 @@ type SwitchProps = {
   className?: string
   colors?: Colors
   onClick?: MouseEventHandler<HTMLButtonElement>
+  children?: React.ReactNode
 }
 
 export const Switch: FC<SwitchProps> = ({
@@ -81,7 +82,8 @@ export const Switch: FC<SwitchProps> = ({
   className = '',
   pressed = false,
   colors = { track: 'bg-primary-2', thumb: 'bg-primary-con' },
-  onClick
+  onClick,
+  children
 }) => (
   <button
     role="switch"
@@ -95,6 +97,8 @@ export const Switch: FC<SwitchProps> = ({
       className
     ].join(' ')}
     onClick={onClick}>
-    <div className={'w-8 h-8 rounded-full transition-colors ' + (pressed ? colors.thumb : colors.track)} />
+    <div className={'w-8 h-8 rounded-full transition-colors justify-center place-items-center flex ' + (pressed ? colors.thumb : colors.track)}>
+      {children}
+    </div>
   </button>
 )
