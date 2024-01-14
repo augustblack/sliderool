@@ -10,7 +10,44 @@ type AccItem = {
 const booya: Record<string, AccItem> = {
   'ayao': {
     header: (<div><strong>conductions series</strong> is going on</div>),
-    child: (<div><div ><a target="_blank" className="bg-blue-200 text-gray-900 pl-1 pr-1 undefined" href="https://conduction.wavefarm.org" rel="noreferrer">The Conduction Series</a> is a monthly live collaborative radio series airing on Wave Farm’s WGXC 90.7-FM Radio for Open Ears in New York’s Upper Hudson Valley.  It consists of a core group of sound and transmission artists from various locations who come together with other remote participants to perform a kind of live media archeaology together.</div></div>)
+    child: (<div>
+      <div >
+        <a target="_blank" className="bg-blue-200 text-gray-900 pl-1 pr-1 undefined" href="https://conduction.wavefarm.org" rel="noreferrer">The Conduction Series</a> is a monthly live collaborative radio series airing on Wave Farm’s WGXC 90.7-FM Radio for Open Ears in New York’s Upper Hudson Valley.  It consists of a core group of sound and transmission artists from various locations who come together with other remote participants to perform a kind of live media archeaology together.
+      </div>
+      <div >
+        <a target="_blank" className="bg-blue-200 text-gray-900 pl-1 pr-1 undefined" href="https://conduction.wavefarm.org" rel="noreferrer">The Conduction Series</a> is a monthly live collaborative radio series airing on Wave Farm’s WGXC 90.7-FM Radio for Open Ears in New York’s Upper Hudson Valley.  It consists of a core group of sound and transmission artists from various locations who come together with other remote participants to perform a kind of live media archeaology together.
+      </div>
+      <div >
+        <a target="_blank" className="bg-blue-200 text-gray-900 pl-1 pr-1 undefined" href="https://conduction.wavefarm.org" rel="noreferrer">The Conduction Series</a> is a monthly live collaborative radio series airing on Wave Farm’s WGXC 90.7-FM Radio for Open Ears in New York’s Upper Hudson Valley.  It consists of a core group of sound and transmission artists from various locations who come together with other remote participants to perform a kind of live media archeaology together.
+      </div>
+      <div >
+        <a target="_blank" className="bg-blue-200 text-gray-900 pl-1 pr-1 undefined" href="https://conduction.wavefarm.org" rel="noreferrer">The Conduction Series</a> is a monthly live collaborative radio series airing on Wave Farm’s WGXC 90.7-FM Radio for Open Ears in New York’s Upper Hudson Valley.  It consists of a core group of sound and transmission artists from various locations who come together with other remote participants to perform a kind of live media archeaology together.
+      </div>
+
+      <div >
+        <a target="_blank" className="bg-blue-200 text-gray-900 pl-1 pr-1 undefined" href="https://conduction.wavefarm.org" rel="noreferrer">The Conduction Series</a> is a monthly live collaborative radio series airing on Wave Farm’s WGXC 90.7-FM Radio for Open Ears in New York’s Upper Hudson Valley.  It consists of a core group of sound and transmission artists from various locations who come together with other remote participants to perform a kind of live media archeaology together.
+      </div>
+      <div >
+        <a target="_blank" className="bg-blue-200 text-gray-900 pl-1 pr-1 undefined" href="https://conduction.wavefarm.org" rel="noreferrer">The Conduction Series</a> is a monthly live collaborative radio series airing on Wave Farm’s WGXC 90.7-FM Radio for Open Ears in New York’s Upper Hudson Valley.  It consists of a core group of sound and transmission artists from various locations who come together with other remote participants to perform a kind of live media archeaology together.
+      </div>
+
+
+      <div >
+        <a target="_blank" className="bg-blue-200 text-gray-900 pl-1 pr-1 undefined" href="https://conduction.wavefarm.org" rel="noreferrer">The Conduction Series</a> is a monthly live collaborative radio series airing on Wave Farm’s WGXC 90.7-FM Radio for Open Ears in New York’s Upper Hudson Valley.  It consists of a core group of sound and transmission artists from various locations who come together with other remote participants to perform a kind of live media archeaology together.
+      </div>
+      <div >
+        <a target="_blank" className="bg-blue-200 text-gray-900 pl-1 pr-1 undefined" href="https://conduction.wavefarm.org" rel="noreferrer">The Conduction Series</a> is a monthly live collaborative radio series airing on Wave Farm’s WGXC 90.7-FM Radio for Open Ears in New York’s Upper Hudson Valley.  It consists of a core group of sound and transmission artists from various locations who come together with other remote participants to perform a kind of live media archeaology together.
+      </div>
+
+      <div >
+        <a target="_blank" className="bg-blue-200 text-gray-900 pl-1 pr-1 undefined" href="https://conduction.wavefarm.org" rel="noreferrer">The Conduction Series</a> is a monthly live collaborative radio series airing on Wave Farm’s WGXC 90.7-FM Radio for Open Ears in New York’s Upper Hudson Valley.  It consists of a core group of sound and transmission artists from various locations who come together with other remote participants to perform a kind of live media archeaology together.
+      </div>
+      <div >
+        <a target="_blank" className="bg-blue-200 text-gray-900 pl-1 pr-1 undefined" href="https://conduction.wavefarm.org" rel="noreferrer">The Conduction Series</a> is a monthly live collaborative radio series airing on Wave Farm’s WGXC 90.7-FM Radio for Open Ears in New York’s Upper Hudson Valley.  It consists of a core group of sound and transmission artists from various locations who come together with other remote participants to perform a kind of live media archeaology together.
+      </div>
+
+
+    </div>)
   },
   'bllao': {
     header: (<div>Fundamental Radio</div>),
