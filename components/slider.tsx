@@ -11,7 +11,6 @@ import React, {
   useRef,
   useEffect,
   useCallback,
-  useState,
   PointerEventHandler,
   PointerEvent,
   RefObject,
@@ -189,7 +188,7 @@ export const DefaultSpringOpts = {
   damping: 45,
   mass: 0.9
 }
-const Slider: FC<SliderProps> = ({
+export const Slider: FC<SliderProps> = ({
   onChange,
   value = 0,
   min = 0,
@@ -258,7 +257,7 @@ const Slider: FC<SliderProps> = ({
     (
       orientation === 'vertical'
         ? ' h-full ' + TrackWidth['vertical'][trackWidth]
-        : ' bg-gradient-to-r from-base-1/25 via-base-3/25 to-base-2/25 w-full flex flex-col place-content-center ' + TrackWidth['horizontal'][trackWidth]
+        : ' w-full flex flex-col place-content-center ' + TrackWidth['horizontal'][trackWidth]
     )
 
   const thumbCl =
@@ -434,5 +433,3 @@ const Slider: FC<SliderProps> = ({
     </div>
   )
 }
-
-export default Slider
