@@ -31,25 +31,45 @@ export const Configure: FC<ConfigureProps> = ({
         afterSubmit={close}
         onCancel={close}
         items={[
-          { field: 'display', label: 'Display Name', init: '', type: 'text', verify },
-          { field: 'radio', label: 'Some radiation', init: '', type: 'radio', options: [{ f: 'one', l: 'one' }, { f: 'two', l: 'two' }], verify },
+          { field: 'username', label: 'Icecast Username', init: 'source', type: 'text', verify },
+          { field: 'password', label: 'Icecast Password', init: '', type: 'password', verify },
+          { field: 'server', label: 'Server', init: '', type: 'text', verify },
+          { field: 'port', label: 'Port', init: '8000', type: 'number', verify },
+          { field: 'mount', label: 'Mount', init: 'test.webm', verify },
+          { field: 'name', label: 'Name', placeholder: 'name of icecast stream', init: '', verify: () => Promise.resolve(true) },
+          { field: 'description', label: 'Description', placeholder: 'description of stream', init: '', verify: () => Promise.resolve(true) },
           {
-            field: 'prebuffer',
-            label: (<div className=''><div>Buffer 2-50</div><div className='text-sm font-normal'>(higher=better, more latency)</div></div>),
-            init: '20',
-            type: 'number',
-            verify: verifyNum(2, 50),
-            args: { min: '2', max: '50', step: '1' }
+            field: 'protocol',
+            label: 'Protocol',
+            init: 'ice2',
+            type: 'radio',
+            options: [
+              { f: 'ice2', l: 'v2 protocol' },
+              { f: 'ice1', l: 'legacy v1 protocol' }
+            ],
           },
           {
-            field: 'quality',
-            label: (<div className=''><div>Encoder Quality 1-10</div><div className='text-sm font-normal'>(higher=better, more cpu)</div></div>),
-            init: '10',
-            type: 'number',
-            verify: verifyNum(1, 10),
-            args: { min: '1', max: '10', step: '1' }
+            field: 'format',
+            label: 'Format',
+            init: 'webm',
+            type: 'radio',
+            options: [
+              { f: 'webm', l: (<span>webm <span className="text-xs">(best quality, least CPU, ffox/chrome only)</span></span>) },
+              { f: 'mp3', l: (<span>mp3 <span className="text-xs">(works on ffox/chrome/safari)</span></span>) }
+            ],
+          },
+          {
+            field: 'ssl',
+            label: 'Use TLS/SSL',
+            init: 'no',
+            type: 'radio',
+            options: [
+              { f: 'no', l: (<span>no <span className='text-xs'>(most icecast servers are not configured for SSL/TLS)</span></span>) },
+              { f: 'yes', l: (<span>yes <span className='text-xs'>(newer icecast configs need TLS/SSL)</span></span>) }
+            ],
           }
         ]}
+
       />
     </div>
   )
