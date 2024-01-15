@@ -190,7 +190,7 @@ export const Form: FC<FormProps> = ({
           .then(() => ({ field: i.field, verified: true }))
           .catch(() => ({ field: i.field, verified: false }))
         : i.type === 'radio'
-          ? Promise.resolve({ field: i.field, verified: state[i.field] || false })
+          ? Promise.resolve({ field: i.field, verified: state.hasOwnProperty(i.field) || false })
           : Promise.resolve({ field: i.field, verified: true })
       ))
         .then(vals => vals
