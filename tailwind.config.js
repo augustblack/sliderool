@@ -60,7 +60,7 @@ module.exports = {
               'warning-con': colors.orange[800],
 
               'error-1': colors.red[200],
-              'error-2': colors.red[500],
+              'error-2': colors.red[300],
               'error-con': colors.red[800]
             }
           }
@@ -115,7 +115,7 @@ module.exports = {
               'warning-con': colors.orange[300],
 
               'error-1': colors.red[950],
-              'error-2': colors.red[700],
+              'error-2': colors.red[800],
               'error-con': colors.red[300]
 
             }
