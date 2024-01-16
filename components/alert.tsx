@@ -63,25 +63,25 @@ export const ErrorDisplay: FC<ErrorDisplayProps> = ({
   errors && errors.length >= 1
     ? (
       <div
-        className="relative bg-red-100 border border-red-400 text-red-700 p-2 rounded text-base"
+        className="flex flex-row bg-error-2 border border-error-con text-error-con p-1 rounded place-items-start"
         role="alert"
       >
+        <div className="flex-grow flex flex-col gap-1">
+          {errors.map((err, idx) => (
+            <Alert key={pre + idx} className=' '>{String(err)}</Alert>
+          ))}
+        </div>
+
         {clearErrors
           ? (
             <button
               onClick={clearErrors}
-              className="absolute top-0 right-0 p-1 m-1 bg-red-300 rounded"
-              style={{ fill: 'red' }}
+              className="flex-shrink p-2 m-1 bg-error-2 hover:bg-error-1 rounded"
             >
-              <Clear fill="#7F1D1D" />
+              <Clear />
             </button>
           )
           : null}
-        <div className="">
-          {errors.map((err, idx) => (
-            <Alert key={pre + idx}>{String(err)}</Alert>
-          ))}
-        </div>
       </div>
     )
     : null

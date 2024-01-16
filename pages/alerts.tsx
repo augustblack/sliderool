@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { Alert, AlertProps } from '../components/alert'
+import { Alert, AlertProps, ErrorDisplay } from '../components/alert'
 import { Template } from '../shared'
 
 const AlertClose: FC<AlertProps> = ({
@@ -44,7 +44,10 @@ const Alerts = () => {
         <AlertClose kind='error'>
           This is an error alert. You would use it in Mezcal to indicate malfunction.
         </AlertClose>
+        <ErrorDisplay pre='error' errors={['just one error that is a bit long an maybe over dramatic to see if we can fill the page.']} clearErrors={() => null} />
+        <ErrorDisplay pre='error' errors={['one error', 'two error']} clearErrors={() => null} />
       </div>
+
     </Template>
   )
 }
